@@ -1,20 +1,18 @@
 import React from "react";
-import Navbar from "./components/Navbar";
-import Banner from "./components/Banner";
-import ListingGrid from "./components/ListingGrid";
-import Footer from "./components/Footer";
+import Navbar from "./components/NavBar/NavBar";
+import Banner from "./components/Banner/Banner";
+import ListingGrid from "./components/ListingGrid/ListingGrid";
+import Footer from "./components/Footer/Footer";
 import { Routes, Route } from "react-router-dom";
 import "./App.css";
 
 const App = () => {
   return (
     <div className="app">
-      <Navbar />
       <Banner />
+      <Navbar />
       <Routes>
-        <div className="app__content">
-          <ListingGrid />
-        </div>
+        <Route element={<ListingGrid />}></Route>
       </Routes>
       <Footer />
     </div>
