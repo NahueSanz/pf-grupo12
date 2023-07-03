@@ -5,17 +5,17 @@ const navBar = () => {
     <nav>
       <ul>
         <li>
-          <Link to="/countries">
+          <Link>
             <button className="btnBar">Home</button>
           </Link>
         </li>
         <li>
-          <Link to="/countries/activities">
+          <Link>
             <button className="btnBar">Poner tu Airbnb</button>
           </Link>
         </li>
         <li>
-          <Link to="/countries/activities/show">
+          <Link>
             <button className="btnBar">Mostrar Habitaciones</button>
           </Link>
         </li>
