@@ -1,19 +1,18 @@
 import React from "react";
-import Navbar from "./components/NavBar/NavBar";
-import Banner from "./components/Banner/Banner";
-import ListingGrid from "./components/ListingGrid/ListingGrid";
-import Footer from "./components/Footer/Footer";
+import { Route, Routes } from 'react-router-dom';
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
+import DetailPropertyPage from "./Components/Views/DetailProperty/DetailPropertyPage";
+import HomePage from './Components/Views/Home/HomePage';
 
 const App = () => {
   return (
     <div className="app">
-      <Banner />
-      <Navbar />
-      <ListingGrid />
-      <Footer />
+        <Routes>
+          <Route path='/home' element={<HomePage/>}/>
+          <Route path='/rooms/:id' element={<DetailPropertyPage/>}/>
+        </Routes>
     </div>
   );
 };
