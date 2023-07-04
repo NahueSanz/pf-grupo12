@@ -1,14 +1,16 @@
-import React from "react";
-import { Container } from 'react-boostrap';
-import Navbar from "./components/NavBar/NavBar";
+// import React from "react";
+import style from "./HomePage.module.css"
+import Container from 'react-bootstrap/Container';
+import Navbar from "../../Inc/NavBar/NavBar";
 
-import ListingGrid from "./components/ListingGrid/ListingGrid";
-import Footer from "./components/Footer/Footer";
+import ListingGrid from "../../Inc/ListingGrid/ListingGrid";
+import Footer from "../../Inc/Footer/Footer";
 
 
 function HomePage () {
     return(
-        <Container>
+        <Container className={style.container}>
+      
              <Navbar /> 
              <ListingGrid />
              <Footer />
