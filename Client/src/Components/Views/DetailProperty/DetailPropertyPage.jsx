@@ -1,7 +1,11 @@
+import NavBar from '../../Inc/NavBar/NavBar';
+
+
+
+
 function DetailPropertyPage() {
     return (
         <div className="container">
-            <h1> detailProduct </h1>
         </div>
     )
 }
