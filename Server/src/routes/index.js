@@ -1,8 +1,8 @@
 const { Router } = require('express');
 // Importar todos los routers;
-import userRouter from './userRouter';
-import adminRouter from './adminRouter';
-import publicRouter from './publicRouter';
+const userRouter =require("./userRouter")
+const adminRouter =require("./adminRouter")
+const publicRouter =require("./publicRouter")
 
 const router = Router();
 
