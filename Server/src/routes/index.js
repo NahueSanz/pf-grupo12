@@ -1,14 +1,17 @@
 const { Router } = require('express');
 // Importar todos los routers;
-
+import userRouter from './userRouter';
+import adminRouter from './adminRouter';
+import publicRouter from './publicRouter';
 
 const router = Router();
 
-// Configurar los routers
+/***********CONFIGURAR LAS RUTAS*************/
 
-//Prueba
-router.use("/",(req,res)=>{
-    res.status(200).send("Bienvenidos al inicio")
-});
+//Rutas publicas
+router.use("/public",publicRouter);
+//Rutas privadas
+router.use("/user",userRouter);
+router.use("/admin",adminRouter);
 
 module.exports = router;
