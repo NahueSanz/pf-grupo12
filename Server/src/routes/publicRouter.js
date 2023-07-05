@@ -1,4 +1,5 @@
 const { Router } = require("express");
+const { loginUserHandler, getAllPropertiesHandler, getPropertyByIdHandler } = require("../handlers/publicHandlers")
 
 const publicRouter = Router();
 

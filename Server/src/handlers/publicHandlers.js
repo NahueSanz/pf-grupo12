@@ -24,7 +24,7 @@ const loginUserHandler = async (req,res) => {
 //Todas las propiedades
 const getAllPropertiesHandler = async (req,res) => {
     try {
-        const properties = await getAllPropertiesHandler();
+        const properties = await getAllProperties();
         if (properties.length === 0) {
             throw Error("Not properties")
         }
@@ -45,4 +45,11 @@ const getPropertyByIdHandler = async (req,res) => {
     } catch (error) {
         res.status(400).json({error: error.message})
     }
+}
+
+
+module.exports = {
+    loginUserHandler,
+    getAllPropertiesHandler,
+    getPropertyByIdHandler
 }
