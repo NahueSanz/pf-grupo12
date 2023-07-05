@@ -10,10 +10,7 @@ import Footer from "../../Inc/Footer/Footer";
 function HomePage () {
     return(
         <Container className={style.container}>
-      
-             <Navbar /> 
              <ListingGrid />
-             <Footer />
         </Container>
     )
 }
