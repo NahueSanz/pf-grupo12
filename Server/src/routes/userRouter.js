@@ -18,9 +18,9 @@ userRouter.get("/info/:id", getUserByIdHandler);
 //Actualizar la informacion del usuario
 userRouter.put("/update/:id", updateUserHandler);
 //Obtener todas las propiedades del usuario
-userRouter.get("/property", getAllPropertiesUserHandler);
+userRouter.get("/:userId/property", getAllPropertiesUserHandler);
 //Crear una nueva propiedad del usuario
-userRouter.post("/property", createPropertyUserHandler);
+userRouter.post("/:userId/property", createPropertyUserHandler);
 //Obtener informacion de una propiedad del usuario por su ID
 userRouter.get("/property/:id", getPropertyUserByIdHandler);
 //Actualizar la informacion de una propiedad del usuario

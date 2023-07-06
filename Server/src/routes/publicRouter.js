@@ -19,5 +19,6 @@ publicRouter.post("/login", loginUserHandler);
 publicRouter.get("/properties", getAllPropertiesHandler);
 //Obtener el detalle de la propiedad
 publicRouter.get("/property/detail/:id", getPropertyByIdHandler);
+//ruta buscar por searchbar
 
 module.exports = publicRouter;
