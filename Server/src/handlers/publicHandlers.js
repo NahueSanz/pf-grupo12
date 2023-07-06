@@ -1,12 +1,64 @@
 //Importar los controllers
 const {
+  createUser,
   getAllProperties,
   findUserByEmail,
   getPropertyDetail,
 } = require("../controllers/publicControllers");
 /********* HANDLERS PARA LAS RUTAS PUBLICAS(NO AUTENTICADO) *********/
 
-//Login
+//Registrar un nuevo usuario 
+const registerUserHandler = async (req, res) => {
+  const {
+    name,
+    lastname,
+    email,
+    password,
+    country,
+    phonenumber,
+    language,
+    description,
+    image,
+    role
+  } = req.body;
+  try {
+    if (
+      !name ||
+      !lastname ||
+      !email ||
+      !password ||
+      !country ||
+      !phonenumber ||
+      !language ||
+      !description ||
+      !image ||
+      !role
+    ) {
+      throw Error("All fields are not complete");
+    }
+    const newUser = await createUser(
+      name,
+      lastname,
+      email,
+      password,
+      country,
+      phonenumber,
+      language,
+      description,
+      image,
+      role
+    );
+    if (!newUser) {
+      throw Error("User not created");
+    }
+    //Si todo sale bien se crea al nuevo usuario
+    res.status(201).json(newUser);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+}
+
+//Login de un usuario
 const loginUserHandler = async (req, res) => {
   const { email, password } = req.body;
   try {
@@ -30,7 +82,7 @@ const getAllPropertiesHandler = async (req, res) => {
   try {
     const properties = await getAllProperties();
     if (properties.length === 0) {
-      return res.status(404).json({ message: "No hay datos cargados" });
+      return res.status(404).json({ message: "There are not properties" });
     }
     res.status(200).json(properties);
   } catch (error) {
@@ -52,6 +104,7 @@ const getPropertyByIdHandler = async (req, res) => {
 };
 
 module.exports = {
+  registerUserHandler,
   loginUserHandler,
   getAllPropertiesHandler,
   getPropertyByIdHandler,
