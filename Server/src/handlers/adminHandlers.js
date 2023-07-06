@@ -1,4 +1,3 @@
-//Importar los controllers
 const { getAllUsers, deleteUser } = require("../controllers/adminControllers");
 /************ HANDLERS DEL USUARIO AUTORIZADO(ADMIN) ************/
 

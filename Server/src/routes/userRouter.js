@@ -8,6 +8,7 @@ const {
   updatePropertyUserHandler,
   deletePropertyUserHandler,
 } = require("../handlers/userHanders");
+
 const userRouter = Router();
 
 /*************** RUTAS DEL USUARIO AUTENTICADO *******************/

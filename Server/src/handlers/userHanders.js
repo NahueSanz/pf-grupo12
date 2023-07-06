@@ -1,4 +1,3 @@
-//Importar los controllers
 const {
   getUserById,
   createUserProperty,

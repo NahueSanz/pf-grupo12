@@ -1,8 +1,10 @@
 const { Router } = require("express");
+
 const {
   getAllUsersHandler,
   deleteUserHandler,
 } = require("../handlers/adminHandlers");
+
 const adminRouter = Router();
 
 /************ RUTAS DEL USUARIO AUTORIZADO(ADMIN) ***************/
