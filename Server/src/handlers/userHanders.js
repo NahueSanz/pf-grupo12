@@ -29,8 +29,9 @@ const updateUserHandler = (req, res) => {
 };
 //Propiedades del usuario
 const getAllPropertiesUserHandler = async (req, res) => {
+  const {userId} = req.params;
   try {
-    const userProperties = await getAllUserProperties();
+    const userProperties = await getAllUserProperties(userId);
     if (userProperties.length === 0) {
       throw Error("User has not properties");
     }
@@ -41,6 +42,7 @@ const getAllPropertiesUserHandler = async (req, res) => {
 };
 //Crear propiedad del usuario
 const createPropertyUserHandler = async (req, res) => {
+  const {userId} = req.params;
   const {
     title,
     type,
@@ -78,7 +80,8 @@ const createPropertyUserHandler = async (req, res) => {
       description,
       startDate,
       endDate,
-      image
+      image,
+      userId
     );
     if (!newProperty) {
       throw Error("Property is not created");

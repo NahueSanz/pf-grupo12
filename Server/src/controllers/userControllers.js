@@ -11,9 +11,10 @@ const getUserById = async (id) => {
   }
 };
 //Se obtendra todas las propiedades del usuario
-const getAllUserProperties = async () => {
+const getAllUserProperties = async (userId) => {
   try {
     const userProperties = await Property.findAll({
+      where:{UserId:userId},
       include: [
         {
           model: User,
@@ -37,7 +38,8 @@ const createUserProperty = async (
   description,
   startDate,
   endDate,
-  image
+  image,
+  userId
 ) => {
   const existingProperty = await Property.findOne({
     where: { title: title, address: address },
@@ -47,7 +49,6 @@ const createUserProperty = async (
   }
   const newProperty = await Property.create({
     title,
-    owner,
     type,
     address,
     country,
@@ -57,6 +58,7 @@ const createUserProperty = async (
     startDate,
     endDate,
     image,
+    UserId:userId
   });
   return newProperty;
 };
