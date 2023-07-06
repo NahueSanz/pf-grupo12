@@ -24,20 +24,23 @@ function NavBar() {
             />
             <Button variant="outline-success" className={style.searchButton}><img src="https://img.icons8.com/?size=2x&id=59878&format=png"></img></Button>
           </Form>
+          <div>
+          <Button>New</Button>
           <DropdownButton
-            className={style.buttonMenu}
+            className={`btn btn-primary bg-transparent ${style.buttonMenu}`}
             align="end"
             title={
               <img className={style.imgUser} src="https://img.icons8.com/?size=2x&id=23265&format=png" alt="Imagen de Dropdown" />}
-
           >
-
             <Dropdown.Item eventKey="1">Favoritos</Dropdown.Item>
             <Dropdown.Item eventKey="2">Viajes</Dropdown.Item>
             <Dropdown.Item eventKey="3">Something else here</Dropdown.Item>
             <Dropdown.Divider />
             <Dropdown.Item eventKey="4">Cerrar Sesión</Dropdown.Item>
           </DropdownButton>
+
+          </div>
+          
         </Nav>
       </Navbar.Collapse>
     </Navbar>

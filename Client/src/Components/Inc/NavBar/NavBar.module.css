@@ -9,7 +9,7 @@
 }
 .searchButton {
     border-radius: 50%;
-    width: 40px;
+    width: 60px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -27,10 +27,18 @@
     width: 30px;
   }
 
-  .buttonMenu{
+  .buttonMenu button{
+    border: none;
     color: black !important;
     border-radius: 50%;
-    background-color: rgba(134, 132, 132, 0) !important;
+    background-color: rgba(61, 11, 11, 0) !important;
+
+  }
+
+   .buttonMenu{
+    color: black !important;
+    border-radius: 50%;
+    background-color: rgba(61, 11, 11, 0) !important;
     border: 1px solid rgba(197, 191, 191, 0.63);
     border-radius: 100px !important;
-  }
+   }
