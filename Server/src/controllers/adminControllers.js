@@ -1,5 +1,7 @@
 const { User } = require("../db");
+/**************** CONTROLLERS DEL USUARIO AUTORIZADO(ADMIN) ****************/
 
+//Obtener todos los usuario de la BDD
 const getAllUsers = async () => {
   try {
     const users = await User.findAll();
@@ -8,7 +10,7 @@ const getAllUsers = async () => {
     throw new Error("Error while getting users");
   }
 };
-
+//Eliminar un usuario de la BDD
 const deleteUser = async (id) => {
   try {
     const deletedUser = await User.destroy({ where: { id } });

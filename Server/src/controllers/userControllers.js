@@ -1,14 +1,16 @@
 const { User, Property } = require("../db");
+/************** CONTROLLERS DEL USUARIO AUTENTICADO ****************/
 
+//Se obtendra al usuario buscando en la BDD por su ID
 const getUserById = async (id) => {
   try {
     const user = await User.findByPk(id);
     return user;
   } catch (error) {
-    throw new Error("Error al obtener el usuario por ID");
+    throw new Error("Error getting user by id");
   }
 };
-
+//Se obtendra todas las propiedades del usuario
 const getAllUserProperties = async () => {
   try {
     const userProperties = await Property.findAll({
@@ -21,10 +23,10 @@ const getAllUserProperties = async () => {
     });
     return userProperties;
   } catch (error) {
-    throw new Error("Error al obtener las propiedades del usuario");
+    throw new Error("Error getting all user properties");
   }
 };
-
+//Crea una nueva propiedad en la BDD
 const createUserProperty = async (
   title,
   type,
@@ -41,7 +43,7 @@ const createUserProperty = async (
     where: { title: title, address: address },
   });
   if (existingProperty) {
-    throw Error("La publicación ya existe");
+    throw new Error("post already exists");
   }
   const newProperty = await Property.create({
     title,
@@ -58,7 +60,7 @@ const createUserProperty = async (
   });
   return newProperty;
 };
-
+//Se obtendra la propiedad de un usuario por su ID de la propiedad
 const getUserPropertyById = async (id) => {
   try {
     const userProperty = await Property.findOne({
@@ -72,10 +74,10 @@ const getUserPropertyById = async (id) => {
     });
     return userProperty;
   } catch (error) {
-    throw new Error("Error al obtener la propiedad del usuario");
+    throw new Error("Error getting a user property");
   }
 };
-
+//Se eliminara una propiedad del usuario
 const deleteUserProperty = async (id) => {
   try {
     const deletedProperty = await Property.destroy({
@@ -88,9 +90,10 @@ const deleteUserProperty = async (id) => {
 
     return "User property deleted";
   } catch (error) {
-    throw new Error("Error al eliminar la propiedad del usuario");
+    throw new Error("Error deleting a user property");
   }
 };
+
 module.exports = {
   getUserById,
   createUserProperty,

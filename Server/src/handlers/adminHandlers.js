@@ -6,7 +6,7 @@ const getAllUsersHandler = async (req, res) => {
   try {
     const users = await getAllUsers();
     if (users.length === 0) {
-      throw Error("Not Users");
+      throw Error("There are not Users");
     }
     res.status(200).json(users);
   } catch (error) {
