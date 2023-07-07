@@ -6,7 +6,7 @@ export const GET_PROPERTIES_BY_NAME = "GET_PROPERTIES_BY_NAME";
 export const APPLY_FILTERS = "APPLY_FILTERS";
 
 
-const url = `http://localhost:3001`; //CAMBIAR POR URL AL BACK
+const url = `http://localhost:3001`; //URL GENERAL
 
 export function getProperties() {
   return async function (dispatch) {
