@@ -1,4 +1,17 @@
 .form {
-    max-width: 400px;
-    margin: 0 auto;
-  }
+  display: flex;
+  flex-direction: column;
+  gap: 1vw;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.inline{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.inlineElement{
+  width: 45%;
+}
