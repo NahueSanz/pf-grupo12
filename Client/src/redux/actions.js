@@ -11,7 +11,7 @@ const url = `http://localhost:3001`; //URL GENERAL
 export function getProperties() {
   return async function (dispatch) {
     try {
-      const res = await axios.get(`${url}/public/properties`);//PREGUNTAR RUTA AL BACK
+      const res = await axios.get(`${url}/public/properties`);//All properties
       return dispatch({
         type: GET_PROPERTIES,
         payload: res.data,
