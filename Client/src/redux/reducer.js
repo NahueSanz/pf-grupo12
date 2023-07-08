@@ -1,6 +1,6 @@
 const initialState = {
   properties: [],
-  propertyDetail:{},
+  propertyDetail: {},
   allProperties: [],
   page: [],
   searchTerm: "",
@@ -16,7 +16,7 @@ const rootReducer = (state = initialState, action) => {
         searchTerm: "",
       };
 
-      case "GET_PROPERTY_DETAIL":
+    case "GET_PROPERTY_DETAIL":
       return {
         ...state,
         propertyDetail: action.payload,
@@ -28,14 +28,6 @@ const rootReducer = (state = initialState, action) => {
         searchTerm: action.searchName,
         properties: action.payload,
       };
-
-
-
-    case "APPLY_FILTERS":
-      return {
-        ...state,
-      };
-
     default:
       return state;
   }
