@@ -1,6 +1,7 @@
 import React from "react";
 import styles from "./landing.module.css";
 import { Link } from "react-router-dom";
+import AboutUs from "../../Inc/AboutUs/AboutUs";
 
 const Hero = () => {
   return (
@@ -49,6 +50,7 @@ const Hero = () => {
           </div>
         </div>
       </div>
+      <AboutUs />
     </div>
   );
 };
