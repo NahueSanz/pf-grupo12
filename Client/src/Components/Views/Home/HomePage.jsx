@@ -5,8 +5,9 @@ import Container from 'react-bootstrap/Container';
 import FilterPanel from "../../Inc/FilterPanel/FilterPanel";
 import Card from "../../Inc/Card/Card";
 import { getProperties } from "../../../redux/actions";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { Button, Pagination } from 'react-bootstrap';
 
 
 function HomePage() {
@@ -15,15 +16,42 @@ function HomePage() {
     //Obtengo todas las propiedades
     const {properties} = useSelector(state => state);
 
+    //Paginado
+    const [currentPage, setCurrentPage] = useState(1);
+    const [itemsPerPage] = useState(8);
+
+    const indexOfLastItem = currentPage * itemsPerPage;
+    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+    const currentItems = properties.slice(indexOfFirstItem, indexOfLastItem);
+
+    const isLastPage = indexOfLastItem === properties.length;
+    const hasNextPage = currentItems.length >= itemsPerPage;
+
+    const firstPage = () => {
+        setCurrentPage(1)
+    };
+
+    const nextPage = () => {
+        setCurrentPage(currentPage+1)
+    };
+      
+    const prevPage = () => {
+        setCurrentPage(currentPage-1)
+    };
+
+
     useEffect(()=>{
         dispatch(getProperties());
+        setCurrentPage(1)
     },[]);
+
+
     return (
         <Container className={style.container}>
-            <FilterPanel />
+            <FilterPanel className={style.filters}/>
 
             <div className={style.cards}>
-            {properties.map((element) => {
+            {currentItems.map((element) => {
                 return (
                     <Card 
                         key={element.id}
@@ -40,6 +68,15 @@ function HomePage() {
 
             </div>
 
+
+            <Pagination className={style.paginado}>
+                <Pagination.First onClick={firstPage} disabled={currentPage === 1}/>
+                <Pagination.Prev onClick={prevPage} disabled={currentPage === 1}/>
+                <Pagination.Item>{currentPage}</Pagination.Item>
+                <Pagination.Next onClick={nextPage} disabled={!hasNextPage || isLastPage}/>
+            </Pagination>
+           
+        
         </Container>
     )
 }
