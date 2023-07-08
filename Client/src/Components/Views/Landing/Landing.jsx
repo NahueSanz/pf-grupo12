@@ -43,8 +43,8 @@ const Hero = () => {
             <div className="col-md-3 ">
               <br></br>
               <Link to="/home" id="click">
-              <button className="btn btn-warning">Search</button>
-             </Link>
+                <button className="btn btn-warning">Search</button>
+              </Link>
             </div>
           </div>
         </div>
