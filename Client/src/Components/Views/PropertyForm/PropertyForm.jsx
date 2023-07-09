@@ -1,21 +1,28 @@
 import React, { useState } from "react";
 import { Form, Button } from "react-bootstrap";
 import styles from "./PropertyForm.module.css";
-import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 const PropertyForm = () => {
   const [formData, setFormData] = useState({
     title: "",
-    owner: "",
     type: "",
     address: "",
     country: "",
     guests: 0,
-    enabled: true,
-    score: 0,
     price: 0,
-    review: [],
+    description: "",
+    startDate: "",
+    endDate: "",
+  });
+
+  const [errors, setErrors] = useState({
+    title: "",
+    type: "",
+    address: "",
+    country: "",
+    guests: "",
+    price: "",
     description: "",
     startDate: "",
     endDate: "",
@@ -25,6 +32,10 @@ const PropertyForm = () => {
     //QUIZA SEA MEJOR HACER UN HANDER POR CADA ITEM
     const { name, value } = e.target;
     setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+    setErrors((prevData) => ({
       ...prevData,
       [name]: value,
     }));
@@ -45,18 +56,6 @@ const PropertyForm = () => {
           type="text"
           name="title"
           value={formData.title}
-          onChange={handleChange}
-          required
-        />
-      </Form.Group>
-
-      <Form.Group controlId="formOwner">
-        {/*CAMBIAR FORM POR DATOS DEL USIARIO*/}
-        <Form.Label>Owner</Form.Label>
-        <Form.Control
-          type="text"
-          name="owner"
-          value={formData.owner}
           onChange={handleChange}
           required
         />
