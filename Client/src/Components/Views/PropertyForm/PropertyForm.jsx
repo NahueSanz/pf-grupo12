@@ -1,21 +1,34 @@
 import React, { useState } from "react";
-import { Form, Button } from "react-bootstrap";
+import { Form, Button, Alert } from "react-bootstrap";
 import styles from "./PropertyForm.module.css";
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
+import validate from "../../../utils/validations";
+import axios from "axios";
 
 const PropertyForm = () => {
+  //Requiriendo el id del usuario de la url
+  const { id } =useParams();
   const [formData, setFormData] = useState({
     title: "",
-    owner: "",
+    image: "",
     type: "",
     address: "",
     country: "",
     guests: 0,
-    enabled: true,
-    score: 0,
     price: 0,
-    review: [],
+    description: "",
+    startDate: "",
+    endDate: "",
+  });
+
+  const [errors, setErrors] = useState({
+    title: "",
+    image: "",
+    type: "",
+    address: "",
+    country: "",
+    guests: "",
+    price: "",
     description: "",
     startDate: "",
     endDate: "",
@@ -24,17 +37,55 @@ const PropertyForm = () => {
   const handleChange = (e) => {
     //QUIZA SEA MEJOR HACER UN HANDER POR CADA ITEM
     const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
+    setFormData({
+      ...formData,
       [name]: value,
-    }));
+    });
+    setErrors(
+      validate({
+        ...formData,
+        [name]: value,
+      })
+    )
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    let arrayErrors = Object.entries(errors);
     //CREAR VALIDACIONES
-    // TRAER FUNCION POST DE REDUX
-    console.log(formData);
+    if (arrayErrors.length === 0) {
+      axios.post(`http://localhost:3001/user/${id}/property`,formData)
+      .then(res=>{
+        console.log(res.data);
+        alert("Created property")});
+      
+      setFormData({
+        title: "",
+        image: "",
+        type: "",
+        address: "",
+        country: "",
+        guests: 0,
+        price: 0,
+        description: "",
+        startDate: "",
+        endDate: "",
+      });
+      setErrors({
+        title: "",
+        image: "",
+        type: "",
+        address: "",
+        country: "",
+        guests: "",
+        price: "",
+        description: "",
+        startDate: "",
+        endDate: "",
+      })
+    }else{
+      alert("Debe llenar correctamente todos los campos")
+    }
   };
 
   return (
@@ -48,18 +99,19 @@ const PropertyForm = () => {
           onChange={handleChange}
           required
         />
+        {errors.title && <Alert variant="danger">{errors.title}</Alert>}
       </Form.Group>
 
-      <Form.Group controlId="formOwner">
-        {/*CAMBIAR FORM POR DATOS DEL USIARIO*/}
-        <Form.Label>Owner</Form.Label>
+      <Form.Group controlId="formImage">
+        <Form.Label>Image</Form.Label>
         <Form.Control
           type="text"
-          name="owner"
-          value={formData.owner}
+          name="image"
+          value={formData.image}
           onChange={handleChange}
           required
         />
+        {errors.image && <Alert variant="danger">{errors.image}</Alert>}
       </Form.Group>
 
       <Form.Group controlId="formType">
@@ -77,6 +129,7 @@ const PropertyForm = () => {
           <option value="House">House</option>
           <option value="Cabin">Cabin</option>
         </Form.Control>
+        {errors.type && <Alert variant="danger">{errors.type}</Alert>}
       </Form.Group>
 
       <div className={styles.inline}>
@@ -96,6 +149,7 @@ const PropertyForm = () => {
             <option value="Chile">Chile</option>
             <option value="Uruguay">Uruguay</option>
           </Form.Control>
+          {errors.country && <Alert variant="danger">{errors.country}</Alert>}
         </Form.Group>
 
         <Form.Group controlId="formAddress" className={styles.inlineElement}>
@@ -107,6 +161,7 @@ const PropertyForm = () => {
             onChange={handleChange}
             required
           />
+          {errors.address && <Alert variant="danger">{errors.address}</Alert>}
         </Form.Group>
       </div>
 
@@ -119,6 +174,7 @@ const PropertyForm = () => {
           onChange={handleChange}
           required
         />
+        {errors.guests && <Alert variant="danger">{errors.guests}</Alert>}
       </Form.Group>
 
       <Form.Group controlId="formPrice">
@@ -130,6 +186,7 @@ const PropertyForm = () => {
           onChange={handleChange}
           required
         />
+        {errors.price && <Alert variant="danger">{errors.price}</Alert>}
       </Form.Group>
 
       <Form.Group controlId="formDescription">
@@ -142,6 +199,7 @@ const PropertyForm = () => {
           onChange={handleChange}
           required
         />
+        {errors.description && <Alert variant="danger">{errors.description}</Alert>}
       </Form.Group>
 
     <div className={styles.inline}>
@@ -155,6 +213,7 @@ const PropertyForm = () => {
           onChange={handleChange}
           required
         />
+        {errors.startDate && <Alert variant="danger">{errors.startDate}</Alert>}
       </Form.Group>
 
       <Form.Group controlId="formEndDate" className={styles.inlineElement}>
@@ -166,10 +225,10 @@ const PropertyForm = () => {
           onChange={handleChange}
           required
         />
+        {errors.endDate && <Alert variant="danger">{errors.endDate}</Alert>}
       </Form.Group>
     </div>
       
-
       <Button variant="primary" type="submit">
         Submit
       </Button>
