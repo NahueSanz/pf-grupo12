@@ -4,6 +4,8 @@ import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import Dropdown from "react-bootstrap/Dropdown";
 import DropdownButton from "react-bootstrap/DropdownButton";
+import { BsSearch } from 'react-icons/bs';
+import { Link } from "react-router-dom";
 import style from "./NavBar.module.css";
 
 function NavBar() {
@@ -16,7 +18,7 @@ function NavBar() {
           style={{ maxHeight: "100px" }}
           navbarScroll
         >
-          <Navbar.Brand href="#">Navbar scroll</Navbar.Brand>
+          <Navbar.Brand href="#">AloHar</Navbar.Brand>
           <Form className={style.form}>
             <Form.Control
               type="search"
@@ -25,11 +27,11 @@ function NavBar() {
               aria-label="Search"
             />
             <Button variant="outline-success" className={style.searchButton}>
-              <img src="https://img.icons8.com/?size=2x&id=59878&format=png"></img>
+           < BsSearch className={style.imgSearch}/>
             </Button>
           </Form>
           <div className={style.containerNews}>
-            <Button>New</Button>
+      
             <DropdownButton
               className={`btn btn-primary bg-transparent ${style.buttonMenu}`}
               align="end"
@@ -41,11 +43,10 @@ function NavBar() {
                 />
               }
             >
-              <Dropdown.Item eventKey="1">Favoritos</Dropdown.Item>
-              <Dropdown.Item eventKey="2">Viajes</Dropdown.Item>
-              <Dropdown.Item eventKey="3">Something else here</Dropdown.Item>
+              <Dropdown.Item as={Link} to="/create-store">New Post</Dropdown.Item>
+        
               <Dropdown.Divider />
-              <Dropdown.Item eventKey="4">Cerrar Sesión</Dropdown.Item>
+              <Dropdown.Item eventKey="2">Cerrar Sesión</Dropdown.Item>
             </DropdownButton>
           </div>
         </Nav>

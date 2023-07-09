@@ -4,7 +4,12 @@ import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
 import ToggleButton from "react-bootstrap/ToggleButton";
 import ToggleButtonGroup from "react-bootstrap/ToggleButtonGroup";
+import { BsFilter } from 'react-icons/bs';
+import { useDispatch } from "react-redux";
+import { orderPrice } from "../../../redux/actions";
+import { countries } from "../../../utils/countries"
 import styles from "./FilterPanel.module.css";
+
 
 function FilterPanel({
   onPriceMinChange,
@@ -16,7 +21,9 @@ function FilterPanel({
   selectedCountry,
   selectedTypes,
 }) {
+
   const [lgShow, setLgShow] = useState(false);
+  const dispatch = useDispatch();
 
   const handleSaveChanges = () => {
     setLgShow(false);
@@ -31,9 +38,27 @@ function FilterPanel({
     onTypeChange([]);
   };
 
+  const handleOrderPrice = (e) => {
+    dispatch(orderPrice(e.target.value));
+  };
+
   return (
     <>
-      <Button onClick={() => setLgShow(true)}>Filter</Button>
+
+      <div className={styles.containerFilters}>
+        <div className={styles.selectOrd}>
+          <label htmlFor="order">Order by: </label>
+        <Form.Select aria-label="Default select example" name="order" className={styles.selectOrdPrice} onChange={handleOrderPrice}>
+          <option value="All">Most relevant</option>
+          <option value="A">Lower price</option>
+          <option value="D">Higher price</option>
+        </Form.Select>
+
+        </div>
+        
+        <Button onClick={() => setLgShow(true)}>  <BsFilter /> Filters</Button>
+      </div>
+
       <Modal
         className={styles.modal}
         size="lg"
@@ -87,9 +112,12 @@ function FilterPanel({
             onChange={onCountryChange}
           >
             <option value="">Países</option>
-            <option value="Argentina">Argentina</option>
-            <option value="Peru">Peru</option>
-            <option value="Ecuador">Ecuador</option>
+            {countries.map((country) => (
+              <option key={country} value={country}>
+                {country}
+              </option>
+            ))}
+
           </Form.Select>
           <h4 className={styles.tittleType}>Tipo de propiedad</h4>
           <ToggleButtonGroup
@@ -99,9 +127,8 @@ function FilterPanel({
           >
             <ToggleButton
               id="tbg-btn-1"
-              className={`btn btn-primary ${styles.buttonTypes} ${
-                selectedTypes.includes("Apartment") ? styles.selectedButton : ""
-              }`}
+              className={`btn btn-primary ${styles.buttonTypes} ${selectedTypes.includes("Apartment") ? styles.selectedButton : ""
+                }`}
               value={"Apartment"}
             >
               <img
@@ -112,9 +139,8 @@ function FilterPanel({
             </ToggleButton>
             <ToggleButton
               id="tbg-btn-2"
-              className={`btn btn-primary ${styles.buttonTypes} ${
-                selectedTypes.includes("Hotel") ? styles.selectedButton : ""
-              }`}
+              className={`btn btn-primary ${styles.buttonTypes} ${selectedTypes.includes("Hotel") ? styles.selectedButton : ""
+                }`}
               value={"Hotel"}
             >
               <img
@@ -125,11 +151,9 @@ function FilterPanel({
             </ToggleButton>
             <ToggleButton
               id="tbg-btn-3"
-              className={`btn btn-primary btn-transparent ${
-                styles.buttonTypes
-              } ${
-                selectedTypes.includes("House") ? styles.selectedButton : ""
-              }`}
+              className={`btn btn-primary btn-transparent ${styles.buttonTypes
+                } ${selectedTypes.includes("House") ? styles.selectedButton : ""
+                }`}
               value={"House"}
             >
               <img
@@ -140,9 +164,8 @@ function FilterPanel({
             </ToggleButton>
             <ToggleButton
               id="tbg-btn-4"
-              className={`btn btn-primary ${styles.buttonTypes} ${
-                selectedTypes.includes("Cabin") ? styles.selectedButton : ""
-              }`}
+              className={`btn btn-primary ${styles.buttonTypes} ${selectedTypes.includes("Cabin") ? styles.selectedButton : ""
+                }`}
               value={"Cabin"}
             >
               <img
