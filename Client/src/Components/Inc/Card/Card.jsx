@@ -11,7 +11,7 @@ function CardComponent({
   price,
 }) {
   return (
-    <Card className={style.card} style={{ width: '20vw', height: '25vw' }}>
+    <Card className={style.card} style={{ width: "20vw", height: "25vw" }}>
       <Card.Img className={style.img} variant="top" src={image} />
       <Card.Body className={style.cardBody}>
         <div className={style.contanerTittle}>
@@ -19,12 +19,13 @@ function CardComponent({
             <h5>{country}</h5>
           </Link>
           <span>☆ 4,55</span>
-          </div>
-    
-            <p>{description}</p>
-            <p>Availiabe from {startDate} to {endDate}</p>
-            <h6>${price} USD night</h6>
-   
+        </div>
+
+        <p>{description}</p>
+        <p>
+          Availiabe from {startDate} to {endDate}
+        </p>
+        <h6>${price} USD night</h6>
       </Card.Body>
     </Card>
   );
