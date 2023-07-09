@@ -44,6 +44,7 @@ function HomePage() {
     console.log(selected);
     setSelectedTypes(selected);
   };
+  
 
   const handleApplyFilters = () => {
     if (filterByPrice.min !== "") {
@@ -52,6 +53,7 @@ function HomePage() {
         max: prevFilters.max !== "" ? prevFilters.max : Infinity,
       }));
     }
+
 
     dispatch(
       applyFilters({
@@ -125,7 +127,7 @@ function HomePage() {
 
   return (
     <Container className={style.container}>
-      <FilterPanel
+      <FilterPanel 
         priceMin={priceMin}
         priceMax={priceMax}
         selectedCountry={selectedCountry}

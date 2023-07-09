@@ -4,6 +4,7 @@ export const GET_PROPERTIES = "GET_PROPERTIES";
 export const GET_PROPERTY_DETAIL = "GET_PROPERTY_DETAIL";
 export const GET_PROPERTIES_BY_NAME = "GET_PROPERTIES_BY_NAME";
 export const APPLY_FILTERS = "APPLY_FILTERS";
+export const ORDER_PRICE = "ORDER_PRICE";
 
 const url = `http://localhost:3001`; //URL GENERAL
 
@@ -50,3 +51,6 @@ export function getPropertiesByName(searchName) {
   };
 }
 
+export const orderPrice = (order) => {
+  return { type: ORDER_PRICE, payload: order }
+}
