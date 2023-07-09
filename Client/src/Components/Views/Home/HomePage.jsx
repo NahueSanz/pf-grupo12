@@ -8,10 +8,12 @@ import { getProperties } from "../../../redux/actions";
 import { Pagination } from "react-bootstrap";
 
 function HomePage() {
-  const [priceMin, setPriceMin] = useState("");
-  const [priceMax, setPriceMax] = useState("");
-  const [selectedCountry, setSelectedCountry] = useState("");
-  const [selectedTypes, setSelectedTypes] = useState([]);
+  const [filters, setFilters] = useState({
+    priceMin: "",
+    priceMax: "",
+    selectedCountry: "",
+    selectedTypes: [],
+  });
 
   const dispatch = useDispatch();
   const { properties } = useSelector((state) => state);
@@ -25,76 +27,63 @@ function HomePage() {
   const handlePriceMinChange = (event) => {
     const value = event.target.value;
     if (value === "" || (value >= 0 && !isNaN(value))) {
-      setPriceMin(value);
+      setFilters((prevFilters) => ({
+        ...prevFilters,
+        priceMin: value,
+      }));
     }
   };
 
   const handlePriceMaxChange = (event) => {
     const value = event.target.value;
     if (value === "" || (value >= 0 && !isNaN(value))) {
-      setPriceMax(value);
+      setFilters((prevFilters) => ({
+        ...prevFilters,
+        priceMax: value,
+      }));
     }
   };
 
   const handleCountryChange = (event) => {
-    setSelectedCountry(event.target.value);
+    const value = event.target.value;
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      selectedCountry: value,
+    }));
   };
 
   const handleTypeChange = (selected) => {
-    console.log(selected);
-    setSelectedTypes(selected);
-  };
-  
-
-  const handleApplyFilters = () => {
-    if (filterByPrice.min !== "") {
-      setFilterByPrice((prevFilters) => ({
-        ...prevFilters,
-        max: prevFilters.max !== "" ? prevFilters.max : Infinity,
-      }));
-    }
-
-
-    dispatch(
-      applyFilters({
-        filterByType,
-        filterByPrice,
-        filterByCountry,
-        orderByPrice,
-        orderByScore,
-      })
-    );
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      selectedTypes: selected,
+    }));
   };
 
   const filteredData = useMemo(() => {
-    // Aplicar los filtros a los datos
-    let filteredProperties = properties;
-
     // Filtrar por rango de precios
-    filteredProperties = filteredProperties.filter((item) => {
+    let filteredProperties = properties.filter((item) => {
       return (
-        (priceMin === "" || item.price >= priceMin) &&
-        (priceMax === "" || item.price <= priceMax)
+        (filters.priceMin === "" || item.price >= filters.priceMin) &&
+        (filters.priceMax === "" || item.price <= filters.priceMax)
       );
     });
 
     // Filtrar por país
-    if (selectedCountry !== "") {
+    if (filters.selectedCountry !== "") {
       filteredProperties = filteredProperties.filter(
-        (item) => item.country === selectedCountry
+        (item) => item.country === filters.selectedCountry
       );
     }
 
     // Filtrar por tipo de propiedad
-    if (selectedTypes.length > 0) {
-      console.log(selectedTypes);
+    if (filters.selectedTypes.length > 0) {
       filteredProperties = filteredProperties.filter((item) =>
-        selectedTypes.includes(item.type)
+        filters.selectedTypes.includes(item.type)
       );
     }
 
     return filteredProperties;
-  }, [properties, priceMin, priceMax, selectedCountry, selectedTypes]);
+  }, [properties, filters]);
 
   //Paginado
   const [currentPage, setCurrentPage] = useState(1);
@@ -103,7 +92,6 @@ function HomePage() {
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = filteredData.slice(indexOfFirstItem, indexOfLastItem);
-  console.log(currentItems);
 
   const isLastPage = indexOfLastItem === filteredData.length;
   const hasNextPage = currentItems.length >= itemsPerPage;
@@ -127,16 +115,15 @@ function HomePage() {
 
   return (
     <Container className={style.container}>
-      <FilterPanel 
-        priceMin={priceMin}
-        priceMax={priceMax}
-        selectedCountry={selectedCountry}
-        selectedTypes={selectedTypes}
+      <FilterPanel
+        priceMin={filters.priceMin}
+        priceMax={filters.priceMax}
+        selectedCountry={filters.selectedCountry}
+        selectedTypes={filters.selectedTypes}
         onPriceMinChange={handlePriceMinChange}
         onPriceMaxChange={handlePriceMaxChange}
         onCountryChange={handleCountryChange}
         onTypeChange={handleTypeChange}
-        onApplyFilters={handleApplyFilters}
       />
 
       <div className={style.cards}>
