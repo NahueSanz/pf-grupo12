@@ -101,6 +101,7 @@ function HomePage() {
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = filteredData.slice(indexOfFirstItem, indexOfLastItem);
+  console.log(currentItems);
 
   const isLastPage = indexOfLastItem === filteredData.length;
   const hasNextPage = currentItems.length >= itemsPerPage;
@@ -137,7 +138,7 @@ function HomePage() {
       />
 
       <div className={style.cards}>
-        {filteredData.map((element) => {
+        {currentItems.map((element) => {
           return (
             <Card
               key={element.id}
