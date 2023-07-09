@@ -5,14 +5,14 @@ import Card from "../../Inc/Card/Card";
 import { useEffect, useState, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getProperties } from "../../../redux/actions";
+import { Pagination } from "react-bootstrap";
 
 function HomePage() {
-  const [filters, setFilters] = useState({
-    priceMin: "",
-    priceMax: "",
-    selectedCountry: "",
-    selectedTypes: [],
-  });
+  const [priceMin, setPriceMin] = useState("");
+  const [priceMax, setPriceMax] = useState("");
+  const [selectedCountry, setSelectedCountry] = useState("");
+  const [selectedTypes, setSelectedTypes] = useState([]);
+
   const dispatch = useDispatch();
   const { properties } = useSelector((state) => state);
 
@@ -25,75 +25,115 @@ function HomePage() {
   const handlePriceMinChange = (event) => {
     const value = event.target.value;
     if (value === "" || (value >= 0 && !isNaN(value))) {
-      setFilters((prevFilters) => ({
-        ...prevFilters,
-        priceMin: value,
-      }));
+      setPriceMin(value);
     }
   };
 
   const handlePriceMaxChange = (event) => {
     const value = event.target.value;
     if (value === "" || (value >= 0 && !isNaN(value))) {
-      setFilters((prevFilters) => ({
-        ...prevFilters,
-        priceMax: value,
-      }));
+      setPriceMax(value);
     }
   };
 
   const handleCountryChange = (event) => {
-    const value = event.target.value;
-    setFilters((prevFilters) => ({
-      ...prevFilters,
-      selectedCountry: value,
-    }));
+    setSelectedCountry(event.target.value);
   };
 
   const handleTypeChange = (selected) => {
-    setFilters((prevFilters) => ({
-      ...prevFilters,
-      selectedTypes: selected,
-    }));
+    console.log(selected);
+    setSelectedTypes(selected);
+  };
+
+  const handleApplyFilters = () => {
+    if (filterByPrice.min !== "") {
+      setFilterByPrice((prevFilters) => ({
+        ...prevFilters,
+        max: prevFilters.max !== "" ? prevFilters.max : Infinity,
+      }));
+    }
+
+    dispatch(
+      applyFilters({
+        filterByType,
+        filterByPrice,
+        filterByCountry,
+        orderByPrice,
+        orderByScore,
+      })
+    );
   };
 
   const filteredData = useMemo(() => {
+    // Aplicar los filtros a los datos
+    let filteredProperties = properties;
+
     // Filtrar por rango de precios
-    let filteredProperties = properties.filter((item) => {
+    filteredProperties = filteredProperties.filter((item) => {
       return (
-        (filters.priceMin === "" || item.price >= filters.priceMin) &&
-        (filters.priceMax === "" || item.price <= filters.priceMax)
+        (priceMin === "" || item.price >= priceMin) &&
+        (priceMax === "" || item.price <= priceMax)
       );
     });
 
     // Filtrar por país
-    if (filters.selectedCountry !== "") {
+    if (selectedCountry !== "") {
       filteredProperties = filteredProperties.filter(
-        (item) => item.country === filters.selectedCountry
+        (item) => item.country === selectedCountry
       );
     }
 
     // Filtrar por tipo de propiedad
-    if (filters.selectedTypes.length > 0) {
+    if (selectedTypes.length > 0) {
+      console.log(selectedTypes);
       filteredProperties = filteredProperties.filter((item) =>
-        filters.selectedTypes.includes(item.type)
+        selectedTypes.includes(item.type)
       );
     }
 
     return filteredProperties;
-  }, [properties, filters]);
+  }, [properties, priceMin, priceMax, selectedCountry, selectedTypes]);
+
+  //Paginado
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(8);
+
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = filteredData.slice(indexOfFirstItem, indexOfLastItem);
+
+  const isLastPage = indexOfLastItem === filteredData.length;
+  const hasNextPage = currentItems.length >= itemsPerPage;
+
+  const firstPage = () => {
+    setCurrentPage(1);
+  };
+
+  const nextPage = () => {
+    setCurrentPage(currentPage + 1);
+  };
+
+  const prevPage = () => {
+    setCurrentPage(currentPage - 1);
+  };
+
+  useEffect(() => {
+    dispatch(getProperties());
+    setCurrentPage(1);
+  }, []);
 
   return (
     <Container className={style.container}>
       <FilterPanel
-        priceMin={filters.priceMin}
-        priceMax={filters.priceMax}
-        selectedCountry={filters.selectedCountry}
-        selectedTypes={filters.selectedTypes}
+        priceMin={priceMin}
+        priceMax={priceMax}
+        selectedCountry={selectedCountry}
+        selectedTypes={selectedTypes}
         onPriceMinChange={handlePriceMinChange}
         onPriceMaxChange={handlePriceMaxChange}
         onCountryChange={handleCountryChange}
         onTypeChange={handleTypeChange}
+        onApplyFilters={handleApplyFilters}
       />
 
       <div className={style.cards}>
@@ -112,6 +152,16 @@ function HomePage() {
           );
         })}
       </div>
+
+      <Pagination className={style.paginado}>
+        <Pagination.First onClick={firstPage} disabled={currentPage === 1} />
+        <Pagination.Prev onClick={prevPage} disabled={currentPage === 1} />
+        <Pagination.Item>{currentPage}</Pagination.Item>
+        <Pagination.Next
+          onClick={nextPage}
+          disabled={!hasNextPage || isLastPage}
+        />
+      </Pagination>
     </Container>
   );
 }
