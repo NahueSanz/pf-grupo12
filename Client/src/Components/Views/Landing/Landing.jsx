@@ -19,7 +19,7 @@ const Hero = () => {
       <div className={styles.cont}>
         <div className={styles.form}>
           <div className="row">
-            <div className="col-md-3">
+            {/* <div className="col-md-3">
               <div className="">
                 <label htmlFor="location">Location</label>
                 <input type="text" placeholder="CO" className="form-control" />
@@ -40,11 +40,11 @@ const Hero = () => {
                 placeholder="100,00"
                 className="form-control"
               />
-            </div>
+            </div> */}
             <div className="col-md-3 ">
               <br></br>
               <Link to="/home" id="click">
-                <button className="btn btn-warning">Search</button>
+                <button className="btn btn-warning">Let´s Go</button>
               </Link>
             </div>
           </div>
