@@ -25,14 +25,14 @@
   }
 
 
-  .reserve-sm{
+  .reserveSm{
     position: sticky;
     bottom: 0;
     height: 90px;
   }
   
   @media (min-width: 768px) {
-    .reserve-sm {
+    .reserveSm {
       display: none;
     }
   }
