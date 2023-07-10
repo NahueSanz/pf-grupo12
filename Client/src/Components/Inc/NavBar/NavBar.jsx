@@ -18,7 +18,7 @@ function NavBar() {
           style={{ maxHeight: "100px" }}
           navbarScroll
         >
-          <Navbar.Brand href="#">AloHar</Navbar.Brand>
+          <Navbar.Brand as={Link} to="/home">AloHar</Navbar.Brand>
           <Form className={style.form}>
             <Form.Control
               type="search"
@@ -43,7 +43,7 @@ function NavBar() {
                 />
               }
             >
-              <Dropdown.Item as={Link} to="/create-store">New Post</Dropdown.Item>
+              <Dropdown.Item as={Link} to="/become-a-host">Become a host</Dropdown.Item>
         
               <Dropdown.Divider />
               <Dropdown.Item eventKey="2">Cerrar Sesión</Dropdown.Item>

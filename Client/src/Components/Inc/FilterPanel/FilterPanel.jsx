@@ -6,40 +6,63 @@ import ToggleButton from "react-bootstrap/ToggleButton";
 import ToggleButtonGroup from "react-bootstrap/ToggleButtonGroup";
 import { BsFilter } from 'react-icons/bs';
 import { useDispatch } from "react-redux";
-import { orderPrice } from "../../../redux/actions";
+import * as actions from "../../../redux/actions"
 import { countries } from "../../../utils/countries"
 import styles from "./FilterPanel.module.css";
 
 
-function FilterPanel({
-  onPriceMinChange,
-  onPriceMaxChange,
-  onCountryChange,
-  onTypeChange,
-  priceMin,
-  priceMax,
-  selectedCountry,
-  selectedTypes,
-}) {
+function FilterPanel() {
+
+  const [priceMin, setPriceMin] = useState("");
+
+  const [priceMax, setPriceMax] = useState("");
+
+  const [selectedCountry, setSelectedCountry] = useState("");
+
+  const [selectedTypes, setSelectedTypes] = useState([]);
+
+
+  const handlePriceMinChange = (e) => {
+    setPriceMin(e.target.value)
+  };
+
+  const handlePriceMaxChange = (e) => {
+    setPriceMax(e.target.value)
+  };
+
+  const handleSelectedCountryChange = (e) => {
+    setSelectedCountry(e.target.value)
+  };
+
+  const handleSelectedTypesChange = (e) => {
+    setSelectedTypes(e)
+  };
 
   const [lgShow, setLgShow] = useState(false);
   const dispatch = useDispatch();
 
   const handleSaveChanges = () => {
+
+    console.log({priceMin,priceMax,selectedCountry,selectedTypes})
+
+    dispatch(actions.applyFilters(priceMin,priceMax,selectedCountry,selectedTypes))
+
+
     setLgShow(false);
   };
 
   const handleReset = () => {
-    const emptyEvent = { target: { value: "" } };
 
-    onPriceMinChange(emptyEvent);
-    onPriceMaxChange(emptyEvent);
-    onCountryChange(emptyEvent);
-    onTypeChange([]);
+    setPriceMin("");
+    setPriceMax("");
+    setSelectedCountry("");
+    setSelectedCountry([]);
+
+
   };
 
   const handleOrderPrice = (e) => {
-    dispatch(orderPrice(e.target.value));
+    dispatch(actions.orderPrice(e.target.value));
   };
 
   return (
@@ -87,7 +110,7 @@ function FilterPanel({
                   type="number"
                   id="priceMin"
                   value={priceMin}
-                  onChange={onPriceMinChange}
+                  onChange={handlePriceMinChange}
                 />
               </div>
             </div>
@@ -99,7 +122,7 @@ function FilterPanel({
                   type="number"
                   id="priceMax"
                   value={priceMax}
-                  onChange={onPriceMaxChange}
+                  onChange={handlePriceMaxChange}
                 />
               </div>
             </div>
@@ -109,7 +132,7 @@ function FilterPanel({
             aria-label="Default select example"
             className={styles.select}
             value={selectedCountry}
-            onChange={onCountryChange}
+            onChange={handleSelectedCountryChange}
           >
             <option value="">Países</option>
             {countries.map((country) => (
@@ -123,7 +146,7 @@ function FilterPanel({
           <ToggleButtonGroup
             type="checkbox"
             value={selectedTypes}
-            onChange={onTypeChange}
+            onChange={handleSelectedTypesChange}
           >
             <ToggleButton
               id="tbg-btn-1"
