@@ -29,6 +29,7 @@ export function getPropertyDetail(id) {
   return async function (dispatch) {
     try {
       const res = await axios.get(`${url}/public/property/detail/${id}`); //One property
+      console.log(res.data);
       return dispatch({
         type: GET_PROPERTY_DETAIL,
         payload: res.data,

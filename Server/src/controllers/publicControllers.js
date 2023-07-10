@@ -70,7 +70,7 @@ const getPropertyDetail = async (id) => {
       include: [
         {
           model: User,
-          attributes: ["id", "name", "phonenumber", "language"],
+          attributes: ["id", "name", "phonenumber", "language", "image", "description"],
         },
       ],
     });

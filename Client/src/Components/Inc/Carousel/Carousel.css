@@ -1,0 +1,15 @@
+.custom-height {
+    height: 470px; 
+  }
+  
+  @media (max-width: 768px) { 
+    .custom-height {
+      height: 320px;
+    }
+  }
+
+  @media (min-width: 992px) {
+    .custom-height {
+      height: 600px;
+    }
+  }
