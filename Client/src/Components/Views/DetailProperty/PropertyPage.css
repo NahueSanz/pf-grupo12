@@ -1,0 +1,38 @@
+.container {
+  display: flex;
+  align-items: start;
+}
+
+
+  .owner{
+    position: sticky;
+    top: 0;
+  }
+
+  
+
+  @media (max-width: 576px) {
+    .owner {
+      display: none;
+    }
+  }
+
+
+  @media (max-width: 576px) {
+    .favButton {
+      display: none;
+    }
+  }
+
+
+  .reserve-sm{
+    position: sticky;
+    bottom: 0;
+    height: 90px;
+  }
+  
+  @media (min-width: 768px) {
+    .reserve-sm {
+      display: none;
+    }
+  }
