@@ -1,4 +1,4 @@
-import './PropertyPage.css'
+// import './PropertyPage.css'
 import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -13,7 +13,7 @@ import FavoritesAddNotification from '../../Inc/ModalPropertypage/ModalProperty'
 import locationIcon from '../../../assets/locationIcon.svg';
 import profilePicGuess from '../../../images/guessProfilePic.webp';
 import languageIcon from '../../../assets/languageIcon.svg';
-
+import style from './PropertyPage.module.css'
 
 function DetailPropertyPage() {
     
@@ -44,7 +44,7 @@ function DetailPropertyPage() {
  
 
     return (
-        <Container className='container-fluid container pt-5'>
+        <Container className={`${style.container} container-fluid container pt-5`}>
           <Row>
             <Col className='p-3 col-12'>
               <Carousel image={property.image}/>
@@ -99,7 +99,7 @@ function DetailPropertyPage() {
                     <Button className='btn-dark'>Contact Host</Button>
                   </div>
               </Col>
-            <Row className='reserve-sm shadow bg-body rounded mx-auto border border-white'>
+            <Row className={`${style.reserveSm} reserve-sm  shadow bg-body rounded mx-auto border border-white`}>
                 <Col className='col-12 text-start'>
                   <small>${property.price}USD night</small>
                   <div className='mt-1'>
@@ -111,7 +111,7 @@ function DetailPropertyPage() {
                 </Col>
             </Row>
           </Row>
-          <Row className='owner ms-2 shadow rounded w-50 pt-3'>
+          <Row className={`${style.owner} owner ms-2 shadow rounded w-50 pt-3`}>
             <Col className='text-center'>
               <small className='fw-semibold'>CHECK-IN</small>
               <input type="date" className='rounded mb-4 mx-2 border border-secondary' placeholder='check-in'/>
