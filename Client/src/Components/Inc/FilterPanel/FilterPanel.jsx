@@ -56,8 +56,11 @@ function FilterPanel() {
     setPriceMin("");
     setPriceMax("");
     setSelectedCountry("");
-    setSelectedCountry([]);
+    setSelectedTypes([]);
 
+    dispatch(actions.getProperties())
+
+    setLgShow(false);
 
   };
 

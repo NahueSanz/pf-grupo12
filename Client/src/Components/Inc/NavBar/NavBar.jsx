@@ -46,7 +46,7 @@ function NavBar() {
               <Dropdown.Item as={Link} to="/become-a-host">Become a host</Dropdown.Item>
         
               <Dropdown.Divider />
-              <Dropdown.Item eventKey="2">Cerrar Sesión</Dropdown.Item>
+              <Dropdown.Item as={Link} to="/">Close sesion</Dropdown.Item>
             </DropdownButton>
           </div>
         </Nav>

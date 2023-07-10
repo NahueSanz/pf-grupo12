@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import { Form, Button, Alert } from "react-bootstrap";
 import styles from "./PropertyForm.module.css";
-import { useParams } from "react-router-dom";
 import validate from "../../../utils/validations";
+import { countries } from "../../../utils/countries"
 import axios from "axios";
 
 const PropertyForm = () => {
-  //Requiriendo el id del usuario de la url
-  const { id } =useParams();
+  //Requiriendo el id del usuario. LUEGO CAMBIAR A DATOS DEL USUARIO TRAIDOS DEL REDUX,por ahora está harcodeado. Por ahora poner el id de algun usuario a mano.
+  const  id  ="23fee389-f96a-459b-a6df-1ca45ae02a44"
   const [formData, setFormData] = useState({
     title: "",
     image: "",
@@ -51,6 +51,7 @@ const PropertyForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    console.log(formData)
     let arrayErrors = Object.entries(errors);
     //CREAR VALIDACIONES
     if (arrayErrors.length === 0) {
@@ -133,6 +134,8 @@ const PropertyForm = () => {
       </Form.Group>
 
       <div className={styles.inline}>
+
+           
         <Form.Group controlId="formType" className={styles.inlineElement}>
           <Form.Label>Country</Form.Label>
           <Form.Control
@@ -144,10 +147,11 @@ const PropertyForm = () => {
           >
             <option value="">Select country</option>
             {/*CAMBIAR LUEGO */}
-            <option value="Argentina">Argentina</option>
-            <option value="Brasil">Brasil</option>
-            <option value="Chile">Chile</option>
-            <option value="Uruguay">Uruguay</option>
+            {countries.map((country) => (
+              <option key={country} value={country}>
+                {country}
+              </option>
+            ))}
           </Form.Control>
           {errors.country && <Alert variant="danger">{errors.country}</Alert>}
         </Form.Group>
