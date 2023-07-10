@@ -4,10 +4,24 @@ const {
   getAllProperties,
   findUserByEmail,
   getPropertyDetail,
+  getPropertiesbyTitle,
 } = require("../controllers/publicControllers");
-/********* HANDLERS PARA LAS RUTAS PUBLICAS(NO AUTENTICADO) *********/
 
-//Registrar un nuevo usuario 
+/********* HANDLERS PARA LAS RUTAS PUBLICAS(NO AUTENTICADO) *********/
+const getPropertiesByTitleHandler = async (req, res) => {
+  const title = req.query.title.toLowerCase();
+  try {
+    if (title) {
+      const properties = await getPropertiesbyTitle(title);
+      res.status(200).json(properties);
+    } else {
+      throw Error("No se paso un titulo valido");
+    }
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+//Registrar un nuevo usuario
 const registerUserHandler = async (req, res) => {
   const {
     name,
@@ -19,7 +33,7 @@ const registerUserHandler = async (req, res) => {
     language,
     description,
     image,
-    role
+    role,
   } = req.body;
   try {
     if (
@@ -56,7 +70,7 @@ const registerUserHandler = async (req, res) => {
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
-}
+};
 
 //Login de un usuario
 const loginUserHandler = async (req, res) => {
@@ -108,5 +122,5 @@ module.exports = {
   loginUserHandler,
   getAllPropertiesHandler,
   getPropertyByIdHandler,
+  getPropertiesByTitleHandler,
 };
-
