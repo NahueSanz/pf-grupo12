@@ -12,11 +12,9 @@ module.exports = (sequelize) => {
       },
       name: {
         type: DataTypes.STRING,
-        allowNull: false,
       },
       lastname: {
         type: DataTypes.STRING,
-        allowNull: false,
       },
       email: {
         type: DataTypes.STRING,
@@ -29,12 +27,9 @@ module.exports = (sequelize) => {
       },
       country: {
         type: DataTypes.STRING,
-        allowNull: false,
       },
       phonenumber: {
         type: DataTypes.INTEGER,
-        allowNull: false,
-        unique: true,
       },
       enabled: {
         type: DataTypes.BOOLEAN,
@@ -56,18 +51,16 @@ module.exports = (sequelize) => {
       },
       language: {
         type: DataTypes.STRING,
-        allowNull: false,
       },
       description: {
         type: DataTypes.STRING,
-        allowNull: false,
       },
       image: {
         type: DataTypes.STRING,
-        allowNull: false,
       },
       role: {
         type: DataTypes.STRING,
+        defaultValue: "user",
         allowNull: false,
       },
     },

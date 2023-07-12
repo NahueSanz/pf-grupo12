@@ -8,6 +8,7 @@ export const ORDER_PRICE = "ORDER_PRICE";
 export const FIRST_PAGE = "FIRST_PAGE";
 export const NEXT_PAGE = "NEXT_PAGE";
 export const PREV_PAGE = "PREV_PAGE";
+export const SEARCH_BY_TITLE = "SEARCH_BY_TITLE";
 
 const url = `http://localhost:3001`; //URL GENERAL
 
@@ -17,6 +18,20 @@ export function getProperties() {
       const res = await axios.get(`${url}/public/properties`); //All properties
       return dispatch({
         type: GET_PROPERTIES,
+        payload: res.data,
+      });
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+}
+
+export function searchPropertiesByTitle(title) {
+  return async function (dispatch) {
+    try {
+      const res = await axios.get(`${url}/public/properties?title=${title}`); //Search properties by title
+      return dispatch({
+        type: SEARCH_BY_TITLE,
         payload: res.data,
       });
     } catch (error) {

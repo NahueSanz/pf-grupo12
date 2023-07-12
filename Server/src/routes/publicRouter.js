@@ -5,7 +5,6 @@ const {
   loginUserHandler,
   getAllPropertiesHandler,
   getPropertyByIdHandler,
-  getPropertiesByTitleHandler,
 } = require("../handlers/publicHandlers");
 
 const publicRouter = Router();
@@ -16,11 +15,9 @@ const publicRouter = Router();
 publicRouter.post("/register", registerUserHandler);
 //Login del usuario
 publicRouter.post("/login", loginUserHandler);
-//Obtener todas las propiedades
+//Obtener todas las propiedades o traer todas por search
 publicRouter.get("/properties", getAllPropertiesHandler);
 //Obtener el detalle de la propiedad
 publicRouter.get("/property/detail/:id", getPropertyByIdHandler);
-//ruta buscar por searchbar
-publicRouter.get("/properties/title", getPropertiesByTitleHandler);
 
 module.exports = publicRouter;
