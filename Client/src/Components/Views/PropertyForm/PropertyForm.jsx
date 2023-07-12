@@ -1,69 +1,99 @@
 import React, { useState } from "react";
-import { Form, Button, Alert } from "react-bootstrap";
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import { Button } from "react-bootstrap";
 import styles from "./PropertyForm.module.css";
-import validate from "../../../utils/validations";
-import { countries } from "../../../utils/countries"
+import { Link, useParams } from "react-router-dom";
+import * as Yup from "yup";
 import axios from "axios";
 
+const validationSchema = Yup.object().shape({
+  title: Yup.string().required("Title is required"),
+  type: Yup.string().required("Type is required"),
+  address: Yup.string().required("Address is required"),
+  country: Yup.string().required("Country is required"),
+  guests: Yup.number().required("Guests is required"),
+  price: Yup.number().required("Price is required"),
+  description: Yup.string().required("Description is required"),
+  startDate: Yup.date()
+    .required("Start Date is required")
+    .min(new Date(), "Start Date must be in the future")
+    .max(Yup.ref("endDate"), "Start Date must be before End Date"),
+  endDate: Yup.date()
+    .required("End Date is required")
+    .min(Yup.ref("startDate"), "End Date must be after Start Date"),
+});
 
 const PropertyForm = () => {
-  //Requiriendo el id del usuario. LUEGO CAMBIAR A DATOS DEL USUARIO TRAIDOS DEL REDUX,por ahora está harcodeado. Por ahora poner el id de algun usuario a mano.
-  const  id  ="23fee389-f96a-459b-a6df-1ca45ae02a44"
-  const [formData, setFormData] = useState({
-    title: "",
-    image: "",
-    type: "",
-    address: "",
-    country: "",
-    guests: 0,
-    price: 0,
-    description: "",
-    startDate: "",
-    endDate: "",
-  });
+  const { id } = useParams();
+  const [image, setImage] = useState(null);
+  const [previewImage, setPreviewImage] = useState(null);
 
-  const [errors, setErrors] = useState({
-    title: "",
-    image: "",
-    type: "",
-    address: "",
-    country: "",
-    guests: "",
-    price: "",
-    description: "",
-    startDate: "",
-    endDate: "",
-  });
+  const handleSubmit = async (values, { setSubmitting, resetForm }) => {
+    try {
+      const formData = new FormData();
+      formData.append("file", image);
+      formData.append("upload_preset", "aloharsur88");
+      formData.append("cloud_name", "dgsnukgdu");
 
-  const handleChange = (e) => {
-    //QUIZA SEA MEJOR HACER UN HANDER POR CADA ITEM
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
-    setErrors(
-      validate({
-        ...formData,
-        [name]: value,
-      })
-    )
+      const response = await axios.post(
+        "https://api.cloudinary.com/v1_1/dgsnukgdu/image/upload",
+        formData
+      );
+
+      const imageUrl = response.data.secure_url;
+      values.image = imageUrl;
+
+      await axios.post(
+        `http://localhost:3001/user/${id}/property`,
+        values
+      );
+
+      console.log(response.data);
+      alert("Created property");
+      resetForm();
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setSubmitting(false);
+    }
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log(formData)
-    let arrayErrors = Object.entries(errors);
-    //CREAR VALIDACIONES
-    if (arrayErrors.length === 0) {
-      axios.post(`http://localhost:3001/user/${id}/property`,formData)
-      .then(res=>{
-        console.log(res.data);
-        alert("Created property")});
-      
-      setFormData({
+  const handleImageChange = (e) => {
+    const selectedImage = e.target.files[0];
+    setImage(selectedImage);
+
+    if (selectedImage) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreviewImage(reader.result);
+      };
+      reader.readAsDataURL(selectedImage);
+    } else {
+      setPreviewImage(null);
+    }
+  };
+
+  const submitImage = () => {
+    const formData = new FormData();
+    formData.append("file", image);
+    formData.append("upload_preset", "aloharsur88");
+    formData.append("cloud_name", "dgsnukgdu");
+
+    axios
+      .post("https://api.cloudinary.com/v1_1/dgsnukgdu/image/upload", formData)
+      .then((response) => {
+        const imageUrl = response.data.secure_url;
+        console.log("Image URL:", imageUrl);
+      })
+      .catch((error) => {
+        console.error("Error uploading image:", error);
+      });
+  };
+
+  return (
+    <Formik
+      initialValues={{
         title: "",
-        image: "",
         type: "",
         address: "",
         country: "",
@@ -72,172 +102,182 @@ const PropertyForm = () => {
         description: "",
         startDate: "",
         endDate: "",
-      });
-      setErrors({
-        title: "",
-        image: "",
-        type: "",
-        address: "",
-        country: "",
-        guests: "",
-        price: "",
-        description: "",
-        startDate: "",
-        endDate: "",
-      })
-    }else{
-      alert("Debe llenar correctamente todos los campos")
-    }
-  };
+      }}
+      validationSchema={validationSchema}
+      onSubmit={handleSubmit}
+    >
+      {({ isSubmitting }) => (
+        <Form className={styles.form}>
+          <div className="form-group">
+            <label htmlFor="title">Title</label>
+            <Field type="text" name="title" className="form-control" required />
+            <ErrorMessage
+              name="title"
+              component="div"
+              className="error-message"
+            />
+          </div>
 
-  return (
-    <Form onSubmit={handleSubmit} className={styles.form}>
-      <Form.Group controlId="formTitle">
-        <Form.Label>Title</Form.Label>
-        <Form.Control
-          type="text"
-          name="title"
-          value={formData.title}
-          onChange={handleChange}
-          required
-        />
-        {errors.title && <Alert variant="danger">{errors.title}</Alert>}
-      </Form.Group>
+          <div className="form-group">
+            <label htmlFor="image">Image</label>
+            <input
+              type="file"
+              name="image"
+              onChange={handleImageChange}
+              required
+            />
+            {previewImage && (
+              <img
+                src={previewImage}
+                alt="Preview"
+                className={styles.imagePreview}
+              />
+            )}
 
-      <Form.Group controlId="formImage">
-        <Form.Label>Image</Form.Label>
-        <Form.Control
-          type="text"
-          name="image"
-          value={formData.image}
-          onChange={handleChange}
-          required
-        />
-        {errors.image && <Alert variant="danger">{errors.image}</Alert>}
-      </Form.Group>
+            <ErrorMessage
+              name="image"
+              component="div"
+              className="error-message"
+            />
+          </div>
+          <Button className={styles["btn-green"]} onClick={submitImage}>
+            Cargar imagen
+          </Button>
 
-      <Form.Group controlId="formType">
-        <Form.Label>Type</Form.Label>
-        <Form.Control
-          as="select"
-          name="type"
-          value={formData.type}
-          onChange={handleChange}
-          required
-        >
-          <option value="">Select type</option>
-          <option value="Apartment">Apartment</option>
-          <option value="Hotel">Hotel</option>
-          <option value="House">House</option>
-          <option value="Cabin">Cabin</option>
-        </Form.Control>
-        {errors.type && <Alert variant="danger">{errors.type}</Alert>}
-      </Form.Group>
+          <div className="form-group">
+            <label htmlFor="type">Type</label>
+            <Field as="select" name="type" className="form-control" required>
+              <option value="">Select type</option>
+              <option value="Apartment">Apartment</option>
+              <option value="Hotel">Hotel</option>
+              <option value="House">House</option>
+              <option value="Cabin">Cabin</option>
+            </Field>
+            <ErrorMessage
+              name="type"
+              component="div"
+              className="error-message"
+            />
+          </div>
 
-      <div className={styles.inline}>
+          <div className="form-group">
+            <label htmlFor="address">Address</label>
+            <Field
+              type="text"
+              name="address"
+              className="form-control"
+              required
+            />
+            <ErrorMessage
+              name="address"
+              component="div"
+              className="error-message"
+            />
+          </div>
 
-           
-        <Form.Group controlId="formType" className={styles.inlineElement}>
-          <Form.Label>Country</Form.Label>
-          <Form.Control
-            as="select"
-            name="country"
-            value={formData.country}
-            onChange={handleChange}
-            required
-          >
-            <option value="">Select country</option>
-            {/*CAMBIAR LUEGO */}
-            {countries.map((country) => (
-              <option key={country} value={country}>
-                {country}
-              </option>
-            ))}
-          </Form.Control>
-          {errors.country && <Alert variant="danger">{errors.country}</Alert>}
-        </Form.Group>
+          <div className="form-group">
+            <label htmlFor="country">Country</label>
+            <Field as="select" name="country" className="form-control" required>
+              <option value="">Select country</option>
+              <option value="Argentina">Argentina</option>
+              <option value="Brasil">Brasil</option>
+              <option value="Chile">Chile</option>
+              <option value="Uruguay">Uruguay</option>
+            </Field>
+            <ErrorMessage
+              name="country"
+              component="div"
+              className="error-message"
+            />
+          </div>
 
-        <Form.Group controlId="formAddress" className={styles.inlineElement}>
-          <Form.Label>Address</Form.Label>
-          <Form.Control
-            type="text"
-            name="address"
-            value={formData.address}
-            onChange={handleChange}
-            required
-          />
-          {errors.address && <Alert variant="danger">{errors.address}</Alert>}
-        </Form.Group>
-      </div>
+          <div className="form-group">
+            <label htmlFor="guests">Guests</label>
+            <Field
+              type="number"
+              name="guests"
+              className="form-control"
+              required
+            />
+            <ErrorMessage
+              name="guests"
+              component="div"
+              className="error-message"
+            />
+          </div>
 
-      <Form.Group controlId="formGuests">
-        <Form.Label>Guests</Form.Label>
-        <Form.Control
-          type="number"
-          name="guests"
-          value={formData.guests}
-          onChange={handleChange}
-          required
-        />
-        {errors.guests && <Alert variant="danger">{errors.guests}</Alert>}
-      </Form.Group>
+          <div className="form-group">
+            <label htmlFor="price">Price</label>
+            <Field
+              type="number"
+              name="price"
+              className="form-control"
+              required
+            />
+            <ErrorMessage
+              name="price"
+              component="div"
+              className="error-message"
+            />
+          </div>
 
-      <Form.Group controlId="formPrice">
-        <Form.Label>Price</Form.Label>
-        <Form.Control
-          type="number"
-          name="price"
-          value={formData.price}
-          onChange={handleChange}
-          required
-        />
-        {errors.price && <Alert variant="danger">{errors.price}</Alert>}
-      </Form.Group>
+          <div className="form-group">
+            <label htmlFor="description">Description</label>
+            <Field
+              as="textarea"
+              rows={3}
+              name="description"
+              className="form-control"
+              required
+            />
+            <ErrorMessage
+              name="description"
+              component="div"
+              className="error-message"
+            />
+          </div>
 
-      <Form.Group controlId="formDescription">
-        <Form.Label>Description</Form.Label>
-        <Form.Control
-          as="textarea"
-          rows={3}
-          name="description"
-          value={formData.description}
-          onChange={handleChange}
-          required
-        />
-        {errors.description && <Alert variant="danger">{errors.description}</Alert>}
-      </Form.Group>
+          <div className="form-group">
+            <label htmlFor="startDate">Start Date</label>
+            <Field
+              type="date"
+              name="startDate"
+              className="form-control"
+              required
+            />
+            <ErrorMessage
+              name="startDate"
+              component="div"
+              className="error-message"
+            />
+          </div>
 
-    <div className={styles.inline}>
+          <div className="form-group">
+            <label htmlFor="endDate">End Date</label>
+            <Field
+              type="date"
+              name="endDate"
+              className="form-control"
+              required
+            />
+            <ErrorMessage
+              name="endDate"
+              component="div"
+              className="error-message"
+            />
+          </div>
 
-      <Form.Group controlId="formStartDate" className={styles.inlineElement}>
-        <Form.Label>Start Date</Form.Label>
-        <Form.Control
-          type="date"
-          name="startDate"
-          value={formData.startDate}
-          onChange={handleChange}
-          required
-        />
-        {errors.startDate && <Alert variant="danger">{errors.startDate}</Alert>}
-      </Form.Group>
+          
 
-      <Form.Group controlId="formEndDate" className={styles.inlineElement}>
-        <Form.Label>End Date</Form.Label>
-        <Form.Control
-          type="date"
-          name="endDate"
-          value={formData.endDate}
-          onChange={handleChange}
-          required
-        />
-        {errors.endDate && <Alert variant="danger">{errors.endDate}</Alert>}
-      </Form.Group>
-    </div>
-      
-      <Button variant="primary" type="submit">
-        Submit
-      </Button>
-    </Form>
+          <Button variant="primary" type="submit" disabled={isSubmitting}>
+            {isSubmitting ? "Submitting..." : "Submit"}
+          </Button>
+          <Link to="/home" id="click">
+            <Button>Home</Button>
+          </Link>
+        </Form>
+      )}
+    </Formik>
   );
 };
 
