@@ -1,0 +1,21 @@
+
+/* PanelRegistrarse.module.css */
+.linkButton {
+    background: none !important;
+    border: none !important;
+    padding: 0;
+    font: inherit;
+    color: #007bff !important;
+    cursor: pointer;
+    text-decoration: underline;
+    background-color: aliceblue!important;
+  }
+  
+  .linkButton:focus {
+    outline: none;
+  }
+  
+  .linkButton:hover {
+    color: #0056b3;
+  }
+  

@@ -5,6 +5,7 @@ import validate from "../../../utils/validations";
 import { countries } from "../../../utils/countries"
 import axios from "axios";
 
+
 const PropertyForm = () => {
   //Requiriendo el id del usuario. LUEGO CAMBIAR A DATOS DEL USUARIO TRAIDOS DEL REDUX,por ahora está harcodeado. Por ahora poner el id de algun usuario a mano.
   const  id  ="23fee389-f96a-459b-a6df-1ca45ae02a44"

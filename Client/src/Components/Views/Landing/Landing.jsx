@@ -2,10 +2,14 @@ import React from "react";
 import styles from "./landing.module.css";
 import { Link } from "react-router-dom";
 import AboutUs from "../../Inc/AboutUs/AboutUs";
+import LoginPanel from "../../Inc/Login/LoginPanel"
+import PanelRegistrarse from "../../Inc/PanelRegistrarse/PanelRegistrarse"
 
 const Hero = () => {
   return (
+   
     <div className={styles.prin}> 
+
       <nav className="row">
         <h1 className="col-md-1">AloHar</h1>
         <ul className="col-md-10">
@@ -13,7 +17,11 @@ const Hero = () => {
           <li>Trending</li>
           <li>About</li>
         </ul>
-        <button className="col-md-1 btn btn-warning">Contact</button>
+        <PanelRegistrarse className="col-md-1 btn btn-warning">Registrarse</PanelRegistrarse>
+        <Link>
+        <LoginPanel className="col-md-1 btn btn-warning">Iniciar Sesion </LoginPanel>
+        </Link>
+        
       </nav>
 
       <div className={styles.cont}>
