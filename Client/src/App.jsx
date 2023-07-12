@@ -21,7 +21,7 @@ const App = () => {
         <Route path="/" element={<Landing />} />
         <Route path="/home" element={<HomePage />} />
         <Route path="/rooms/:id" element={<DetailPropertyPage />} />
-        <Route path="//become-a-host" element={<PropertyForm />} />
+        <Route path="/become-a-host" element={<PropertyForm />} />
       </Routes>
       {location.pathname !== "/" && <Footer />}
     </div>
