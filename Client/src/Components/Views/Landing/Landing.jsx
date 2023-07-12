@@ -5,7 +5,7 @@ import AboutUs from "../../Inc/AboutUs/AboutUs";
 
 const Hero = () => {
   return (
-    <div className={styles.prin}>
+    <div className={styles.prin}> 
       <nav className="row">
         <h1 className="col-md-1">AloHar</h1>
         <ul className="col-md-10">
