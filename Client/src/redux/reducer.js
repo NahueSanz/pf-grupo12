@@ -29,6 +29,12 @@ const rootReducer = (state = initialState, action) => {
         properties: action.payload,
       };
 
+    case "SEARCH_BY_TITLE":
+      return{
+        ...state,
+        properties: action.payload
+      }
+
     case "APPLY_FILTERS":
 
       var filteringProperties = [...state.allProperties]

@@ -4,8 +4,7 @@ const { literal, fn, Op } = require("sequelize");
 /********************* CONTROLLERS PUBLICOS *********************/
 const getPropertiesbyTitle = async (title) => {
   try {
-    const searchTitle = title;
-    let properties = await Property.findAll({
+    const properties = await Property.findAll({
       where: {
         title: { [Op.iLike]: "%" + title + "%" },
       },
@@ -16,40 +15,17 @@ const getPropertiesbyTitle = async (title) => {
       throw new Error("No se encontraron propiedades con ese título");
     }
   } catch (error) {
-    console.log(error.message);
     throw new Error("Error al realizar la búsqueda");
   }
 };
 
 //Crear un nuevo usuario en la BDD
-const createUser = async (
-  name,
-  lastname,
-  email,
-  password,
-  country,
-  phonenumber,
-  language,
-  description,
-  image,
-  role
-) => {
+const createUser = async (email,password) => {
   const [newUser, created] = await User.findOrCreate({
     //busca por estos datos al usuario
-    where: { email, phonenumber },
+    where: { email },
     //sino lo encuentra lo crea con los valores del defaults
-    defaults: {
-      name,
-      lastname,
-      email,
-      password,
-      country,
-      phonenumber,
-      language,
-      description,
-      image,
-      role,
-    },
+    defaults: { email,password},
   });
   if (!created) {
     throw new Error("User already exists");
@@ -59,14 +35,7 @@ const createUser = async (
 //Obtener todas las propiedades de la BDD
 const getAllProperties = async () => {
   try {
-    const properties = await Property.findAll({
-      include: [
-        {
-          model: User,
-          attributes: ["id", "name", "phonenumber", "language"],
-        },
-      ],
-    });
+    const properties = await Property.findAll();
 
     return properties;
   } catch (error) {

@@ -8,60 +8,15 @@ const {
 } = require("../controllers/publicControllers");
 
 /********* HANDLERS PARA LAS RUTAS PUBLICAS(NO AUTENTICADO) *********/
-const getPropertiesByTitleHandler = async (req, res) => {
-  const title = req.query.title.toLowerCase();
-  try {
-    if (title) {
-      const properties = await getPropertiesbyTitle(title);
-      res.status(200).json(properties);
-    } else {
-      throw Error("No se paso un titulo valido");
-    }
-  } catch (error) {
-    res.status(400).json({ error: error.message });
-  }
-};
+
 //Registrar un nuevo usuario
 const registerUserHandler = async (req, res) => {
-  const {
-    name,
-    lastname,
-    email,
-    password,
-    country,
-    phonenumber,
-    language,
-    description,
-    image,
-    role,
-  } = req.body;
+  const { email,password } = req.body;
   try {
-    if (
-      !name ||
-      !lastname ||
-      !email ||
-      !password ||
-      !country ||
-      !phonenumber ||
-      !language ||
-      !description ||
-      !image ||
-      !role
-    ) {
+    if (!email || !password ) {
       throw Error("All fields are not complete");
     }
-    const newUser = await createUser(
-      name,
-      lastname,
-      email,
-      password,
-      country,
-      phonenumber,
-      language,
-      description,
-      image,
-      role
-    );
+    const newUser = await createUser(email,password);
     if (!newUser) {
       throw Error("User not created");
     }
@@ -91,18 +46,31 @@ const loginUserHandler = async (req, res) => {
     res.status(400).json({ error: error.message });
   }
 };
-//Todas las propiedades
+
+//Todas las propiedades o todas las propiedas encontradas por search
 const getAllPropertiesHandler = async (req, res) => {
+  const {title} = req.query;
   try {
-    const properties = await getAllProperties();
-    if (properties.length === 0) {
-      return res.status(404).json({ message: "There are not properties" });
+    //Si se busca por search
+    if (title) {
+      const properties = await getPropertiesbyTitle(title.toLowerCase());
+      if (properties.length===0) {
+        throw Error("No se paso un titulo valido");
+      }
+      res.status(200).json(properties);
     }
-    res.status(200).json(properties);
+    else{
+      const properties = await getAllProperties();
+      if (properties.length === 0) {
+        return res.status(404).json({ message: "There are not properties" });
+      }
+      res.status(200).json(properties);
+    }
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
 };
+
 //Detalle de la propiedad
 const getPropertyByIdHandler = async (req, res) => {
   const { id } = req.params;
@@ -122,5 +90,4 @@ module.exports = {
   loginUserHandler,
   getAllPropertiesHandler,
   getPropertyByIdHandler,
-  getPropertiesByTitleHandler,
 };

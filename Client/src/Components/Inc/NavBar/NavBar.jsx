@@ -5,10 +5,20 @@ import Navbar from "react-bootstrap/Navbar";
 import Dropdown from "react-bootstrap/Dropdown";
 import DropdownButton from "react-bootstrap/DropdownButton";
 import { BsSearch } from 'react-icons/bs';
+import { useDispatch } from "react-redux";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import style from "./NavBar.module.css";
+import { searchPropertiesByTitle } from "../../../redux/actions";
 
 function NavBar() {
+
+  const dispatch = useDispatch();
+  const [title, setTitle] = useState("");
+
+  const handleChange = (event) => {
+    setTitle(event.target.value)
+  }
   return (
     <Navbar expand="lg" className="bg-body-tertiary">
       <Navbar.Toggle aria-controls="navbarScroll" />
@@ -21,12 +31,15 @@ function NavBar() {
           <Navbar.Brand as={Link} to="/home">AloHar</Navbar.Brand>
           <Form className={style.form}>
             <Form.Control
+              name="search"
               type="search"
+              value={title}
               placeholder="Search"
               className="me-2"
               aria-label="Search"
+              onChange={handleChange}
             />
-            <Button variant="outline-success" className={style.searchButton}>
+            <Button variant="outline-success" className={style.searchButton} onClick={()=>{dispatch(searchPropertiesByTitle(title))}}>
            < BsSearch className={style.imgSearch}/>
             </Button>
           </Form>
