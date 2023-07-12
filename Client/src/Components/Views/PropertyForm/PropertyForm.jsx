@@ -24,7 +24,7 @@ const validationSchema = Yup.object().shape({
 });
 
 const PropertyForm = () => {
-  //const { id } = useParams();
+  const { id } = useParams();
   const [image, setImage] = useState(null);
   const [previewImage, setPreviewImage] = useState(null);
 
@@ -44,7 +44,7 @@ const PropertyForm = () => {
       values.image = imageUrl;
 
       await axios.post(
-        `http://localhost:3001/user/41aa83f2-fb4f-435b-923b-36cfb93a165c/property`,
+        `http://localhost:3001/user/${id}/property`,
         values
       );
 
