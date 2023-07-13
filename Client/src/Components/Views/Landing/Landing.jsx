@@ -18,9 +18,7 @@ const Hero = () => {
           <li>About</li>
         </ul>
         <PanelRegistrarse className="col-md-1 btn btn-warning">Registrarse</PanelRegistrarse>
-        <Link>
         <LoginPanel className="col-md-1 btn btn-warning">Iniciar Sesion </LoginPanel>
-        </Link>
         
       </nav>
 

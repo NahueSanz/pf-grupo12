@@ -1,29 +1,56 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useSelector,useDispatch  } from 'react-redux';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
-import firebaseApp from '../../../fb';
-import { getAuth, GoogleAuthProvider, signInWithRedirect } from 'firebase/auth';
-import PanelRegistrarse from "../PanelRegistrarse/PanelRegistrarse"
-import style from './LoginPanel.module.css';
-
-const auth = getAuth(firebaseApp);
-const gProvider = new GoogleAuthProvider();
+import {login, logout} from "../../../redux/actions"
+import axios from 'axios';
 
 function LoginPanel() {
+  const navigate = useNavigate();
+  const dispatch = useDispatch(); 
   const [show, setShow] = useState(false);
-  const [showPassword, setShowPassword] = useState(false); // Nuevo estado para controlar la visibilidad de la contraseña
+  const [showPassword, setShowPassword] = useState(false);
+  const loggedIn = useSelector(state => state.loggedIn);
+  const [formData, setFormData] = useState({
+    email: '',
+    password: '',
+  });
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+  
 
-  // const loginGoogle = () => {
-  //   signInWithRedirect(auth, gProvider);
-  // };
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log(formData);
 
-  // const togglePasswordVisibility = () => {
-  //   setShowPassword(!showPassword);
-  // };
+    // Realizar la solicitud de inicio de sesión
+    axios.post(`http://localhost:3001/public/login`, formData)
+      .then(res => {
+        console.log(res.data);
+        alert("Logeado");
+
+          dispatch(login());
+     
+      
+       
+        setFormData({
+          email: '',
+          password: '',
+        });
+      })
+      .catch(error => console.log(error));
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
 
   return (
     <>
@@ -33,42 +60,37 @@ function LoginPanel() {
 
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Modal heading</Modal.Title>
+          <Modal.Title>Iniciar Sesion</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Form>
+          <Form onSubmit={handleSubmit}>
             <Form.Group className="mb-3" controlId="formBasicEmail">
               <Form.Label>Email address</Form.Label>
-              <Form.Control type="email" placeholder="Enter email" />
+              <Form.Control type="email" placeholder="Enter email" name="email" onChange={handleChange} />
               <Form.Text className="text-muted">
-                We'll never share your email with anyone else.
+                We&apos;ll never share your email with anyone else.
               </Form.Text>
             </Form.Group>
 
             <Form.Group className="mb-3" controlId="formBasicPassword">
               <Form.Label>Password</Form.Label>
               <Form.Control
-                type={showPassword ? 'text' : 'password'} // Mostrar la contraseña si showPassword es true
+                type={showPassword ? 'text' : 'password'}
                 placeholder="Password"
-              />
-              <Form.Check
-                type="checkbox"
-                label="Show password" // Etiqueta para mostrar/ocultar la contraseña
-                // Cambiar el estado de showPassword al hacer clic en la casilla de verificación
+                name="password"
+                onChange={handleChange}
               />
             </Form.Group>
-
-      
-
-            <Button variant="primary" >Iniciar Sesion</Button>
+            <Button type="submit" variant="primary">
+              Iniciar Sesion
+            </Button>
           </Form>
         </Modal.Body>
 
         <Modal.Footer>
-          <PanelRegistrarse  variant="link" className={style.linkButton} onClick={handleShow}>
-            Regístrate
-          </PanelRegistrarse>
-       
+          <Button variant="secondary" onClick={handleClose}>
+            Close
+          </Button>
         </Modal.Footer>
       </Modal>
     </>

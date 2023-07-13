@@ -4,6 +4,7 @@ const initialState = {
   allProperties: [],
   page: 1,
   searchTerm: "",
+  loggedIn: false,
 };
 
 const rootReducer = (state = initialState, action) => {
@@ -100,6 +101,17 @@ const rootReducer = (state = initialState, action) => {
             ...state,
             page: state.page+1,
           };
+          
+          case "LOGIN":
+      return {
+        ...state,
+        loggedIn: true,
+      };
+      case "LOGOUT":
+        return {
+          ...state,
+          loggedIn: false,
+        };
 
     default:
       return state;

@@ -10,7 +10,7 @@ import axios from 'axios';
 const auth = getAuth(firebaseApp);
 const gProvider = new GoogleAuthProvider();
 
-function LoginPanel() {
+function PanelRegistrarse() {
   const [show, setShow] = useState(false);
   const [showPassword, setShowPassword] = useState(false); // Nuevo estado para controlar la visibilidad de la contraseña
   const [formData, setFormData] = useState({
@@ -36,22 +36,21 @@ function LoginPanel() {
 
     //CREAR VALIDACIONES
 
-      // axios.post(`http://localhost:3001/`,formData)
-      // .then(res=>{
-      //   console.log(res.data);
-      //   alert("Created user")});
+      axios.post(`http://localhost:3001/public/register`,formData)
+      .then(res=>{
+        console.log(res.data);
+        alert("Created user")});
       
-      // setFormData({
-      //   email: '',
-      //   password: '',
-      // });
+      setFormData({
+        email: '',
+        password: '',
+      });
 
 
   };
 useEffect(()=> console.log(formData), [formData])
 
   const handleChange = (e) => {
-    //QUIZA SEA MEJOR HACER UN HANDER POR CADA ITEM
 
     const { name, value } = e.target;
     setFormData({
@@ -97,7 +96,6 @@ useEffect(()=> console.log(formData), [formData])
               />
             </Form.Group>
 
-
             <Button className={style.googleBtn} onClick={loginGoogle}>
               <picture>
                 <img
@@ -124,4 +122,4 @@ useEffect(()=> console.log(formData), [formData])
   );
 }
 
-export default LoginPanel;
+export default PanelRegistrarse;

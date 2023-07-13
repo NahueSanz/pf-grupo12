@@ -10,21 +10,41 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import firebaseApp from '../../../fb'
 import { getAuth, signOut } from "firebase/auth";
+import { login, logout } from "../../../redux/actions"
+import { useNavigate } from "react-router-dom";
+
 
 import style from "./NavBar.module.css";
 import { searchPropertiesByTitle } from "../../../redux/actions";
 
 const auth = getAuth(firebaseApp);
 
+
 function NavBar() {
   console.log("hola soy el auth", auth)
 
-  const dispatch = useDispatch();
   const [title, setTitle] = useState("");
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleChange = (event) => {
     setTitle(event.target.value)
   }
+  const logoutHandle = () => {
+    console.log("click")
+ 
+      signOut(auth)
+        .then(() => {
+          dispatch(logout());
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+
+    dispatch(logout())
+    navigate("/")
+  }
+
   return (
     <Navbar expand="lg" className="bg-body-tertiary">
       <Navbar.Toggle aria-controls="navbarScroll" />
@@ -45,29 +65,29 @@ function NavBar() {
               aria-label="Search"
               onChange={handleChange}
             />
-            <Button variant="outline-success" className={style.searchButton} onClick={()=>{dispatch(searchPropertiesByTitle(title))}}>
-           < BsSearch className={style.imgSearch}/>
+            <Button variant="outline-success" className={style.searchButton} onClick={() => { dispatch(searchPropertiesByTitle(title)) }}>
+              < BsSearch className={style.imgSearch} />
             </Button>
           </Form>
           <div className={style.containerNews}>
-      
+
             <DropdownButton
               className={`btn btn-primary bg-transparent ${style.buttonMenu}`}
               align="end"
               title={
                 <img
                   className={style.imgUser}
-                  // src="https://img.icons8.com/?size=2x&id=23265&format=png"
-                  src={auth.currentUser.photoURL}
+                  src="https://img.icons8.com/?size=2x&id=23265&format=png"
+                  // src={auth.currentUser.photoURL}
                   alt="Imagen de Dropdown"
                 />
               }
             >
-              <Dropdown.Item >{auth.currentUser.displayName}</Dropdown.Item>
+              {/* <Dropdown.Item >{auth.currentUser.displayName}</Dropdown.Item> */}
               <Dropdown.Item as={Link} to="/become-a-host">Become a host</Dropdown.Item>
-        
+
               <Dropdown.Divider />
-              <Dropdown.Item as={Link} to="/" onClick={() => signOut(auth)}>Close sesion</Dropdown.Item>
+              <Dropdown.Item as={Link} to="/" onClick={logoutHandle}>Close sesion</Dropdown.Item>
 
             </DropdownButton>
           </div>
