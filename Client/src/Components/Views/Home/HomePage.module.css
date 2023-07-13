@@ -18,3 +18,8 @@
   align-items: center;
   justify-content: center;
 }
+
+.searchTerm{
+  font-size: 30px;
+  margin-top: 2vw;
+}

@@ -12,6 +12,7 @@ function HomePage() {
 
   const dispatch = useDispatch();
   const properties = useSelector((state) => state.properties);
+  const searchTerm = useSelector((state)=>state.searchTerm)
   
 
   useEffect(() => {
@@ -52,6 +53,11 @@ function HomePage() {
   return (
     <Container className={style.container}>
       <FilterPanel/>
+
+      {searchTerm.length?
+          <h4 className={style.searchTerm}>Searching properties by "{searchTerm}"</h4 >:
+          <h4 className={style.searchTerm}>Showing all properties</h4 >
+      }
 
       <div className={style.cards}>
         {currentItems.map((element) => {

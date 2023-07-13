@@ -32,12 +32,13 @@ const rootReducer = (state = initialState, action) => {
     case "SEARCH_BY_TITLE":
       return{
         ...state,
+        searchTerm: action.searchName,
         properties: action.payload
       }
 
     case "APPLY_FILTERS":
 
-      var filteringProperties = [...state.allProperties]
+      var filteringProperties = [...state.properties]
       // Aplicar el filtro filterByPriceMin
       if(action.payload.filterByPriceMin!==""){
         filteringProperties = filteringProperties.filter((property) => property.price >= action.payload.filterByPriceMin)
@@ -62,14 +63,13 @@ const rootReducer = (state = initialState, action) => {
         ...state,
         properties: filteringProperties,
         page:1,
-        searchTerm: "",
       };
 
       case "ORDER_PRICE":
         if (action.payload === "All") {
           return {
             ...state,
-            properties: state.allProperties, // Mostrar los datos sin ordenar
+            properties: state.properties, // Mostrar los datos sin ordenar
           };
         } else {
           const orderPrice = state.properties.slice().sort((a, b) => { 
