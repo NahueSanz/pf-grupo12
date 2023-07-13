@@ -10,6 +10,7 @@ import { useLocation } from "react-router-dom";
 import NavBar from "./Components/Inc/NavBar/NavBar";
 import Footer from "./Components/Inc/Footer/Footer";
 import Landing from "./Components/Views/Landing/Landing";
+import Payment from "./Components/Views/Payment/Payment"
 
 const App = () => {
   const location = useLocation();
@@ -22,6 +23,7 @@ const App = () => {
         <Route path="/home" element={<HomePage />} />
         <Route path="/rooms/:id" element={<DetailPropertyPage />} />
         <Route path="/become-a-host" element={<PropertyForm />} />
+        <Route path="/payment" element={<Payment />} />
       </Routes>
       {location.pathname !== "/" && <Footer />}
     </div>

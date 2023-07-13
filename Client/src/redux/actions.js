@@ -32,6 +32,7 @@ export function searchPropertiesByTitle(title) {
       const res = await axios.get(`${url}/public/properties?title=${title}`); //Search properties by title
       return dispatch({
         type: SEARCH_BY_TITLE,
+        searchName:title,
         payload: res.data,
       });
     } catch (error) {
@@ -55,7 +56,7 @@ export function getPropertyDetail(id) {
   };
 }
 
-export function getPropertiesByName(searchName) {
+export function getPropertiesByName(searchName) {//SIN USAR? QUIZA SE PUEDA BORRAR
   return async function (dispatch) {
     try {
       const res = await axios.get(`${url}/countries/name?name=${searchName}`); //Property by name

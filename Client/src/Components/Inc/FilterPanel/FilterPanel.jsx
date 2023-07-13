@@ -75,7 +75,7 @@ function FilterPanel() {
         <div className={styles.selectOrd}>
           <label htmlFor="order">Order by: </label>
         <Form.Select aria-label="Default select example" name="order" className={styles.selectOrdPrice} onChange={handleOrderPrice}>
-          <option value="All">Most relevant</option>
+          <option value="All">Default</option>
           <option value="A">Lower price</option>
           <option value="D">Higher price</option>
         </Form.Select>
