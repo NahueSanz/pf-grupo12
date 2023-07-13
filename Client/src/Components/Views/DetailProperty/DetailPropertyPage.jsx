@@ -14,6 +14,7 @@ import locationIcon from '../../../assets/locationIcon.svg';
 import profilePicGuess from '../../../images/guessProfilePic.webp';
 import languageIcon from '../../../assets/languageIcon.svg';
 import style from './PropertyPage.module.css'
+import { Link } from "react-router-dom";
 
 function DetailPropertyPage() {
     
@@ -117,7 +118,7 @@ function DetailPropertyPage() {
               <input type="date" className='rounded mb-4 mx-2 border border-secondary' placeholder='check-in'/>
               <small className='fw-semibold'>CHECKOUT</small> 
               <input type="date" className='rounded mb-4 mx-2 border border-secondary' placeholder='check-in'/>
-              <Button className='btn-danger btn-sm my-2 mx-2'>Reserve</Button>
+              <Button className='btn-danger btn-sm my-2 mx-2' as={Link} to="/payment">Reserve</Button>
             </Col>
           </Row>
         </Container>

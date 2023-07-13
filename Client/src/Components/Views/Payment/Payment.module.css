@@ -1,0 +1,15 @@
+.payment{
+    margin-top: 2vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+}
+
+
+.paypal{
+    width: 60vw;
+    justify-self: center;
+    justify-content: center;
+    justify-items: center;
+}
