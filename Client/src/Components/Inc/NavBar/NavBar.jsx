@@ -45,6 +45,12 @@ function NavBar() {
     navigate("/")
   }
 
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    dispatch(searchPropertiesByTitle(title))
+    setTitle("")
+  };
+
   return (
     <Navbar expand="lg" className="bg-body-tertiary">
       <Navbar.Toggle aria-controls="navbarScroll" />
@@ -55,7 +61,8 @@ function NavBar() {
           navbarScroll
         >
           <Navbar.Brand as={Link} to="/home">AloHar</Navbar.Brand>
-          <Form className={style.form}>
+
+          <Form className={style.form} onSubmit={handleSubmit}> {/*O BIEN SOLO RENDERIZAR EN /home, O QUE AL BUSCAR REDIRIGA A /home */ }
             <Form.Control
               name="search"
               type="search"
@@ -65,10 +72,11 @@ function NavBar() {
               aria-label="Search"
               onChange={handleChange}
             />
-            <Button variant="outline-success" className={style.searchButton} onClick={() => { dispatch(searchPropertiesByTitle(title)) }}>
-              < BsSearch className={style.imgSearch} />
+            <Button variant="outline-success" type="submit" className={style.searchButton}>
+           < BsSearch className={style.imgSearch}/>
             </Button>
           </Form>
+
           <div className={style.containerNews}>
 
             <DropdownButton

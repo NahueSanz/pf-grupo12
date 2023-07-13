@@ -18,6 +18,7 @@ import firebaseApp from './fb'
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 const auth = getAuth(firebaseApp);
+import Payment from "./Components/Views/Payment/Payment"
 
 const App = () => {
   const location = useLocation();
@@ -81,6 +82,7 @@ const App = () => {
             <Route path="/home" element={<HomePage />} />
             <Route path="/rooms/:id" element={<DetailPropertyPage />} />
             <Route path="/become-a-host" element={<PropertyForm />} />
+            <Route path="/payment" element={<Payment />} />
           </Routes>
           {location.pathname !== "/" && <Footer />}
         </>
