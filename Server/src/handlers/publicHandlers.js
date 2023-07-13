@@ -47,6 +47,23 @@ const loginUserHandler = async (req, res) => {
   }
 };
 
+//Check user
+const checkUserHandle = async (req, res) => {
+  const { email } = req.body;
+  try {
+    if (!email) {
+      throw Error("All fields are not complete");
+    }
+    const user = await findUserByEmail(email);
+    if (!user) {
+      res.status(200).json({ exists: false });
+    }
+    res.status(200).json({ exists: true });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
 //Todas las propiedades o todas las propiedas encontradas por search
 const getAllPropertiesHandler = async (req, res) => {
   const {title} = req.query;
