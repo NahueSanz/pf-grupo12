@@ -11,6 +11,7 @@ import { Link } from "react-router-dom";
 import style from "./NavBar.module.css";
 import { searchPropertiesByTitle } from "../../../redux/actions";
 
+
 function NavBar() {
 
   const dispatch = useDispatch();
@@ -57,7 +58,7 @@ function NavBar() {
               }
             >
               <Dropdown.Item as={Link} to="/become-a-host">Become a host</Dropdown.Item>
-        
+              <Dropdown.Item as={Link} to="/Create-Profile" className="createprofile">Create Profile</Dropdown.Item>
               <Dropdown.Divider />
               <Dropdown.Item as={Link} to="/">Close sesion</Dropdown.Item>
             </DropdownButton>
