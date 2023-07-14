@@ -96,6 +96,9 @@ const deleteUserProperty = async (id) => {
   }
 };
 
+
+
+
 module.exports = {
   getUserById,
   createUserProperty,

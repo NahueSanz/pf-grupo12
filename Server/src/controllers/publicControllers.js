@@ -1,5 +1,4 @@
 const { Property, User } = require("../db");
-const { literal, fn, Op } = require("sequelize");
 
 /********************* CONTROLLERS PUBLICOS *********************/
 const getPropertiesbyTitle = async (title) => {
