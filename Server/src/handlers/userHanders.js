@@ -21,15 +21,49 @@ const getUserByIdHandler = async (req, res) => {
   }
 };
 //Actualizar usuario
-const updateUserHandler = (req, res) => {
+const updateUserHandler = async (req, res) => {
   const { id } = req.params;
-  const props = req.body;
+  const { name, lastname, email, country, phonenumber, language } = req.body;
+
   try {
-  } catch (error) {}
+    const user = await getUserById(id);
+
+    if (!user) {
+      throw new Error("User not found");
+    }
+
+    // Actualiza solo los campos que se hayan proporcionado en el cuerpo de la solicitud
+    if (name) {
+      user.name = name;
+    }
+    if (lastname) {
+      user.lastname = lastname;
+    }
+    if (email) {
+      user.email = email;
+    }
+    if (country) {
+      user.country = country;
+    }
+    if (phonenumber) {
+      user.phonenumber = phonenumber;
+    }
+    if (language) {
+      user.language = language;
+    }
+
+    // Guarda los cambios en la base de datos
+    await user.save();
+
+    res.status(200).json(user);
+  } catch (error) {
+    res.status(404).json({ error: error.message });
+  }
 };
+
 //Propiedades del usuario
 const getAllPropertiesUserHandler = async (req, res) => {
-  const {userId} = req.params;
+  const { userId } = req.params;
   try {
     const userProperties = await getAllUserProperties(userId);
     if (userProperties.length === 0) {
@@ -42,7 +76,7 @@ const getAllPropertiesUserHandler = async (req, res) => {
 };
 //Crear propiedad del usuario
 const createPropertyUserHandler = async (req, res) => {
-  const {userId} = req.params;
+  const { userId } = req.params;
   const {
     title,
     type,
@@ -105,11 +139,59 @@ const getPropertyUserByIdHandler = async (req, res) => {
   }
 };
 //Actualizar propiedad por ID
-const updatePropertyUserHandler = (req, res) => {
+const updatePropertyUserHandler = async (req, res) => {
   const { id } = req.params;
-  const props = req.body;
+  const {
+    title,
+    type,
+    address,
+    country,
+    guests,
+    price,
+    description,
+    startDate,
+    endDate,
+  } = req.body;
   try {
-  } catch (error) {}
+    const property = await getUserPropertyById(id);
+
+    if (!property) {
+      throw new Error("property not found");
+    }
+
+    if (title) {
+      property.title = title;
+    }
+    if (type) {
+      property.type = type;
+    }
+    if (address) {
+      property.address = address;
+    }
+    if (country) {
+      property.country = country;
+    }
+    if (guests) {
+      property.guests = guests;
+    }
+    if (price) {
+      property.price = price;
+    }
+    if (description) {
+      property.description = description;
+    }
+    if (startDate) {
+      property.startDate = startDate;
+    }
+    if (endDate) {
+      property.endDate = endDate;
+    }
+
+    await property.save();
+    res.status(200).json(property);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
 };
 //Eliminar propiedad por ID
 const deletePropertyUserHandler = async (req, res) => {
