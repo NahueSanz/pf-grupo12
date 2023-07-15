@@ -32,7 +32,7 @@ export function searchPropertiesByTitle(title) {
       const res = await axios.get(`${url}/public/properties?title=${title}`); //Search properties by title
       return dispatch({
         type: SEARCH_BY_TITLE,
-        searchName:title,
+        searchName: title,
         payload: res.data,
       });
     } catch (error) {
@@ -56,7 +56,8 @@ export function getPropertyDetail(id) {
   };
 }
 
-export function getPropertiesByName(searchName) {//SIN USAR? QUIZA SE PUEDA BORRAR
+export function getPropertiesByName(searchName) {
+  //SIN USAR? QUIZA SE PUEDA BORRAR
   return async function (dispatch) {
     try {
       const res = await axios.get(`${url}/countries/name?name=${searchName}`); //Property by name
@@ -71,13 +72,22 @@ export function getPropertiesByName(searchName) {//SIN USAR? QUIZA SE PUEDA BORR
   };
 }
 
-
-export function applyFilters(filterByPriceMin,  filterByPriceMax, FilterByCountry,filterByTypes) {
+export function applyFilters(
+  filterByPriceMin,
+  filterByPriceMax,
+  FilterByCountry,
+  filterByTypes
+) {
   return async function (dispatch) {
     try {
       return dispatch({
         type: APPLY_FILTERS,
-        payload: {filterByPriceMin:filterByPriceMin,  filterByPriceMax:filterByPriceMax, FilterByCountry:FilterByCountry,filterByTypes:filterByTypes},
+        payload: {
+          filterByPriceMin: filterByPriceMin,
+          filterByPriceMax: filterByPriceMax,
+          FilterByCountry: FilterByCountry,
+          filterByTypes: filterByTypes,
+        },
       });
     } catch (error) {
       console.log(error.message);
@@ -86,8 +96,8 @@ export function applyFilters(filterByPriceMin,  filterByPriceMax, FilterByCountr
 }
 
 export const orderPrice = (order) => {
-  return { type: ORDER_PRICE, payload: order }
-}
+  return { type: ORDER_PRICE, payload: order };
+};
 
 export function firstPage() {
   return {
@@ -107,11 +117,12 @@ export function nextPage() {
   };
 }
 
-export const LOGIN = 'LOGIN';
-export const LOGOUT = 'LOGOUT';
+export const LOGIN = "LOGIN";
+export const LOGOUT = "LOGOUT";
 
-export const login = () => ({
+export const login = (id) => ({
   type: LOGIN,
+  payload: id,
 });
 
 export const logout = () => ({

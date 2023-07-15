@@ -11,12 +11,12 @@ const {
 
 //Registrar un nuevo usuario
 const registerUserHandler = async (req, res) => {
-  const { email,password } = req.body;
+  const { email, password } = req.body;
   try {
-    if (!email || !password ) {
+    if (!email || !password) {
       throw Error("All fields are not complete");
     }
-    const newUser = await createUser(email,password);
+    const newUser = await createUser(email, password);
     if (!newUser) {
       throw Error("User not created");
     }
@@ -42,7 +42,7 @@ const loginUserHandler = async (req, res) => {
     if (user.password !== password) {
       throw Error("Incorrect Password");
     }
-    res.status(200).json({ access: "User authenticated" });
+    res.status(200).json({ access: "User authenticated", id: user.id });
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
@@ -67,17 +67,16 @@ const checkUserHandle = async (req, res) => {
 
 //Todas las propiedades o todas las propiedas encontradas por search
 const getAllPropertiesHandler = async (req, res) => {
-  const {title} = req.query;
+  const { title } = req.query;
   try {
     //Si se busca por search
     if (title) {
       const properties = await getPropertiesbyTitle(title.toLowerCase());
-      if (properties.length===0) {
+      if (properties.length === 0) {
         throw Error("No se paso un titulo valido");
       }
       res.status(200).json(properties);
-    }
-    else{
+    } else {
       const properties = await getAllProperties();
       if (properties.length === 0) {
         return res.status(404).json({ message: "There are not properties" });
