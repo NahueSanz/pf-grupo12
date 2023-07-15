@@ -36,8 +36,9 @@ const loginUserHandler = async (req, res) => {
     }
     const user = await findUserByEmail(email);
     if (!user) {
-      res.status(404).json({ error: "User not found" });
+      throw Error("Incorrect user");
     }
+
     if (user.password !== password) {
       throw Error("Incorrect Password");
     }

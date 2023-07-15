@@ -1,47 +1,59 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { useSelector,useDispatch  } from 'react-redux';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
+import firebaseApp from '../../../fb';
+import Alert from 'react-bootstrap/Alert';
 import {login, logout} from "../../../redux/actions"
+import style from './LoginPanel.module.css';
+import { getAuth, GoogleAuthProvider, signInWithRedirect } from 'firebase/auth';
 import axios from 'axios';
 
+const auth = getAuth(firebaseApp);
+const gProvider = new GoogleAuthProvider();
+
 function LoginPanel() {
-  const navigate = useNavigate();
+
+  const redVariant = 'danger';
   const dispatch = useDispatch(); 
   const [show, setShow] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const loggedIn = useSelector(state => state.loggedIn);
+
   const [formData, setFormData] = useState({
     email: '',
     password: '',
   });
+  const [error, setError] = useState(null);
 
-  const handleClose = () => setShow(false);
+  const handleClose = () => {
+    setShow(false)
+    setError(null); 
+  
+  };
   const handleShow = () => setShow(true);
   
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     console.log(formData);
-
-    // Realizar la solicitud de inicio de sesión
-    axios.post(`http://localhost:3001/public/login`, formData)
-      .then(res => {
-        console.log(res.data);
-        alert("Logeado");
-
-          dispatch(login());
-     
-      
-       
-        setFormData({
-          email: '',
-          password: '',
-        });
-      })
-      .catch(error => console.log(error));
+  
+    try {
+      // Realizar la solicitud de inicio de sesión
+      const response = await axios.post(`http://localhost:3001/public/login`, formData);
+      console.log(response.data);
+      alert('Logeado');
+  
+      dispatch(login());
+  
+      setFormData({
+        email: '',
+        password: '',
+      });
+    } catch (error) {
+      const errorMessage = error.response.data.error;
+      setError(errorMessage);
+    }
   };
 
   const handleChange = (e) => {
@@ -52,17 +64,23 @@ function LoginPanel() {
     });
   };
 
+  const loginGoogle = () => {
+    signInWithRedirect(auth, gProvider);
+  };
+
+
   return (
     <>
       <Button variant="primary" onClick={handleShow}>
         Iniciar Sesion
       </Button>
 
-      <Modal show={show} onHide={handleClose}>
+      <Modal show={show} onHide={handleClose}  className={style.modal}>
         <Modal.Header closeButton>
           <Modal.Title>Iniciar Sesion</Modal.Title>
         </Modal.Header>
-        <Modal.Body>
+        <Modal.Body className={style.body}>
+      
           <Form onSubmit={handleSubmit}>
             <Form.Group className="mb-3" controlId="formBasicEmail">
               <Form.Label>Email address</Form.Label>
@@ -81,17 +99,30 @@ function LoginPanel() {
                 onChange={handleChange}
               />
             </Form.Group>
+
+            {error && (
+                  <Alert variant={redVariant}>
+                    {error}
+                  </Alert>
+                )}
+
             <Button type="submit" variant="primary">
               Iniciar Sesion
             </Button>
           </Form>
+
+          <Button className={style.googleBtn} onClick={loginGoogle}>
+              <picture>
+                <img
+                  src="https://entredichos.trabajosocial.unlp.edu.ar/wp-content/uploads/sites/6/2016/12/Google_-G-_Logo.svg_.png"
+                  alt="logo-google"
+                />
+              </picture>
+              <span>Log in with Google</span>
+            </Button>
         </Modal.Body>
 
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-            Close
-          </Button>
-        </Modal.Footer>
+   
       </Modal>
     </>
   );
