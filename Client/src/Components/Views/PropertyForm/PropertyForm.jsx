@@ -24,7 +24,7 @@ const validationSchema = Yup.object().shape({
 });
 
 const PropertyForm = () => {
-  const { id } = useParams();
+  const id = localStorage.getItem("loggedIn");
   const [image, setImage] = useState(null);
   const [previewImage, setPreviewImage] = useState(null);
 
@@ -42,14 +42,12 @@ const PropertyForm = () => {
 
       const imageUrl = response.data.secure_url;
       values.image = imageUrl;
-
-      await axios.post(
-        `http://localhost:3001/user/${id}/property`,
-        values
-      );
+      console.log(id);
+      await axios.post(`http://localhost:3001/user/${id}/property`, values);
 
       console.log(response.data);
       alert("Created property");
+      localStorage.setItem("Form", "{}");
       resetForm();
     } catch (error) {
       console.error(error);
@@ -73,6 +71,24 @@ const PropertyForm = () => {
     }
   };
 
+  const handleChange = (event) => {
+    const values = event.currentTarget.elements;
+    localStorage.setItem(
+      "Form",
+      JSON.stringify({
+        address: values.address.value,
+        title: values.title.value,
+        type: values.type.value,
+        country: values.country.value,
+        guests: parseInt(values.guests.value),
+        price: parseInt(values.price.value),
+        description: values.description.value,
+        startDate: values.startDate.value,
+        endDate: values.endDate.value,
+      })
+    );
+  };
+
   const submitImage = () => {
     const formData = new FormData();
     formData.append("file", image);
@@ -92,22 +108,24 @@ const PropertyForm = () => {
 
   return (
     <Formik
-      initialValues={{
-        title: "",
-        type: "",
-        address: "",
-        country: "",
-        guests: 0,
-        price: 0,
-        description: "",
-        startDate: "",
-        endDate: "",
-      }}
+      initialValues={
+        JSON.parse(localStorage.getItem("Form")) || {
+          title: "",
+          type: "",
+          address: "",
+          country: "",
+          guests: 0,
+          price: 0,
+          description: "",
+          startDate: "",
+          endDate: "",
+        }
+      }
       validationSchema={validationSchema}
       onSubmit={handleSubmit}
     >
       {({ isSubmitting }) => (
-        <Form className={styles.form}>
+        <Form className={styles.form} onChange={handleChange}>
           <div className="form-group">
             <label htmlFor="title">Title</label>
             <Field type="text" name="title" className="form-control" required />
@@ -266,8 +284,6 @@ const PropertyForm = () => {
               className="error-message"
             />
           </div>
-
-          
 
           <Button variant="primary" type="submit" disabled={isSubmitting}>
             {isSubmitting ? "Submitting..." : "Submit"}
