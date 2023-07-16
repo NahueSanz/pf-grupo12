@@ -1,69 +1,22 @@
 import React from "react";
-import { MdHomeRepairService } from "react-icons/md";
-import styles from "./AboutUs.module.css";
+import style from "../../Views/landing/landing.module.css";
+import Container from "react-bootstrap/esm/Container";
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+
+
 const AboutUs = () => {
   return (
-    <div className="row mt-5">
-      <div className="row col-md-6">
-        <div className="col-md-6">
-          <div className={styles.cas}>
-            <MdHomeRepairService size={"1.8rem"} />
-            <h1>Good Services</h1>
-            <p>
-              Lorem ipsum dolor sit, amet consectetur adipisicing elit. Minima
-              in quis doloremque ipsa voluptates, itaque quasi placeat incidunt
-              soluta dolorum, repudiandae quae, repellat id quos debitis maxime
-              possimus blanditiis inventore?
-            </p>
-          </div>
-          <div className={styles.cas}>
-            <MdHomeRepairService size={"1.8rem"} />
-            <h1>Good Services</h1>
-            <p>
-              Lorem ipsum dolor sit, amet consectetur adipisicing elit. Minima
-              in quis doloremque ipsa voluptates, itaque quasi placeat incidunt
-              soluta dolorum, repudiandae quae, repellat id quos debitis maxime
-              possimus blanditiis inventore?
-            </p>
-          </div>
-        </div>
-        <div className="col-md-4">
-          <div className={styles.cas}>
-            <MdHomeRepairService size={"1.8rem"} />
-            <h1>Good Services</h1>
-            <p>
-              Lorem ipsum dolor sit, amet consectetur adipisicing elit. Minima
-              in quis doloremque ipsa voluptates, itaque quasi placeat incidunt
-              soluta dolorum, repudiandae quae, repellat id quos debitis maxime
-              possimus blanditiis inventore?
-            </p>
-          </div>
-          <div className={styles.cas}>
-            <MdHomeRepairService size={"1.8rem"} />
-            <h1>Good Services</h1>
-            <p>
-              Lorem ipsum dolor sit, amet consectetur adipisicing elit. Minima
-              in quis doloremque ipsa voluptates, itaque quasi placeat incidunt
-              soluta dolorum, repudiandae quae, repellat id quos debitis maxime
-              possimus blanditiis inventore?
-            </p>
-          </div>
-        </div>
-      </div>
-      <div className="col-md-6 row justify-content-center align-items-center ">
-        <div className="col-auto text-justify">
-          <h1 className={styles.titulo_about}>
-            Know <span className={styles.orange}>About Us</span>
-          </h1>
-          <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Natus, sed
-            corrupti porro dolore debitis doloremque ex unde, est odio sint
-            recusandae dolorem, beatae ab perferendis?
-          </p>
-          <button className="btn btn-warning">Read more</button>
-        </div>
-      </div>
-    </div>
+    <Container fluid className="p-5">
+      <Row className="d-flex justify-content-center align-text-center py-4">
+        <Col className="col-12">
+          <h1 className="fw-semibold text-center text-dark font-monospace">About Us</h1>
+        </Col>
+        <Col className="col-8 m-2 p-1">
+          <p className="m-auto fw-semibold text-dark" style={{ textAlign: 'justify', }}>Alohar was founded in 2023 by 6 Henry students Edinson, Fabio, Facundo, Ivan, Julio, Nahuel and Micaela with the idea that make confortable, fast and secure your stay. In the name of Alohar we wish you an excellent experience in the amazing South America.</p>
+        </Col>
+      </Row>
+    </Container>
   );
 };
 

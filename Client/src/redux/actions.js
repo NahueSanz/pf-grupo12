@@ -58,6 +58,7 @@ export function getPropertiesByName(searchName) {
 
 export function applyFilters(filterByPriceMin,  filterByPriceMax, FilterByCountry,filterByTypes) {
   return async function (dispatch) {
+    console.log(dispatch)
     try {
       return dispatch({
         type: APPLY_FILTERS,

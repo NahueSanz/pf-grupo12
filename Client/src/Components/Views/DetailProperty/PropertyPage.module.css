@@ -8,9 +8,13 @@
     position: sticky;
     top: 0;
   }
-
   
-
+  .paragraph {
+    text-align: justify;
+    margin-top: 0;
+    text-rendering: optimizeLegibility;
+  }
+  
   @media (max-width: 576px) {
     .owner {
       display: none;

@@ -20,7 +20,6 @@ function DetailPropertyPage() {
     const { id } = useParams();
     const dispatch = useDispatch();
     const property = useSelector(state => state.propertyDetail);
-    console.log(property);
 
     const owner = property.User?.name
     const ownerImage = property.User?.image || profilePicGuess;
@@ -44,7 +43,7 @@ function DetailPropertyPage() {
  
 
     return (
-        <Container className={`${style.container} container-fluid container pt-5`}>
+        <Container className={`${style.container} container-fluid container pt-md-5`}>
           <Row>
             <Col className='p-3 col-12'>
               <Carousel image={property.image}/>
@@ -71,10 +70,10 @@ function DetailPropertyPage() {
                 <a href="#" className='link-dark link-offset-2'>{`${property.address}, ${property.country}`}</a>
               </p>
             </Col>
-            <Col className='p-3 mb-5 rounded' sm={12} md={12} lg={12}>
+            <Col className='p-3 mb-auto rounded text-start sm-text-center' sm={12} md={12} lg={12}>
                   <hr className='mb-4 border-top border-secondary' style={{ width: "100%" }} />
-                  <h3 className='fw-semibold mb-4'>About this space</h3>
-                  <p className='lh-sm mt-4 paragraph mb-4'>
+                  <h3 className='fw-semibold mb-4 mx-2'>About this space</h3>
+                  <p className='lh-sm mt-4 paragraph mb-4 mx-2'>
                       { property.description?.length > 475 ? property.description.slice(0, 475).concat('...') : property.description }
                   </p>
                   { property.description?.length > 475 && <ReadMore description={property.description} /> }
@@ -82,9 +81,9 @@ function DetailPropertyPage() {
               <Col className='p-3 mb-5 rounded text-start col-12'>
                 <hr className='mb-4 border-top border-secondary' style={{ width: "100%" }} />
                 <div className="d-flex align-items-center">
-                  <img src={ownerImage} className='rounded-circle img-fluid profileImage' alt="User picture" style={{ width: "60px", marginRight: "10px", height: '50px' }} />
+                  <img src={ownerImage} className='rounded-circle img-fluid profileImage mx-2' alt="User picture" style={{ width: "60px", marginRight: "10px", height: '50px' }} />
                   <div>
-                    <h4 className='fw-semibold my-4'>Hosted by {owner}</h4>
+                    <h4 className='fw-semibold my-4 mx-1'>Hosted by {owner}</h4>
                   </div>
                 </div>
                 <p className='d-inline-flex align-items-center mt-2'>
@@ -92,9 +91,9 @@ function DetailPropertyPage() {
                   <span className="ms-1">23 reviews <img className='ms-3' style={{ height: "22px" }} src={languageIcon} alt="Star icon"/> <span className=''>Languages: {ownerLanguage} </span> </span>
                 </p>
                   <p className='lh-sm mt-4 paragraph mb-4'>
-                      { ownerDescription?.length > 475 ? ownerDescription.slice(0, 475).concat('...') : ownerDescription }
+                      { ownerDescription?.length > 175 ? ownerDescription.slice(0, 475).concat('...') : ownerDescription }
                   </p>
-                  { ownerDescription?.length > 475 && <ReadMore description={ ownerDescription } /> }
+                  { ownerDescription?.length > 175 && <ReadMore description={ ownerDescription } /> }
                   <div className='d-flex justify-content-end'>
                     <Button className='btn-dark'>Contact Host</Button>
                   </div>
@@ -111,7 +110,7 @@ function DetailPropertyPage() {
                 </Col>
             </Row>
           </Row>
-          <Row className={`${style.owner} owner ms-2 shadow rounded w-50 pt-3`}>
+          <Row className={`${style.owner} owner ms-2 shadow rounded w-50 pt-3 mt-3`}>
             <Col className='text-center'>
               <small className='fw-semibold'>CHECK-IN</small>
               <input type="date" className='rounded mb-4 mx-2 border border-secondary' placeholder='check-in'/>
