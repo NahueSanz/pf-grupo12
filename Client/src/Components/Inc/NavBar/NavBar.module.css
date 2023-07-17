@@ -1,0 +1,56 @@
+
+.form{
+  display: flex;
+  height: 35px;
+}
+
+.nav{
+  display: flex;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  min-width: 100%;
+  align-items: center;
+  padding-left: 20px;
+  padding-right: 15px;
+}
+.searchButton {
+  border-radius: 50%;
+  width: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(197, 191, 191, 0.63);
+ 
+}
+.searchButton:hover{
+  background-color: rgb(255,56,92);
+}
+
+.containerNews{
+  display: flex;
+}
+.imgUser{
+  width: 30px;
+}
+
+.buttonMenu button{
+  border: none;
+  color: black !important;
+  border-radius: 50%;
+  background-color: rgba(61, 11, 11, 0) !important;
+
+}
+
+ .buttonMenu{
+  color: black !important;
+  border-radius: 50%;
+  background-color: rgba(61, 11, 11, 0) !important;
+  border: 1px solid rgba(197, 191, 191, 0.63);
+  border-radius: 100px !important;
+  height: 35px;
+  
+  display: flex;
+  align-items: center;
+ 
+ }
