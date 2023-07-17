@@ -13,6 +13,8 @@ import Footer from "./Components/Inc/Footer/Footer";
 import Landing from "./Components/Views/Landing/Landing";
 import { login, logout } from "./redux/actions";
 import axios from "axios";
+import FormPerfil from "./Components/Inc/FormPerfil/FormPerfil";
+import FormProperty from "./Components/Inc/FormProperty/FormProperty";
 
 import firebaseApp from "./fb";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
@@ -83,6 +85,8 @@ const App = () => {
             <Route path="/rooms/:id" element={<DetailPropertyPage />} />
             <Route path="/become-a-host" element={<PropertyForm />} />
             <Route path="/payment" element={<Payment />} />
+            <Route path="/Miperfilform" element={<FormPerfil />} />
+            <Route path="/Create-my-prperty" element={<FormProperty />} />
           </Routes>
           {location.pathname !== "/" && <Footer />}
         </>
