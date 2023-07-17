@@ -7,6 +7,7 @@ import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import DetailPropertyPage from "./Components/Views/DetailProperty/DetailPropertyPage";
 import HomePage from "./Components/Views/Home/HomePage";
 import PropertyForm from "./Components/Views/PropertyForm/PropertyForm";
+import PerfilUser from './Components/Views/PerfilUser/perfilUser';
 import { useLocation } from "react-router-dom";
 import NavBar from "./Components/Inc/NavBar/NavBar";
 import Footer from "./Components/Inc/Footer/Footer";
@@ -86,6 +87,7 @@ const App = () => {
             <Route path="/become-a-host" element={<PropertyForm />} />
             <Route path="/payment" element={<Payment />} />
             <Route path="/Miperfilform" element={<FormPerfil />} />
+            <Route path='/user/:id' element={<PerfilUser/>} />
             <Route path="/Create-my-prperty" element={<FormProperty />} />
           </Routes>
           {location.pathname !== "/" && <Footer />}

@@ -5,7 +5,7 @@ import Navbar from "react-bootstrap/Navbar";
 import Dropdown from "react-bootstrap/Dropdown";
 import DropdownButton from "react-bootstrap/DropdownButton";
 import { BsSearch } from 'react-icons/bs';
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import firebaseApp from '../../../fb'
@@ -26,6 +26,7 @@ function NavBar() {
   const [title, setTitle] = useState("");
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const id = useSelector(state => state.id)
 
   const handleChange = (event) => {
     setTitle(event.target.value)
@@ -96,7 +97,8 @@ function NavBar() {
 
               <Dropdown.Divider />
               <Dropdown.Item as={Link} to="/" onClick={logoutHandle}>Close sesion</Dropdown.Item>
-              <Dropdown.Item as={Link} to="/Miperfilform">My Profile</Dropdown.Item>
+              <Dropdown.Item as={Link} to={`/user/${id}`}>Profile</Dropdown.Item>
+              <Dropdown.Item as={Link} to="/Miperfilform">Account</Dropdown.Item>
               <Dropdown.Item as={Link} to="/Create-my-prperty">Create My Property</Dropdown.Item>
 
             </DropdownButton>

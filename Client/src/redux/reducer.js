@@ -5,6 +5,8 @@ const initialState = {
   page: 1,
   searchTerm: "",
   loggedIn: Boolean(localStorage.getItem("loggedIn")) || false,
+  id: '',
+  user: {}
 };
 
 const rootReducer = (state = initialState, action) => {
@@ -110,18 +112,23 @@ const rootReducer = (state = initialState, action) => {
       };
 
     case "LOGIN":
-      localStorage.setItem("loggedIn", action.payload);
-      return {
-        ...state,
-        loggedIn: action.payload,
-      };
+        localStorage.setItem("loggedIn", action.payload);
+        return {
+          ...state,
+          loggedIn: action.payload,
+          id: action.payload
+        };
     case "LOGOUT":
       localStorage.setItem("loggedIn", "");
       return {
         ...state,
         loggedIn: false,
       };
-
+      case 'GET_USER':
+        return{
+          ...state,
+          user: action.payload
+        }
     default:
       return state;
   }
