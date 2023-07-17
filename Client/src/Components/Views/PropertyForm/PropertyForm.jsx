@@ -99,7 +99,6 @@ const PropertyForm = () => {
       .post("https://api.cloudinary.com/v1_1/dgsnukgdu/image/upload", formData)
       .then((response) => {
         const imageUrl = response.data.secure_url;
-        console.log("Image URL:", imageUrl);
       })
       .catch((error) => {
         console.error("Error uploading image:", error);
