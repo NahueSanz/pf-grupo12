@@ -96,6 +96,8 @@ function NavBar() {
 
               <Dropdown.Divider />
               <Dropdown.Item as={Link} to="/" onClick={logoutHandle}>Close sesion</Dropdown.Item>
+              <Dropdown.Item as={Link} to="/Miperfilform">My Profile</Dropdown.Item>
+              <Dropdown.Item as={Link} to="/Create-my-prperty">Create My Property</Dropdown.Item>
 
             </DropdownButton>
           </div>
