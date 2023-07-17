@@ -1,0 +1,42 @@
+nav {
+  width: 100%;
+  margin: auto;
+  display: flex;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+nav ul {
+  list-style: none;
+}
+nav ul li {
+  display: inline-flex;
+  margin: 5px;
+}
+.prin {
+  width: 85%;
+  display: flex;
+  flex-wrap: wrap;
+  margin: auto;
+}
+.cont {
+  background-size: cover;
+  width: 100%;
+  padding: 20px;
+  margin: auto;
+  background-image: url("../../../assets/image6.jpg");
+  min-height: 900px;
+  display: flex;
+  border-radius: 20px;
+  justify-content: center;
+}
+.form {
+  background-color: white;
+  width: 80%;
+  align-self: flex-end;
+  padding: 1rem;
+  border-radius: 10px;
+}
+
+.initButton{
+  width: 90%;
+}

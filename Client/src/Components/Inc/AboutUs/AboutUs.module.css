@@ -1,0 +1,12 @@
+.cas {
+  font-size: 15px;
+  box-shadow: 10px 10px 10px 10px rgb(234, 234, 234);
+  border-radius: 15px;
+  padding: 1rem;
+}
+.orange {
+  color: rgb(255, 221, 0);
+}
+.titulo_about {
+  font-size: 70px;
+}
