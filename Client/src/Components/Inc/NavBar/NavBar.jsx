@@ -21,7 +21,6 @@ const auth = getAuth(firebaseApp);
 
 
 function NavBar() {
-  console.log("hola soy el auth", auth)
 
   const [title, setTitle] = useState("");
   const navigate = useNavigate();
@@ -32,7 +31,6 @@ function NavBar() {
     setTitle(event.target.value)
   }
   const logoutHandle = () => {
-    console.log("click")
  
       signOut(auth)
         .then(() => {
@@ -93,13 +91,13 @@ function NavBar() {
               }
             >
               {/* <Dropdown.Item >{auth.currentUser.displayName}</Dropdown.Item> */}
-              <Dropdown.Item as={Link} to="/become-a-host">Become a host</Dropdown.Item>
+              <Dropdown.Item as={Link} to="/new-property">New Property</Dropdown.Item>
 
               <Dropdown.Divider />
               <Dropdown.Item as={Link} to="/" onClick={logoutHandle}>Close sesion</Dropdown.Item>
               <Dropdown.Item as={Link} to={`/user/${id}`}>Profile</Dropdown.Item>
               <Dropdown.Item as={Link} to="/Miperfilform">Account</Dropdown.Item>
-              <Dropdown.Item as={Link} to="/Create-my-prperty">Create My Property</Dropdown.Item>
+              <Dropdown.Item as={Link} to="/update-my-property">Update My Property</Dropdown.Item>
 
             </DropdownButton>
           </div>

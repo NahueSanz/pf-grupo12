@@ -21,7 +21,6 @@ function DetailPropertyPage() {
     const { id } = useParams();
     const dispatch = useDispatch();
     const property = useSelector(state => state.propertyDetail);
-    console.log(property);
 
     const owner = property.User?.name
     const ownerImage = property.User?.image || profilePicGuess;

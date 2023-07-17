@@ -10,7 +10,8 @@ export const NEXT_PAGE = "NEXT_PAGE";
 export const PREV_PAGE = "PREV_PAGE";
 export const SEARCH_BY_TITLE = "SEARCH_BY_TITLE";
 export const GET_USER = 'GET_USER'
-
+export const LOGIN = "LOGIN";
+export const LOGOUT = "LOGOUT";
 const url = `http://localhost:3001`; //URL GENERAL
 
 export function getProperties() {
@@ -120,18 +121,16 @@ export function nextPage(quantity) {
   };
 }
 
-export const LOGIN = "LOGIN";
-export const LOGOUT = "LOGOUT";
 
+//se le pasa un id al loguearse
 export const login = (id) => ({
   type: LOGIN,
   payload: id,
 });
-
+//salir sesion
 export const logout = () => ({
   type: LOGOUT,
 });
-
 
 export const getUser = (id) => {
   return async function (dispatch) {

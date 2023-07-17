@@ -11,38 +11,17 @@ const {
 
 //Registrar un nuevo usuario
 const registerUserHandler = async (req, res) => {
-  const { email, password } = req.body;
+  const { email, id } = req.body;
   try {
-    if (!email || !password) {
+    if (!email || !id) {
       throw Error("All fields are not complete");
     }
-    const newUser = await createUser(email, password);
+    const newUser = await createUser(email, id);
     if (!newUser) {
       throw Error("User not created");
     }
     //Si todo sale bien se crea al nuevo usuario
     res.status(201).json(newUser);
-  } catch (error) {
-    res.status(400).json({ error: error.message });
-  }
-};
-
-//Login de un usuario
-const loginUserHandler = async (req, res) => {
-  const { email, password } = req.body;
-  try {
-    if (!email || !password) {
-      throw Error("All fields are not complete");
-    }
-    const user = await findUserByEmail(email);
-    if (!user) {
-      throw Error("Incorrect user");
-    }
-
-    if (user.password !== password) {
-      throw Error("Incorrect Password");
-    }
-    res.status(200).json({ access: "User authenticated", id: user.id });
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
@@ -104,7 +83,6 @@ const getPropertyByIdHandler = async (req, res) => {
 
 module.exports = {
   registerUserHandler,
-  loginUserHandler,
   getAllPropertiesHandler,
   getPropertyByIdHandler,
 };
