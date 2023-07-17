@@ -105,15 +105,17 @@ export function firstPage() {
   };
 }
 
-export function prevPage() {
+export function prevPage(quantity) {
   return {
     type: PREV_PAGE,
+    payload:quantity
   };
 }
 
-export function nextPage() {
+export function nextPage(quantity) {
   return {
     type: NEXT_PAGE,
+    payload:quantity
   };
 }
 

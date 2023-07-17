@@ -101,12 +101,12 @@ const rootReducer = (state = initialState, action) => {
     case "PREV_PAGE":
       return {
         ...state,
-        page: state.page - 1,
+        page: state.page - action.payload,
       };
     case "NEXT_PAGE":
       return {
         ...state,
-        page: state.page + 1,
+        page: state.page + action.payload,
       };
 
     case "LOGIN":

@@ -37,12 +37,32 @@ function HomePage() {
     dispatch(actions.firstPage())
   };
 
-  const nextPage = () => {
-    dispatch(actions.nextPage())
+  const prevPage = () => {
+    dispatch(actions.prevPage(1))
   };
 
-  const prevPage = () => {
-    dispatch(actions.prevPage())
+  const prev2Page = () => {
+    dispatch(actions.prevPage(2))
+  };
+
+  const prev1Page = () => {
+    dispatch(actions.prevPage(1))
+  };
+
+  const next1Page = () => {
+    dispatch(actions.nextPage(1))
+  };
+
+  const next2Page = () => {
+    dispatch(actions.nextPage(2))
+  };
+
+  const nextPage = () => {
+    dispatch(actions.nextPage(1))
+  };
+
+  const lastPage = () => {
+    dispatch(actions.lastPage())
   };
 
   useEffect(() => {
@@ -79,11 +99,19 @@ function HomePage() {
       <Pagination className={style.paginado}>
         <Pagination.First onClick={firstPage} disabled={currentPage === 1} />
         <Pagination.Prev onClick={prevPage} disabled={currentPage === 1} />
-        <Pagination.Item>{currentPage}</Pagination.Item>
+        {currentPage>=3 && (<Pagination.Item onClick={prev2Page}>{currentPage-2}</Pagination.Item>)}
+        {currentPage>=2 && (<Pagination.Item onClick={prev1Page}>{currentPage-1}</Pagination.Item>)}
+        <Pagination.Item active={true}>{currentPage}</Pagination.Item>
+        {hasNextPage && (<Pagination.Item onClick={next1Page}>{currentPage+1}</Pagination.Item>)}
         <Pagination.Next
           onClick={nextPage}
           disabled={!hasNextPage || isLastPage}
         />
+        {/*<Pagination.Last
+        onClick={lastPage}
+        disabled={!hasNextPage || isLastPage}
+      />*/}
+        
       </Pagination>
     </Container>
   );
