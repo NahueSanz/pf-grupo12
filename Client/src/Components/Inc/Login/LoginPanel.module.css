@@ -16,8 +16,8 @@
  
 }
 
-.googleBtn:hover {
-  opacity: 0.75;
+.googleBtn:hover span {
+  color: white;
 }
 
 .googleBtn picture {

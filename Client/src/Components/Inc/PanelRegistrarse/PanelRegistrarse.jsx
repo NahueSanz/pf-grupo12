@@ -71,25 +71,25 @@ function PanelRegistrarse() {
 
   return (
     <>
-      <Button variant="primary" onClick={handleShow}>
-        Registrarse
-      </Button>
+      <a className='link-danger' onClick={handleShow}>
+        Sign up
+      </a>
 
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Registrarse</Modal.Title>
+          <Modal.Title>Sign Up</Modal.Title>
         </Modal.Header>
         <Modal.Body className={style.body}>
           <Form onSubmit={handleSubmit}>
             <Form.Group className="mb-3" controlId="formBasicEmail">
-              <Form.Label>Email address</Form.Label>
+              <Form.Label>Email</Form.Label>
               <Form.Control type="email" placeholder="Enter email" name="email" onChange={handleChange} value={formData.email} />
               <Form.Text className="text-muted">
               
               </Form.Text>
             </Form.Group>
 
-            <Form.Group className="mb-3" controlId="formBasicPassword">
+            <Form.Group className="mb-4" controlId="formBasicPassword">
               <Form.Label>Password</Form.Label>
               <Form.Control
                 type={showPassword ? 'text' : 'password'}
@@ -98,7 +98,7 @@ function PanelRegistrarse() {
                 onChange={handleChange}
                 value={formData.password}
               />
-              <Form.Check
+              <Form.Check className='mt-3'
                 type="checkbox"
                 label="Show password"
                 onChange={togglePasswordVisibility}
@@ -112,16 +112,11 @@ function PanelRegistrarse() {
                 )}
 
        
-            <Button type="submit" variant="primary">
+            <Button type="submit" variant="danger">
               Save Changes
             </Button>
           </Form>
         </Modal.Body>
-
-        <Modal.Footer>
-
-        </Modal.Footer>
-
       </Modal>
     </>
   );
