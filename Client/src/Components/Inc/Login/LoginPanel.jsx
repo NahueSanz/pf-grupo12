@@ -71,8 +71,8 @@ function LoginPanel() {
 
   return (
     <>
-      <Button variant="primary" onClick={handleShow}>
-        Iniciar Sesion
+      <Button className='btn-danger' onClick={handleShow}>
+        LOGIN
       </Button>
 
       <Modal show={show} onHide={handleClose} className={style.modal}>
@@ -107,12 +107,12 @@ function LoginPanel() {
 
             {error && <Alert variant={redVariant}>{error}</Alert>}
 
-            <Button type="submit" variant="primary">
-              Iniciar Sesion
+            <Button type="submit" variant="danger">
+              Login
             </Button>
           </Form>
 
-          <Button className={style.googleBtn} onClick={loginGoogle}>
+          <Button className={`${style.googleBtn} btn-danger`} onClick={loginGoogle}>
             <picture>
               <img
                 src="https://entredichos.trabajosocial.unlp.edu.ar/wp-content/uploads/sites/6/2016/12/Google_-G-_Logo.svg_.png"
