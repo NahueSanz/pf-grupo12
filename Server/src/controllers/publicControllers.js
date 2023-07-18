@@ -1,6 +1,9 @@
 const { Property, User } = require("../db");
+const { Op } = require("sequelize");
 
 /********************* CONTROLLERS PUBLICOS *********************/
+
+//Obtiene las propiedades buscando por su titulo
 const getPropertiesbyTitle = async (title) => {
   try {
     const properties = await Property.findAll({
@@ -19,18 +22,19 @@ const getPropertiesbyTitle = async (title) => {
 };
 
 //Crear un nuevo usuario en la BDD
-const createUser = async (email,password) => {
+const createUser = async (email,id) => {
   const [newUser, created] = await User.findOrCreate({
     //busca por estos datos al usuario
-    where: { email },
+    where: { email, id },
     //sino lo encuentra lo crea con los valores del defaults
-    defaults: { email,password},
+    defaults: { email, id },
   });
   if (!created) {
     throw new Error("User already exists");
   }
   return newUser;
 };
+
 //Obtener todas las propiedades de la BDD
 const getAllProperties = async () => {
   try {
@@ -41,6 +45,7 @@ const getAllProperties = async () => {
     throw new Error("Error getting all properties");
   }
 };
+
 //Obtener un usuario buscandolo por su email en la BDD
 const findUserByEmail = async (email) => {
   try {
@@ -50,6 +55,7 @@ const findUserByEmail = async (email) => {
     throw new Error("Error while finding user by email");
   }
 };
+
 //Obtener la info de una propiedad con alguna informacion de su usuario(propietario)
 const getPropertyDetail = async (id) => {
   try {

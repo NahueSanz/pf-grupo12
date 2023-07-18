@@ -9,7 +9,9 @@ export const FIRST_PAGE = "FIRST_PAGE";
 export const NEXT_PAGE = "NEXT_PAGE";
 export const PREV_PAGE = "PREV_PAGE";
 export const SEARCH_BY_TITLE = "SEARCH_BY_TITLE";
-
+export const GET_USER = 'GET_USER'
+export const LOGIN = "LOGIN";
+export const LOGOUT = "LOGOUT";
 const url = `http://localhost:3001`; //URL GENERAL
 
 export function getProperties() {
@@ -105,26 +107,41 @@ export function firstPage() {
   };
 }
 
-export function prevPage() {
+export function prevPage(quantity) {
   return {
     type: PREV_PAGE,
+    payload:quantity
   };
 }
 
-export function nextPage() {
+export function nextPage(quantity) {
   return {
     type: NEXT_PAGE,
+    payload:quantity
   };
 }
 
-export const LOGIN = "LOGIN";
-export const LOGOUT = "LOGOUT";
 
+//se le pasa un id al loguearse
 export const login = (id) => ({
   type: LOGIN,
   payload: id,
 });
-
+//salir sesion
 export const logout = () => ({
   type: LOGOUT,
 });
+
+export const getUser = (id) => {
+  return async function (dispatch) {
+    try {
+      const res = await axios.get(`${url}/user/info/${id}`); //get User
+      return dispatch({
+        type: GET_USER,
+        payload: res.data,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+}

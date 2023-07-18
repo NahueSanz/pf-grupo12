@@ -1,69 +1,39 @@
-import React from "react";
-import { MdHomeRepairService } from "react-icons/md";
-import styles from "./AboutUs.module.css";
+import style from '../../Views/Landing/landing.module.css';
+import { Container, Row, Col } from 'react-bootstrap';
+import img from '../../../assets/AboutUsImage.webp'
+import AboutUsItem from '../AboutUsItems/itemsAboutUs';
+import Secure from '../../../assets/securityIcon.svg';
+import Comfortable from '../../../assets/comfortableIcon.svg';
+import Fast from '../../../assets/fastIcon.svg';
+
+
 const AboutUs = () => {
   return (
-    <div className="row mt-5">
-      <div className="row col-md-6">
-        <div className="col-md-6">
-          <div className={styles.cas}>
-            <MdHomeRepairService size={"1.8rem"} />
-            <h1>Good Services</h1>
-            <p>
-              Lorem ipsum dolor sit, amet consectetur adipisicing elit. Minima
-              in quis doloremque ipsa voluptates, itaque quasi placeat incidunt
-              soluta dolorum, repudiandae quae, repellat id quos debitis maxime
-              possimus blanditiis inventore?
-            </p>
+   <Container fluid className='mb-5'>
+      <Row style={{ backgroundColor: '#fff', height: '70vh'}}> 
+        <Col className='col-12 d-flex justify-content-center text-uppercase align-text-center text-nowrap'>
+              <h2 className='fw-bolder text-dark fw'>
+                  About <span className='fw-bolder text-danger'>Us</span>
+              </h2>
+          </Col>
+          <div className='d-flex justify-content-center align-items-center p-5 ms-5' style={{ position: 'absolute', width: '90%'}}>
+          <Col lg={7} md={6} sm={12} xs={12} className='px-2'>
+           <p className="lh-lg fst-italic fw-bold text-start mx-2 mb-5" style={{ textAlign: 'justify', fontFamily: 'Open Sans, sans-serif' }}>Alohar, founded in 2023 by 6 Henry students, Edinson, Fabio, Facundo, Ivan, Julio, Nahuel and Micaela, with the mission of make your experience comfortable, fast, and secure. With our carefully selected accommodations and commitment to quality, we strive to provide you with unforgettable memories. We look forward to being part of your amazing journey through this beautiful continent South America.</p>
+          </Col>
+          <Col lg={6} md={6} sm={12} xs={12} className='d-flex justify-content-center p-5'>
+            <img src={img} alt="" style={{ width: '400px', height: '350px' }} fluid/>
+          </Col>
           </div>
-          <div className={styles.cas}>
-            <MdHomeRepairService size={"1.8rem"} />
-            <h1>Good Services</h1>
-            <p>
-              Lorem ipsum dolor sit, amet consectetur adipisicing elit. Minima
-              in quis doloremque ipsa voluptates, itaque quasi placeat incidunt
-              soluta dolorum, repudiandae quae, repellat id quos debitis maxime
-              possimus blanditiis inventore?
-            </p>
-          </div>
-        </div>
-        <div className="col-md-4">
-          <div className={styles.cas}>
-            <MdHomeRepairService size={"1.8rem"} />
-            <h1>Good Services</h1>
-            <p>
-              Lorem ipsum dolor sit, amet consectetur adipisicing elit. Minima
-              in quis doloremque ipsa voluptates, itaque quasi placeat incidunt
-              soluta dolorum, repudiandae quae, repellat id quos debitis maxime
-              possimus blanditiis inventore?
-            </p>
-          </div>
-          <div className={styles.cas}>
-            <MdHomeRepairService size={"1.8rem"} />
-            <h1>Good Services</h1>
-            <p>
-              Lorem ipsum dolor sit, amet consectetur adipisicing elit. Minima
-              in quis doloremque ipsa voluptates, itaque quasi placeat incidunt
-              soluta dolorum, repudiandae quae, repellat id quos debitis maxime
-              possimus blanditiis inventore?
-            </p>
-          </div>
-        </div>
-      </div>
-      <div className="col-md-6 row justify-content-center align-items-center ">
-        <div className="col-auto text-justify">
-          <h1 className={styles.titulo_about}>
-            Know <span className={styles.orange}>About Us</span>
-          </h1>
-          <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Natus, sed
-            corrupti porro dolore debitis doloremque ex unde, est odio sint
-            recusandae dolorem, beatae ab perferendis?
-          </p>
-          <button className="btn btn-warning">Read more</button>
-        </div>
-      </div>
-    </div>
+          </Row>
+         <Row>
+          <Col className='col-12 mt-2'>
+            <h3 className='text-danger text-start text-uppercase text-decoration-underline'>Why Us?</h3>
+          </Col>
+          <AboutUsItem img={Secure} title={'Secure'} text={'We collaborate with verified and trustworthy hosts who have undergone rigorous selection processes'}/>
+          <AboutUsItem img={Comfortable} title={'Comfortable'} text={'We offer a carefully chosen accommodations for your perfect stay. Wide selection to meet your needs.'}/>
+          <AboutUsItem img={Fast} title={'Fast'} text={'We provide a function of instant bookings, allowing you to secure your accommodation quickly and hassle-free.'}/>
+         </Row>
+   </Container>
   );
 };
 
