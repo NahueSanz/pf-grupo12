@@ -7,7 +7,14 @@ import firebaseApp from "../../../fb";
 import Alert from "react-bootstrap/Alert";
 import { login, logout } from "../../../redux/actions";
 import style from "./LoginPanel.module.css";
-import { getAuth,GoogleAuthProvider, signInWithEmailAndPassword, signInWithCredential, signInWithPopup, sendEmailVerification } from 'firebase/auth';
+import {
+  getAuth,
+  GoogleAuthProvider,
+  signInWithEmailAndPassword,
+  signInWithCredential,
+  signInWithPopup,
+  sendEmailVerification,
+} from "firebase/auth";
 import axios from "axios";
 
 const auth = getAuth(firebaseApp);
@@ -22,7 +29,7 @@ function LoginPanel() {
   const [showPassword, setShowPassword] = useState(false);
 
   const [formData, setFormData] = useState({
-    email: /*localStorage.getItem("email") || */"",//para que trae el localstorage de email
+    email: /*localStorage.getItem("email") || */ "", //para que trae el localstorage de email
     password: "",
   });
   //errores de validaciones o BDD, usamos errores de firebase
@@ -52,7 +59,7 @@ function LoginPanel() {
     try {
       const auth = getAuth(); // Obtener instancia de autenticación de Firebase
       //Login con Firebase pasando email y contraseña
-      const {user}= await signInWithEmailAndPassword(
+      const { user } = await signInWithEmailAndPassword(
         auth,
         formData.email,
         formData.password
@@ -76,42 +83,45 @@ function LoginPanel() {
       .then(async (result) => {
         // Obtener credenciales del usuario creado
         const id = result.user.uid;
-        const email = result.user.email
+        const email = result.user.email;
         //Tratar de que no mande un correo si ya estas registrado: pensado una ruta para realizar condiciones
         //manda un email si te registras con google
         const sendVerificationEmail = async () => {
           const auth = getAuth();
           await sendEmailVerification(auth.currentUser);
         };
-        sendVerificationEmail().catch(error => console.log(error));
-        
+        sendVerificationEmail().catch((error) => console.log(error));
+
         const userData = {
           email,
-          id
+          id,
         };
         //Tratar de no crear un usuario si ya estas registrado
         //Crea el usuario en la BDD
-        await axios.post(
-          "http://localhost:3001/public/register",
-          userData
-        ).then(response => console.log("Response register: ", response.data))
-          .catch(error => console.log("Error Register: ", error));
+        await axios
+          .post(
+            //"http://localhost:3001/public/register",
+            "https://pf-grupo12-production.up.railway.app/public/register",
+
+            userData
+          )
+          .then((response) => console.log("Response register: ", response.data))
+          .catch((error) => console.log("Error Register: ", error));
 
         // Crear un objeto credential con las credenciales del usuario
         const credential = GoogleAuthProvider.credentialFromResult(result);
 
         // Iniciar sesión con las credenciales del usuario(Logueo)
-        
       })
       .catch((error) => {
         // Ocurrió un error al autenticar con Firebase a través del objeto del proveedor de Google
-        console.log(error)
+        console.log(error);
       });
   };
 
   return (
     <>
-      <Button className='btn-danger' onClick={handleShow}>
+      <Button className="btn-danger" onClick={handleShow}>
         LOGIN
       </Button>
 
@@ -149,7 +159,10 @@ function LoginPanel() {
             </Button>
           </Form>
           {/* Boton de google para logueo */}
-          <Button className={`${style.googleBtn} btn-danger`} onClick={loginGoogle}>
+          <Button
+            className={`${style.googleBtn} btn-danger`}
+            onClick={loginGoogle}
+          >
             <picture>
               <img
                 src="https://entredichos.trabajosocial.unlp.edu.ar/wp-content/uploads/sites/6/2016/12/Google_-G-_Logo.svg_.png"
