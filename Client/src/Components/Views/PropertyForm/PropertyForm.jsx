@@ -5,6 +5,7 @@ import styles from "./PropertyForm.module.css";
 import { Link, useParams } from "react-router-dom";
 import * as Yup from "yup";
 import axios from "axios";
+import { countries } from "../../../utils/countries"
 
 const validationSchema = Yup.object().shape({
   title: Yup.string().required("Title is required"),
@@ -200,10 +201,11 @@ const PropertyForm = () => {
             <label htmlFor="country">Country</label>
             <Field as="select" name="country" className="form-control" required>
               <option value="">Select country</option>
-              <option value="Argentina">Argentina</option>
-              <option value="Brasil">Brasil</option>
-              <option value="Chile">Chile</option>
-              <option value="Uruguay">Uruguay</option>
+              {countries.map((country) => (
+              <option key={country} value={country}>
+                {country}
+              </option>
+            ))}
             </Field>
             <ErrorMessage
               name="country"

@@ -15,12 +15,13 @@ import Landing from "./Components/Views/Landing/Landing";
 import { login, logout } from "./redux/actions";
 import FormPerfil from "./Components/Inc/FormPerfil/FormPerfil";
 import FormProperty from "./Components/Inc/FormProperty/FormProperty";
-
+import Payment from "./Components/Views/Payment/Payment";
+import Dashboard from "./Components/Views/Dashboard/Dashboard";
 import firebaseApp from "./fb";
 import { getAuth } from "firebase/auth";
 
 const auth = getAuth(firebaseApp);
-import Payment from "./Components/Views/Payment/Payment";
+
 
 const App = () => {
   const location = useLocation();
@@ -51,7 +52,7 @@ const App = () => {
       ? (
         <>
           {/* Si estoy logueado puedo usar estas rutas */}
-          {location.pathname !== "/" && <NavBar />}
+          {location.pathname !== "/" && location.pathname !== "/admin-dashboard" && <NavBar />}
           <Routes>
             <Route path='/' element={<Navigate to='/home' replace />} />{/* Si yo quiero retrocer a landing, al estar logueado no me deja y redirije a home */}
             <Route path="/home" element={<HomePage />} />
@@ -61,8 +62,9 @@ const App = () => {
             <Route path="/Miperfilform" element={<FormPerfil />} />
             <Route path='/user/:id' element={<PerfilUser/>} />
             <Route path="/update-my-property" element={<FormProperty />} />
+            <Route path="/admin-dashboard" element={<Dashboard />} />
           </Routes>
-          {location.pathname !== "/" && <Footer />}
+          {location.pathname !== "/" && location.pathname !== "/admin-dashboard" && <Footer />}
         </>
       ) 
       : (
