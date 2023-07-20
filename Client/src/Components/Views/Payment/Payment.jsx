@@ -1,5 +1,5 @@
 import style from "./Payment.module.css";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Card, Row, Col, ListGroup } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import "react-date-range/dist/styles.css";
@@ -7,19 +7,28 @@ import "react-date-range/dist/theme/default.css";
 import { DateRange } from "react-date-range";
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 
+async function hola(email) {
+  let dato = await fetch("http://localhost:3001/public/property/" + email);
+  return await dato.json();
+}
 function Payment() {
   const property = useSelector((state) => state.propertyDetail);
   const [selectedRange, setSelectedRange] = useState([
     {
       startDate: new Date(property.startDate),
       endDate: new Date(property.endDate),
-      key: "selection"
-    }
+      key: "selection",
+    },
   ]);
-
+  useEffect(() => {
+    let local = localStorage;
+    let det = local.getItem("email");
+    console.log(det);
+    console.log(hola(det));
+  });
   const paypalOptions = {
     "client-id": "test",
-    currency: "USD"
+    currency: "USD",
   };
 
   function onChange(range) {
@@ -36,7 +45,6 @@ function Payment() {
 
   const nights = calculateNights();
 
-
   function handlePaymentSuccess(data, actions) {
     /*data: Es un objeto que contiene información sobre el pago aprobado. Puede incluir detalles como el ID de la transacción, el estado del pago y la hora de creación del pago.
     actions: Es un objeto que proporciona métodos adicionales que puedes utilizar para realizar acciones relacionadas con el pago. Algunas de las funciones útiles que puedes llamar en actions son actions.order.capture() para capturar el pago de manera programática y actions.redirect() para redirigir al usuario a una página de confirmación personalizada.
@@ -44,18 +52,20 @@ function Payment() {
 
     // Aquí puedes realizar la lógica que deseas ejecutar cuando el pago se complete con éxito
     console.log("Payment succeeded!");
-    
   }
 
   return (
     <PayPalScriptProvider options={paypalOptions}>
       <h4 className={style.encabezado}>Reserve payment</h4>
       <section className={style.payment}>
-        <PayPalButtons className={style.paypal} onApprove={handlePaymentSuccess}/>
+        <PayPalButtons
+          className={style.paypal}
+          onApprove={handlePaymentSuccess}
+        />
 
         <ListGroup flush>
           <ListGroup.Item>
-            <Card className={style.card} style={{ maxWidth: "35vw" }} >
+            <Card className={style.card} style={{ maxWidth: "35vw" }}>
               <Row className="g-0">
                 <Col md={4}>
                   <Card.Img src={property.image} alt={property.title} />
@@ -89,10 +99,23 @@ function Payment() {
 
           <ListGroup.Item>
             <h4>Price Detail:</h4>
-            <div className={style.priceLine}><h5>${property.price} USD per {nights} nights</h5> <h5>${(property.price)*nights}</h5></div>
-            <div className={style.priceLine}><h5>Taxes (5%)</h5> <h5>${(((property.price)*nights)*5)/100}</h5></div>
+            <div className={style.priceLine}>
+              <h5>
+                ${property.price} USD per {nights} nights
+              </h5>{" "}
+              <h5>${property.price * nights}</h5>
+            </div>
+            <div className={style.priceLine}>
+              <h5>Taxes (5%)</h5>{" "}
+              <h5>${(property.price * nights * 5) / 100}</h5>
+            </div>
             <hr />
-            <div className={style.priceLine}><h5>Total price</h5> <h5>${(((property.price)*nights)*5)/100+((property.price)*nights)}</h5></div>
+            <div className={style.priceLine}>
+              <h5>Total price</h5>{" "}
+              <h5>
+                ${(property.price * nights * 5) / 100 + property.price * nights}
+              </h5>
+            </div>
           </ListGroup.Item>
         </ListGroup>
       </section>
