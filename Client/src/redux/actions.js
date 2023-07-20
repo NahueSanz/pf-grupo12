@@ -9,15 +9,17 @@ export const FIRST_PAGE = "FIRST_PAGE";
 export const NEXT_PAGE = "NEXT_PAGE";
 export const PREV_PAGE = "PREV_PAGE";
 export const SEARCH_BY_TITLE = "SEARCH_BY_TITLE";
-export const GET_USER = 'GET_USER'
+export const GET_USER = "GET_USER";
 export const LOGIN = "LOGIN";
 export const LOGOUT = "LOGOUT";
-const url = `http://localhost:3001`; //URL GENERAL
+
+const urlLocal = `http://localhost:3001`; //URL GENERAL
+const url = `https://pf-grupo12-production.up.railway.app/`; //URL Data-base deploy
 
 export function getProperties() {
   return async function (dispatch) {
     try {
-      const res = await axios.get(`${url}/public/properties`); //All properties
+      const res = await axios.get(`${urlLocal}/public/properties`); //All properties
       return dispatch({
         type: GET_PROPERTIES,
         payload: res.data,
@@ -31,7 +33,7 @@ export function getProperties() {
 export function searchPropertiesByTitle(title) {
   return async function (dispatch) {
     try {
-      const res = await axios.get(`${url}/public/properties?title=${title}`); //Search properties by title
+      const res = await axios.get(`${urlLocal}/public/properties?title=${title}`); //Search properties by title
       return dispatch({
         type: SEARCH_BY_TITLE,
         searchName: title,
@@ -46,7 +48,7 @@ export function searchPropertiesByTitle(title) {
 export function getPropertyDetail(id) {
   return async function (dispatch) {
     try {
-      const res = await axios.get(`${url}/public/property/detail/${id}`); //One property
+      const res = await axios.get(`${urlLocal}/public/property/detail/${id}`); //One property
       console.log(res.data);
       return dispatch({
         type: GET_PROPERTY_DETAIL,
@@ -62,7 +64,7 @@ export function getPropertiesByName(searchName) {
   //SIN USAR? QUIZA SE PUEDA BORRAR
   return async function (dispatch) {
     try {
-      const res = await axios.get(`${url}/countries/name?name=${searchName}`); //Property by name
+      const res = await axios.get(`${urlLocal}/countries/name?name=${searchName}`); //Property by name
       return dispatch({
         type: GET_PROPERTIES_BY_NAME,
         searchName: searchName,
@@ -110,17 +112,16 @@ export function firstPage() {
 export function prevPage(quantity) {
   return {
     type: PREV_PAGE,
-    payload:quantity
+    payload: quantity,
   };
 }
 
 export function nextPage(quantity) {
   return {
     type: NEXT_PAGE,
-    payload:quantity
+    payload: quantity,
   };
 }
-
 
 //se le pasa un id al loguearse
 export const login = (id) => ({
@@ -135,7 +136,7 @@ export const logout = () => ({
 export const getUser = (id) => {
   return async function (dispatch) {
     try {
-      const res = await axios.get(`${url}/user/info/${id}`); //get User
+      const res = await axios.get(`${urlLocal}/user/info/${id}`); //get User
       return dispatch({
         type: GET_USER,
         payload: res.data,
@@ -143,5 +144,5 @@ export const getUser = (id) => {
     } catch (error) {
       console.log(error);
     }
-  }
-}
+  };
+};

@@ -94,10 +94,11 @@ function NavBar() {
               <Dropdown.Item as={Link} to="/new-property">New Property</Dropdown.Item>
 
               <Dropdown.Divider />
-              <Dropdown.Item as={Link} to="/" onClick={logoutHandle}>Close sesion</Dropdown.Item>
+              <Dropdown.Item as={Link} to={`/admin-dashboard`}>Admin Dashboard</Dropdown.Item>
               <Dropdown.Item as={Link} to={`/user/${id}`}>Profile</Dropdown.Item>
               <Dropdown.Item as={Link} to="/Miperfilform">Account</Dropdown.Item>
               <Dropdown.Item as={Link} to="/update-my-property">Update My Property</Dropdown.Item>
+              <Dropdown.Item as={Link} to="/" onClick={logoutHandle}>Close sesion</Dropdown.Item>
 
             </DropdownButton>
           </div>

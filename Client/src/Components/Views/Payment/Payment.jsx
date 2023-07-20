@@ -36,11 +36,22 @@ function Payment() {
 
   const nights = calculateNights();
 
+
+  function handlePaymentSuccess(data, actions) {
+    /*data: Es un objeto que contiene información sobre el pago aprobado. Puede incluir detalles como el ID de la transacción, el estado del pago y la hora de creación del pago.
+    actions: Es un objeto que proporciona métodos adicionales que puedes utilizar para realizar acciones relacionadas con el pago. Algunas de las funciones útiles que puedes llamar en actions son actions.order.capture() para capturar el pago de manera programática y actions.redirect() para redirigir al usuario a una página de confirmación personalizada.
+    */
+
+    // Aquí puedes realizar la lógica que deseas ejecutar cuando el pago se complete con éxito
+    console.log("Payment succeeded!");
+    
+  }
+
   return (
     <PayPalScriptProvider options={paypalOptions}>
       <h4 className={style.encabezado}>Reserve payment</h4>
       <section className={style.payment}>
-        <PayPalButtons className={style.paypal} />
+        <PayPalButtons className={style.paypal} onApprove={handlePaymentSuccess}/>
 
         <ListGroup flush>
           <ListGroup.Item>

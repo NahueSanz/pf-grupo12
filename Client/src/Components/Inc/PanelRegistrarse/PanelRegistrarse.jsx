@@ -1,32 +1,35 @@
-import React, { useEffect, useState } from 'react';
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
-import Modal from 'react-bootstrap/Modal';
-import style from './PanelRegistrarse.module.css';
-import Alert from 'react-bootstrap/Alert';
-import axios from 'axios';
-import { getAuth, createUserWithEmailAndPassword, sendEmailVerification } from "firebase/auth";
-
+import React, { useEffect, useState } from "react";
+import Button from "react-bootstrap/Button";
+import Form from "react-bootstrap/Form";
+import Modal from "react-bootstrap/Modal";
+import style from "./PanelRegistrarse.module.css";
+import Alert from "react-bootstrap/Alert";
+import axios from "axios";
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  sendEmailVerification,
+} from "firebase/auth";
 
 function PanelRegistrarse() {
-  const redVariant = 'danger';
+  const redVariant = "danger";
   //muestra o no en pantalla el form de registro
   const [show, setShow] = useState(false);
   //muestra o no la contraseña
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
-    email: '',
-    password: '',
+    email: "",
+    password: "",
   });
   //errores de BDD o validaciones, se esta usando de firebase
   const [error, setError] = useState(null);
 
   const handleClose = () => {
     setShow(false);
-    setError(null); 
+    setError(null);
     setFormData({
-      email: '',
-      password: '',
+      email: "",
+      password: "",
     });
   };
   const handleShow = () => setShow(true);
@@ -52,19 +55,19 @@ function PanelRegistrarse() {
         const auth = getAuth(); // Obtener instancia de autenticación de Firebase
         await sendEmailVerification(auth.currentUser);
       };
-      sendVerificationEmail().catch(error => console.log(error));
+      sendVerificationEmail().catch((error) => console.log(error));
 
       const userData = {
         email: formData.email,
-        id: userCredential.user.uid
+        id: userCredential.user.uid,
       };
       //Crea un usuario en la BDD con el email y id proporcionado por Firebase
-      await axios.post(
-        "http://localhost:3001/public/register",
-        userData
-      ).then(response => console.log("Response register: ", response.data))
-        .catch(error => console.log("Error Register: ", error));
+      await axios
+        //.post("http://localhost:3001/public/register", userData)
+        .post("https://pf-grupo12-production.up.railway.app/public/register", userData)
 
+        .then((response) => console.log("Response register: ", response.data))
+        .catch((error) => console.log("Error Register: ", error));
 
       setShow(false);
       setFormData({
@@ -74,15 +77,13 @@ function PanelRegistrarse() {
       setError(null);
 
       //alert("Created user"); Crear nuevo tipo de Alerta
-      dispatch(login(userData.id))
-      navigate("/home")
-
+      dispatch(login(userData.id));
+      navigate("/home");
     } catch (error) {
       const errorMessage = error.message;
       setError(errorMessage);
     }
   };
-
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -94,7 +95,7 @@ function PanelRegistrarse() {
 
   return (
     <>
-      <a className='link-danger' onClick={handleShow}>
+      <a className="link-danger" onClick={handleShow}>
         Sign up
       </a>
 
@@ -106,35 +107,34 @@ function PanelRegistrarse() {
           <Form onSubmit={handleSubmit}>
             <Form.Group className="mb-3" controlId="formBasicEmail">
               <Form.Label>Email</Form.Label>
-              <Form.Control type="email" placeholder="Enter email" name="email" onChange={handleChange} value={formData.email} />
-              <Form.Text className="text-muted">
-              
-              </Form.Text>
+              <Form.Control
+                type="email"
+                placeholder="Enter email"
+                name="email"
+                onChange={handleChange}
+                value={formData.email}
+              />
+              <Form.Text className="text-muted"></Form.Text>
             </Form.Group>
 
             <Form.Group className="mb-4" controlId="formBasicPassword">
               <Form.Label>Password</Form.Label>
               <Form.Control
-                type={showPassword ? 'text' : 'password'}
+                type={showPassword ? "text" : "password"}
                 placeholder="Password"
                 name="password"
                 onChange={handleChange}
                 value={formData.password}
               />
-              <Form.Check className='mt-3'
+              <Form.Check
+                className="mt-3"
                 type="checkbox"
                 label="Show password"
                 onChange={togglePasswordVisibility}
               />
-               
             </Form.Group>
-            {error && (
-                  <Alert variant={redVariant}>
-                    {error}
-                  </Alert>
-                )}
+            {error && <Alert variant={redVariant}>{error}</Alert>}
 
-       
             <Button type="submit" variant="danger">
               Save Changes
             </Button>
