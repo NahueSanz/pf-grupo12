@@ -16,6 +16,7 @@ publicRouter.post("/register", registerUserHandler);
 publicRouter.get("/properties", getAllPropertiesHandler);
 //Obtener el detalle de la propiedad
 publicRouter.get("/property/detail/:id", getPropertyByIdHandler);
+
 publicRouter.get("/property/:email", async function (req, res) {
   const { email } = req.params;
   console.log(email);
