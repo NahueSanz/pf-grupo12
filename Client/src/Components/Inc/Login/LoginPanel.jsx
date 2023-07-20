@@ -100,9 +100,8 @@ function LoginPanel() {
         //Crea el usuario en la BDD
         await axios
           .post(
-            //"http://localhost:3001/public/register",
-            "https://pf-grupo12-production.up.railway.app/public/register",
-
+            "http://localhost:3001/public/register", //URL LOCAL
+            //"https://pf-grupo12-production.up.railway.app/public/register", //URL DEPLOY
             userData
           )
           .then((response) => console.log("Response register: ", response.data))

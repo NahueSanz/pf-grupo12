@@ -9,6 +9,7 @@ export const FIRST_PAGE = "FIRST_PAGE";
 export const NEXT_PAGE = "NEXT_PAGE";
 export const PREV_PAGE = "PREV_PAGE";
 export const SEARCH_BY_TITLE = "SEARCH_BY_TITLE";
+export const GET_USERS = "GET_USERS";
 export const GET_USER = "GET_USER";
 export const LOGIN = "LOGIN";
 export const LOGOUT = "LOGOUT";
@@ -16,6 +17,21 @@ export const LOGOUT = "LOGOUT";
 const urlLocal = `http://localhost:3001`; //URL GENERAL
 const url = `https://pf-grupo12-production.up.railway.app/`; //URL Data-base deploy
 
+//Trae todos los usuarios de la BDD
+export function getUsers() {
+  return async function (dispatch) {
+    try {
+      const res = await axios.get(`${urlLocal}/admin/users`); //All users
+      return dispatch({
+        type: GET_USERS,
+        payload: res.data,
+      });
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+}
+//Trae todas las propiedades de la BDD
 export function getProperties() {
   return async function (dispatch) {
     try {
@@ -49,7 +65,7 @@ export function getPropertyDetail(id) {
   return async function (dispatch) {
     try {
       const res = await axios.get(`${urlLocal}/public/property/detail/${id}`); //One property
-      console.log(res.data);
+      //console.log(res.data);
       return dispatch({
         type: GET_PROPERTY_DETAIL,
         payload: res.data,

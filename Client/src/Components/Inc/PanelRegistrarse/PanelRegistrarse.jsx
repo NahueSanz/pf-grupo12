@@ -63,8 +63,8 @@ function PanelRegistrarse() {
       };
       //Crea un usuario en la BDD con el email y id proporcionado por Firebase
       await axios
-        //.post("http://localhost:3001/public/register", userData)
-        .post("https://pf-grupo12-production.up.railway.app/public/register", userData)
+        .post("http://localhost:3001/public/register", userData) //URL LOCAL
+        //.post("https://pf-grupo12-production.up.railway.app/public/register", userData) //URL DEPLOY
 
         .then((response) => console.log("Response register: ", response.data))
         .catch((error) => console.log("Error Register: ", error));

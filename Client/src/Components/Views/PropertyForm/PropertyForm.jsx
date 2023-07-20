@@ -44,11 +44,11 @@ const PropertyForm = () => {
       const imageUrl = response.data.secure_url;
       values.image = imageUrl;
       console.log(id);
-      //await axios.post(`http://localhost:3001/user/${id}/property`, values);
-      await axios.post(
-        `https://pf-grupo12-production.up.railway.app/user/${id}/property`,
-        values
-      );
+      await axios.post(`http://localhost:3001/user/${id}/property`, values); //URL LOCAL
+      // await axios.post(
+      //   `https://pf-grupo12-production.up.railway.app/user/${id}/property`, //URL DEPLOY
+      //   values
+      // );
 
       console.log(response.data);
       alert("Created property");

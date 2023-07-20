@@ -2,6 +2,8 @@ const initialState = {
   properties: [],
   propertyDetail: {},
   allProperties: [],
+  users: [],
+  allUsers:[],
   page: 1,
   searchTerm: "",
   loggedIn: Boolean(localStorage.getItem("loggedIn")) || false,
@@ -31,6 +33,13 @@ const rootReducer = (state = initialState, action) => {
         searchTerm: action.searchName,
         properties: action.payload,
       };
+
+    case "GET_USERS":
+      return {
+        ...state,
+        users: action.payload,
+        allUsers: action.payload
+      }
 
     case "SEARCH_BY_TITLE":
       return {
