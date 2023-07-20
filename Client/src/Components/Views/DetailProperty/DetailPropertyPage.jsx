@@ -13,6 +13,7 @@ import FavoritesAddNotification from '../../Inc/ModalPropertypage/ModalProperty'
 import locationIcon from '../../../assets/locationIcon.svg';
 import profilePicGuess from '../../../images/guessProfilePic.webp';
 import languageIcon from '../../../assets/languageIcon.svg';
+import ReviewsPanel from '../../Inc/ReviewsPanel/ReviewsPanel';
 import style from './PropertyPage.module.css'
 import { Link } from "react-router-dom";
 
@@ -120,6 +121,7 @@ function DetailPropertyPage() {
               <Button className='btn-danger btn-sm my-2 mx-2' as={Link} to="/payment">Reserve</Button>
             </Col>
           </Row>
+          <ReviewsPanel/>
         </Container>
       );
 }
