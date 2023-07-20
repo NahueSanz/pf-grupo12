@@ -27,5 +27,4 @@ userRouter.get("/property/:id", getPropertyUserByIdHandler);
 userRouter.put("/property/:id", updatePropertyUserHandler);
 //Eliminar una propiedad del usuario
 userRouter.delete("/property/:id", deletePropertyUserHandler);
-
 module.exports = userRouter;
