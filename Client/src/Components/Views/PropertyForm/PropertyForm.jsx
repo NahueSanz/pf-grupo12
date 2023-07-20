@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { Button } from "react-bootstrap";
+import { countries } from "../../../utils/countries"
 import styles from "./PropertyForm.module.css";
+
 import { Link, useParams } from "react-router-dom";
 import * as Yup from "yup";
 import axios from "axios";
@@ -124,173 +126,223 @@ const PropertyForm = () => {
       onSubmit={handleSubmit}
     >
       {({ isSubmitting }) => (
-        <Form className={styles.form} onChange={handleChange}>
-          <div className="form-group">
-            <label htmlFor="title">Title</label>
-            <Field type="text" name="title" className="form-control" required />
-            <ErrorMessage
-              name="title"
-              component="div"
-              className="error-message"
-            />
-          </div>
 
-          <div className="form-group">
-            <label htmlFor="image">Image</label>
-            <input
-              type="file"
-              name="image"
-              onChange={handleImageChange}
-              required
-            />
-            {previewImage && (
-              <img
-                src={previewImage}
-                alt="Preview"
-                className={styles.imagePreview}
-              />
-            )}
+        <div className={styles.containerPrincipal}>
 
-            <ErrorMessage
-              name="image"
-              component="div"
-              className="error-message"
-            />
-          </div>
-          <Button className={styles["btn-green"]} onClick={submitImage}>
+          <Form className={styles.form} onChange={handleChange}>
+            <h2>New Property</h2>
+            <div className={styles.container}>
+
+              <div className={styles.container1}>
+
+                <div className={`form-group ${styles.formGroup}`}>
+                  <label htmlFor="title">Title</label>
+                  <Field type="text" name="title" className={`form-control ${styles.formControl}`} required />
+                  <ErrorMessage
+                    name="title"
+                    component="div"
+                    className={`error-message ${styles.error}`}
+                  />
+                </div>
+
+
+                <div className={styles.selects}>
+
+                  {/* TIPOS DE PROPIEDADES */}
+
+                  <div className={`form-group ${styles.formGroup}`}>
+                    <label htmlFor="type">Type</label>
+                    <Field as="select" name="type" className={`form-control ${styles.formControl}`} required>
+                      <option value="">Select type</option>
+                      <option value="Apartment">Apartment</option>
+                      <option value="Hotel">Hotel</option>
+                      <option value="House">House</option>
+                      <option value="Cabin">Cabin</option>
+                    </Field>
+                    <ErrorMessage
+                      name="type"
+                      component="div"
+                      className={`error-message ${styles.error}`}
+                    />
+                  </div>
+
+                  {/* COUNTRIES */}
+
+                  <div className={`form-group ${styles.formGroup}`}>
+                    <label htmlFor="country">Country</label>
+                    <Field as="select" name="country" className={`form-control ${styles.formControl}`} required>
+                      <option value="">Países</option>
+                      {countries.map((country) => (
+                        <option key={country} value={country}>
+                          {country}
+                        </option>
+                      ))}
+                    </Field>
+                    <ErrorMessage
+                      name="country"
+                      component="div"
+                      className={`error-message ${styles.error}`}
+                    />
+                  </div>
+
+                </div>
+
+                <div className={`form-group ${styles.formGroup}`}>
+                  <label htmlFor="address">Address</label>
+                  <Field
+                    type="text"
+                    name="address"
+                    className={`form-control ${styles.formControl}`}
+                    required
+                  />
+                  <ErrorMessage
+                    name="address"
+                    component="div"
+                    className={`error-message ${styles.error}`}
+                  />
+                </div>
+
+
+                {/* GUESTS AND PRICE */}
+
+                <div className={styles.selects}>
+
+                  <div className={`form-group ${styles.formGroup}`}>
+                    <label htmlFor="startDate">Start Date</label>
+                    <Field
+                      type="date"
+                      name="startDate"
+                      className={`form-control ${styles.formControl}`}
+                      required
+                    />
+                    <ErrorMessage
+                      name="startDate"
+                      component="div"
+                      className={`error-message ${styles.error}`}
+                    />
+                  </div>
+
+
+                  <div className={`form-group ${styles.formGroup}`}>
+                    <label htmlFor="price">Price</label>
+                    <Field
+                      type="number"
+                      name="price"
+                      className={`form-control ${styles.formControl}`}
+                      required
+                    />
+                    <ErrorMessage
+                      name="price"
+                      component="div"
+                      className={`error-message ${styles.error}`}
+                    />
+                  </div>
+
+                </div>
+
+
+                {/* START DATE AND END DATE */}
+
+                <div className={styles.selects}>
+
+
+
+                  <div className={`form-group ${styles.formGroup}`}>
+                    <label htmlFor="endDate">End Date</label>
+                    <Field
+                      type="date"
+                      name="endDate"
+                      className={`form-control ${styles.formControl}`}
+                      required
+                    />
+                    <ErrorMessage
+                      name="endDate"
+                      component="div"
+                      className={`error-message ${styles.error}`}
+                    />
+                  </div>
+
+
+                  <div className={`form-group ${styles.formGroup}`}>
+                    <label htmlFor="guests">Guests</label>
+                    <Field
+                      type="number"
+                      name="guests"
+                      className={`form-control ${styles.formControl}`}
+                      required
+                    />
+                    <ErrorMessage
+                      name="guests"
+                      component="div"
+                      className={`error-message ${styles.error}`}
+                    />
+                  </div>
+
+                </div>
+
+              </div>
+
+
+              {/* DESCRIPTION AND IMAGE */}
+
+              <div className={styles.container2}>
+                <div className={`form-group ${styles.formGroup}`}>
+                  <label htmlFor="description">Description</label>
+                  <Field
+                    as="textarea"
+                    rows={3}
+                    name="description"
+                    className={`form-control ${styles.formControl}`}
+                    required
+                  />
+                  <ErrorMessage
+                    name="description"
+                    component="div"
+                    className={`error-message ${styles.error}`}
+                  />
+                </div>
+
+                <div className={`form-group ${styles.formGroupImg}`}>
+                  {/* <label htmlFor="image">Image</label> */}
+                  <input
+                    type="file"
+                    name="image"
+                    onChange={handleImageChange}
+                    required
+                  />
+                  {previewImage && (
+                    <div className={styles.imageContainer}>
+                      <img
+                        src={previewImage}
+                        alt="Preview"
+                        className={styles.imagePreview}
+                      />
+                    </div>
+
+                  )}
+
+                  <ErrorMessage
+                    name="image"
+                    component="div"
+                    className={`error-message invalid-feedback ${styles.error}`}
+                  />
+                </div>
+                {/* <Button className={styles["btn-green"]} onClick={submitImage}>
             Cargar imagen
-          </Button>
+          </Button> */}
+              </div>
 
-          <div className="form-group">
-            <label htmlFor="type">Type</label>
-            <Field as="select" name="type" className="form-control" required>
-              <option value="">Select type</option>
-              <option value="Apartment">Apartment</option>
-              <option value="Hotel">Hotel</option>
-              <option value="House">House</option>
-              <option value="Cabin">Cabin</option>
-            </Field>
-            <ErrorMessage
-              name="type"
-              component="div"
-              className="error-message"
-            />
-          </div>
+            </div>
 
-          <div className="form-group">
-            <label htmlFor="address">Address</label>
-            <Field
-              type="text"
-              name="address"
-              className="form-control"
-              required
-            />
-            <ErrorMessage
-              name="address"
-              component="div"
-              className="error-message"
-            />
-          </div>
+            <Button variant="primary" type="submit" disabled={isSubmitting} className={styles.submit}>
+              {isSubmitting ? "Submitting..." : "Submit"}
+            </Button>
 
-          <div className="form-group">
-            <label htmlFor="country">Country</label>
-            <Field as="select" name="country" className="form-control" required>
-              <option value="">Select country</option>
-              <option value="Argentina">Argentina</option>
-              <option value="Brasil">Brasil</option>
-              <option value="Chile">Chile</option>
-              <option value="Uruguay">Uruguay</option>
-            </Field>
-            <ErrorMessage
-              name="country"
-              component="div"
-              className="error-message"
-            />
-          </div>
 
-          <div className="form-group">
-            <label htmlFor="guests">Guests</label>
-            <Field
-              type="number"
-              name="guests"
-              className="form-control"
-              required
-            />
-            <ErrorMessage
-              name="guests"
-              component="div"
-              className="error-message"
-            />
-          </div>
+          </Form>
 
-          <div className="form-group">
-            <label htmlFor="price">Price</label>
-            <Field
-              type="number"
-              name="price"
-              className="form-control"
-              required
-            />
-            <ErrorMessage
-              name="price"
-              component="div"
-              className="error-message"
-            />
-          </div>
+        </div>
 
-          <div className="form-group">
-            <label htmlFor="description">Description</label>
-            <Field
-              as="textarea"
-              rows={3}
-              name="description"
-              className="form-control"
-              required
-            />
-            <ErrorMessage
-              name="description"
-              component="div"
-              className="error-message"
-            />
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="startDate">Start Date</label>
-            <Field
-              type="date"
-              name="startDate"
-              className="form-control"
-              required
-            />
-            <ErrorMessage
-              name="startDate"
-              component="div"
-              className="error-message"
-            />
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="endDate">End Date</label>
-            <Field
-              type="date"
-              name="endDate"
-              className="form-control"
-              required
-            />
-            <ErrorMessage
-              name="endDate"
-              component="div"
-              className="error-message"
-            />
-          </div>
-
-          <Button variant="primary" type="submit" disabled={isSubmitting}>
-            {isSubmitting ? "Submitting..." : "Submit"}
-          </Button>
-          <Link to="/home" id="click">
-            <Button>Home</Button>
-          </Link>
-        </Form>
       )}
     </Formik>
   );
