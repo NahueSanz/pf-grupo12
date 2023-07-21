@@ -17,31 +17,27 @@ import style from './PropertyPage.module.css'
 import { Link } from "react-router-dom";
 
 function DetailPropertyPage() {
-    
-    const { id } = useParams();
-    const dispatch = useDispatch();
-    const property = useSelector(state => state.propertyDetail);
+  const { id } = useParams();
+  const dispatch = useDispatch();
+  const property = useSelector((state) => state.propertyDetail);
 
-    const owner = property.User?.name
-    const ownerImage = property.User?.image || profilePicGuess;
-    const ownerLanguage = property.User?.language;
-    const ownerDescription = property.User?.description;
+  const owner = property.User?.name;
+  const ownerImage = property.User?.image || profilePicGuess;
+  const ownerLanguage = property.User?.language;
+  const ownerDescription = property.User?.description;
 
-
-    useEffect(() => {
-
-      async function getPropertyData(id){
-        try {
-            const data = getPropertyDetail(id);
-            dispatch(data)
-        } catch (error) {
-            console.log(error);
-        }
+  useEffect(() => {
+    async function getPropertyData(id) {
+      try {
+        const data = getPropertyDetail(id);
+        dispatch(data);
+      } catch (error) {
+        console.log(error);
+      }
     }
-    
-      getPropertyData(id);
-    }, [ dispatch, id]);
- 
+
+    getPropertyData(id);
+  }, [dispatch, id]);
 
     return (
         <Container className={`${style.container} container-fluid container pt-5`}>
@@ -124,5 +120,4 @@ function DetailPropertyPage() {
       );
 }
 
-
-export default DetailPropertyPage
+export default DetailPropertyPage;

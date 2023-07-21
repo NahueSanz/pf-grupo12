@@ -23,7 +23,7 @@ const getUserByIdHandler = async (req, res) => {
 //Actualizar usuario
 const updateUserHandler = async (req, res) => {
   const { id } = req.params;
-  const { name, lastname, email, country, phonenumber, language } = req.body;
+  const { name, lastname, email, country, phonenumber, language, image } = req.body;
 
   try {
     const user = await getUserById(id);
@@ -50,6 +50,9 @@ const updateUserHandler = async (req, res) => {
     }
     if (language) {
       user.language = language;
+    }
+    if (image) {
+      user.image = image;
     }
 
     // Guarda los cambios en la base de datos

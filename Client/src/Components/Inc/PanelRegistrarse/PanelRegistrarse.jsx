@@ -1,17 +1,20 @@
 import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
 import style from "./PanelRegistrarse.module.css";
 import Alert from "react-bootstrap/Alert";
-import axios from "axios";
+import { register } from "../../../redux/actions";
 import {
   getAuth,
   createUserWithEmailAndPassword,
   sendEmailVerification,
 } from "firebase/auth";
 
+
 function PanelRegistrarse() {
+  const dispatch = useDispatch();
   const redVariant = "danger";
   //muestra o no en pantalla el form de registro
   const [show, setShow] = useState(false);
@@ -62,12 +65,7 @@ function PanelRegistrarse() {
         id: userCredential.user.uid,
       };
       //Crea un usuario en la BDD con el email y id proporcionado por Firebase
-      await axios
-        //.post("http://localhost:3001/public/register", userData)
-        .post("https://pf-grupo12-production.up.railway.app/public/register", userData)
-
-        .then((response) => console.log("Response register: ", response.data))
-        .catch((error) => console.log("Error Register: ", error));
+      dispatch(register(userData))
 
       setShow(false);
       setFormData({

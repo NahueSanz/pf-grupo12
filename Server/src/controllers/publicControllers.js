@@ -38,7 +38,17 @@ const createUser = async (email,id) => {
 //Obtener todas las propiedades de la BDD
 const getAllProperties = async () => {
   try {
-    const properties = await Property.findAll();
+    const properties = await Property.findAll({
+      include:[
+        {
+          model: User,
+          attributes: [
+            "name",
+            "lastname"
+          ],
+        },
+      ],
+    });
 
     return properties;
   } catch (error) {
