@@ -7,6 +7,8 @@ const {
   getPropertyUserByIdHandler,
   updatePropertyUserHandler,
   deletePropertyUserHandler,
+  getPropertyReview,
+  createPropertyReview,
 } = require("../handlers/userHanders");
 
 const userRouter = Router();
@@ -27,4 +29,9 @@ userRouter.get("/property/:id", getPropertyUserByIdHandler);
 userRouter.put("/property/:id", updatePropertyUserHandler);
 //Eliminar una propiedad del usuario
 userRouter.delete("/property/:id", deletePropertyUserHandler);
+//Obtener las reviews
+userRouter.get("/property/:id/review", getPropertyReview);
+//Crear una nueva review
+userRouter.post("/property/:id/review", createPropertyReview);
+
 module.exports = userRouter;

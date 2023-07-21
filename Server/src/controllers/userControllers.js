@@ -1,4 +1,4 @@
-const { User, Property } = require("../db");
+const { User, Property, Review } = require("../db");
 /************** CONTROLLERS DEL USUARIO AUTENTICADO ****************/
 
 //Se obtendra al usuario buscando en la BDD por su ID
@@ -14,7 +14,7 @@ const getUserById = async (id) => {
 const getAllUserProperties = async (userId) => {
   try {
     const userProperties = await Property.findAll({
-      where:{UserId:userId},
+      where: { UserId: userId },
       include: [
         {
           model: User,
@@ -58,9 +58,25 @@ const createUserProperty = async (
     startDate,
     endDate,
     image,
-    UserId:userId
+    UserId: userId,
   });
   return newProperty;
+};
+const createUserReview = async (review, score, user, idCasa) => {
+ const existingReview = await Review.findOne({
+    where: { user: user, PropertyId: idCasa },
+  });
+  console.log(existingReview, idCasa);
+  if (existingReview) {
+    throw new Error("You have already posted one review in this property");
+  }
+  const newReview = await Review.create({
+    review,
+    score,
+    user,
+    PropertyId: idCasa,
+  });
+  return newReview;
 };
 //Se obtendra la propiedad de un usuario por su ID de la propiedad
 const getUserPropertyById = async (id) => {
@@ -95,9 +111,24 @@ const deleteUserProperty = async (id) => {
     throw new Error("Error deleting a user property");
   }
 };
-
-
-
+const getReview = async (id) => {
+  try {
+    const casaConReview = await Property.findByPk(id, {
+      include: [
+        {
+          model: Review,
+          attributes: ["review", "score", "user"],
+        },
+      ],
+    });
+    if (!casaConReview) {
+      throw new Error("User property review not found");
+    }
+    return casaConReview;
+  } catch (error) {
+    throw new Error("No se encontraron las reviews");
+  }
+};
 
 module.exports = {
   getUserById,
@@ -105,4 +136,6 @@ module.exports = {
   getAllUserProperties,
   getUserPropertyById,
   deleteUserProperty,
+  getReview,
+  createUserReview,
 };
