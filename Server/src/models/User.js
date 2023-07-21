@@ -25,7 +25,7 @@ module.exports = (sequelize) => {
         type: DataTypes.STRING,
       },
       phonenumber: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.BIGINT,
       },
       enabled: {
         type: DataTypes.BOOLEAN,

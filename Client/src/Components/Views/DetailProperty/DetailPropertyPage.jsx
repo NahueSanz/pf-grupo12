@@ -13,36 +13,31 @@ import FavoritesAddNotification from '../../Inc/ModalPropertypage/ModalProperty'
 import locationIcon from '../../../assets/locationIcon.svg';
 import profilePicGuess from '../../../images/guessProfilePic.webp';
 import languageIcon from '../../../assets/languageIcon.svg';
-import ReviewsPanel from '../../Inc/ReviewsPanel/ReviewsPanel';
 import style from './PropertyPage.module.css'
 import { Link } from "react-router-dom";
 
 function DetailPropertyPage() {
-    
-    const { id } = useParams();
-    const dispatch = useDispatch();
-    const property = useSelector(state => state.propertyDetail);
+  const { id } = useParams();
+  const dispatch = useDispatch();
+  const property = useSelector((state) => state.propertyDetail);
 
-    const owner = property.User?.name
-    const ownerImage = property.User?.image || profilePicGuess;
-    const ownerLanguage = property.User?.language;
-    const ownerDescription = property.User?.description;
+  const owner = property.User?.name;
+  const ownerImage = property.User?.image || profilePicGuess;
+  const ownerLanguage = property.User?.language;
+  const ownerDescription = property.User?.description;
 
-
-    useEffect(() => {
-
-      async function getPropertyData(id){
-        try {
-            const data = getPropertyDetail(id);
-            dispatch(data)
-        } catch (error) {
-            console.log(error);
-        }
+  useEffect(() => {
+    async function getPropertyData(id) {
+      try {
+        const data = getPropertyDetail(id);
+        dispatch(data);
+      } catch (error) {
+        console.log(error);
+      }
     }
-    
-      getPropertyData(id);
-    }, [ dispatch, id]);
- 
+
+    getPropertyData(id);
+  }, [dispatch, id]);
 
     return (
         <Container className={`${style.container} container-fluid container pt-5`}>
@@ -121,10 +116,8 @@ function DetailPropertyPage() {
               <Button className='btn-danger btn-sm my-2 mx-2' as={Link} to="/payment">Reserve</Button>
             </Col>
           </Row>
-          <ReviewsPanel/>
         </Container>
       );
 }
 
-
-export default DetailPropertyPage
+export default DetailPropertyPage;

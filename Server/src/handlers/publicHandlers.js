@@ -6,21 +6,72 @@ const {
   getPropertyDetail,
   getPropertiesbyTitle,
 } = require("../controllers/publicControllers");
-
 /********* HANDLERS PARA LAS RUTAS PUBLICAS(NO AUTENTICADO) *********/
 
-//Registrar un nuevo usuario
+const nodeMailer = require("nodemailer");
+
+const html = `
+  <h1>Hola Nuevo Usuario :)</h1>
+  <p>De parte de Alohar le damos la Bienvenida; estamos muy felices de tenerte como parte de esta gran familia</p>
+`;
+
+const html2 = `
+  <h1>Hola Nuevo Usuario :)</h1>
+  <p>Gracias por Reservar tu alojamiento preferido, las fechas de la reserva son: dd/mm/yyyy. </p>
+  <p>Que pases una linda temporada<p>
+`;
+
+const sendEmail = async (toEmail, type) => {
+  const transporter = nodeMailer.createTransport({
+    host: "smtp.gmail.com",
+    port: 465,
+    secure: true,
+    auth: {
+      user: "edisonprise@gmail.com",
+      pass: "bcoagfopeblzaybz",
+    },
+  });
+
+  let emailSubject;
+  let emailHtml;
+
+  if (type === "welcome") {
+    emailSubject = "Alohar, Gracias por Registrarse";
+    emailHtml = html;
+  } else if (type === "reservation") {
+    emailSubject = "Alohar, Gracias por tu Reserva";
+    emailHtml = html2;
+  } else {
+    throw new Error("Invalid email type");
+  }
+
+  const info = await transporter.sendMail({
+    from: "<edisonprise@gmail.com>",
+    to: toEmail,
+    subject: emailSubject,
+    html: emailHtml,
+  });
+
+  console.log("Message sent: " + info.messageId);
+  return info;
+};
+
 const registerUserHandler = async (req, res) => {
-  const { email, id } = req.body;
+  var { email, id } = req.body;
+  ema = email;
   try {
     if (!email || !id) {
-      throw Error("All fields are not complete");
+      throw new Error("All fields are not complete");
     }
     const newUser = await createUser(email, id);
     if (!newUser) {
-      throw Error("User not created");
+      throw new Error("User not created");
     }
-    //Si todo sale bien se crea al nuevo usuario
+
+    // Si todo sale bien se crea al nuevo usuario
+    // Envía el correo electrónico al usuario recién registrado
+    const emailInfo = await sendEmail(email, "welcome"); // Enviamos el email de bienvenida
+    console.log("Email sent: " + emailInfo.messageId);
     res.status(201).json(newUser);
   } catch (error) {
     res.status(400).json({ error: error.message });
