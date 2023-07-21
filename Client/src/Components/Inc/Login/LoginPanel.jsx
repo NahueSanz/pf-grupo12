@@ -5,7 +5,7 @@ import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
 import firebaseApp from "../../../fb";
 import Alert from "react-bootstrap/Alert";
-import { login, logout } from "../../../redux/actions";
+import { register } from "../../../redux/actions";
 import style from "./LoginPanel.module.css";
 import {
   getAuth,
@@ -98,15 +98,7 @@ function LoginPanel() {
         };
         //Tratar de no crear un usuario si ya estas registrado
         //Crea el usuario en la BDD
-        await axios
-          .post(
-            //"http://localhost:3001/public/register",
-            "https://pf-grupo12-production.up.railway.app/public/register",
-
-            userData
-          )
-          .then((response) => console.log("Response register: ", response.data))
-          .catch((error) => console.log("Error Register: ", error));
+        dispatch(register(userData));
 
         // Crear un objeto credential con las credenciales del usuario
         const credential = GoogleAuthProvider.credentialFromResult(result);
