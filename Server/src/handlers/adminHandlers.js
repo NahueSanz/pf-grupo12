@@ -1,4 +1,9 @@
-const { getAllUsers, getAllAdmins, deleteUser } = require("../controllers/adminControllers");
+const {
+  getAllUsers,
+  getAllAdmins,
+  deleteUser,
+  getReviewByPk,
+} = require("../controllers/adminControllers");
 /************ HANDLERS DEL USUARIO AUTORIZADO(ADMIN) ************/
 
 //Todos los usuarios con rol user
@@ -39,8 +44,19 @@ const deleteUserHandler = async (req, res) => {
   }
 };
 
+const changeEnableReview = (req, res) => {
+  const reviewId = req.params.id;
+  try {
+    const review = getReviewByPk(reviewId);
+    res.status(200).json(review);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
 module.exports = {
   getAllUsersHandler,
   getAllAdminsHandler,
   deleteUserHandler,
+  changeEnableReview,
 };

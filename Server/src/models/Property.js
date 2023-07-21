@@ -36,16 +36,8 @@ module.exports = (sequelize) => {
         defaultValue: true,
         allowNull: false,
       },
-      score: {
-        type: DataTypes.INTEGER,
-      },
       price: {
         type: DataTypes.INTEGER,
-        allowNull: false,
-      },
-      review: {
-        type: DataTypes.ARRAY(DataTypes.STRING),
-        defaultValue: [],
         allowNull: false,
       },
       description: {

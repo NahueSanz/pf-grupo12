@@ -1,17 +1,19 @@
-const { User, Property } = require("../db");
+const { User, Property, Review } = require("../db");
 /**************** CONTROLLERS DEL USUARIO AUTORIZADO(ADMIN) ****************/
 
 //Obtener todos los usuarios con rol usuario de la BDD
 const getAllUsers = async () => {
   try {
     const users = await User.findAll({
-      where:{
-        role: "user"
+      where: {
+        role: "user",
       },
-      include:[{
-        model: Property,
-        attributes: ["id","title","type"],
-      }]
+      include: [
+        {
+          model: Property,
+          attributes: ["id", "title", "type"],
+        },
+      ],
     });
     return users;
   } catch (error) {
@@ -22,13 +24,15 @@ const getAllUsers = async () => {
 const getAllAdmins = async () => {
   try {
     const admins = await User.findAll({
-      where:{
-        role: "admin"
+      where: {
+        role: "admin",
       },
-      include:[{
-        model: Property,
-        attributes: ["id","title","type"],
-      }]
+      include: [
+        {
+          model: Property,
+          attributes: ["id", "title", "type"],
+        },
+      ],
     });
     return admins;
   } catch (error) {
@@ -48,4 +52,23 @@ const deleteUser = async (id) => {
   }
 };
 
-module.exports = { getAllUsers, getAllAdmins, deleteUser };
+const getReviewByPk = async (id) => {
+  try {
+    const review = await Review.findByPk(id);
+    if (!review) {
+      throw new Error("Property not found");
+    }
+
+    review.enabled = !review.enabled;
+    await review.save();
+
+    return {
+      message: "Campo booleano cambiado exitosamente.",
+      newValue: review.enabled,
+    };
+  } catch (error) {
+    throw new Error("Error al cambiar el campo booleano: " + error.message);
+  }
+};
+
+module.exports = { getAllUsers, deleteUser, getReviewByPk, getAllAdmins };

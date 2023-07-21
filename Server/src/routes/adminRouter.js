@@ -4,6 +4,7 @@ const {
   getAllUsersHandler,
   getAllAdminsHandler,
   deleteUserHandler,
+  changeEnableReview,
 } = require("../handlers/adminHandlers");
 
 const adminRouter = Router();
@@ -16,5 +17,7 @@ adminRouter.get("/users", getAllUsersHandler);
 adminRouter.get("/admins", getAllAdminsHandler);
 //Eliminar a un usuario
 adminRouter.delete("/users/:id", deleteUserHandler);
+//Cambia el campo enable
+adminRouter.put("/property/:id/review", changeEnableReview);
 
 module.exports = adminRouter;
