@@ -12,6 +12,7 @@ export const SEARCH_BY_TITLE = "SEARCH_BY_TITLE";
 export const GET_USER = "GET_USER";
 export const LOGIN = "LOGIN";
 export const LOGOUT = "LOGOUT";
+export const UPDATE_USER = "UPDATE_USER";
 
 const urlLocal = `http://localhost:3001`; //URL GENERAL
 const url = `https://pf-grupo12-production.up.railway.app/`; //URL Data-base deploy
@@ -146,3 +147,22 @@ export const getUser = (id) => {
     }
   };
 };
+
+export const updateUser = (id, userData) => {
+  return async function (dispatch) {
+    try {
+      const res = await axios.put(`${urlLocal}/user/update/${id}`, userData);
+      return dispatch({
+        type: UPDATE_USER,
+        payload: res.data,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+
+
+
+
+

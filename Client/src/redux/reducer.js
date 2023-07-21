@@ -129,6 +129,13 @@ const rootReducer = (state = initialState, action) => {
           ...state,
           user: action.payload
         }
+      case "UPDATE_USER":
+        localStorage.setItem("loggedIn", action.payload);
+        return{
+          ...state,
+          user: action.payload
+        }
+
     default:
       return state;
   }
