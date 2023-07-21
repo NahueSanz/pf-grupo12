@@ -1,7 +1,7 @@
-const { getAllUsers, deleteUser } = require("../controllers/adminControllers");
+const { getAllUsers, getAllAdmins, deleteUser } = require("../controllers/adminControllers");
 /************ HANDLERS DEL USUARIO AUTORIZADO(ADMIN) ************/
 
-//Todos los usuarios
+//Todos los usuarios con rol user
 const getAllUsersHandler = async (req, res) => {
   try {
     const users = await getAllUsers();
@@ -9,6 +9,18 @@ const getAllUsersHandler = async (req, res) => {
       throw Error("There are not Users");
     }
     res.status(200).json(users);
+  } catch (error) {
+    res.status(404).json({ error: error.message });
+  }
+};
+//Todos los usuarios con rol admin
+const getAllAdminsHandler = async (req, res) => {
+  try {
+    const admins = await getAllAdmins();
+    if (admins.length === 0) {
+      throw Error("There are not Admins");
+    }
+    res.status(200).json(admins);
   } catch (error) {
     res.status(404).json({ error: error.message });
   }
@@ -29,5 +41,6 @@ const deleteUserHandler = async (req, res) => {
 
 module.exports = {
   getAllUsersHandler,
+  getAllAdminsHandler,
   deleteUserHandler,
 };

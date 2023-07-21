@@ -1,12 +1,14 @@
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { Button } from "react-bootstrap";
 import { countries } from "../../../utils/countries"
 import styles from "./PropertyForm.module.css";
-
+import { newPostProperty } from "../../../redux/actions";
 import { Link, useParams } from "react-router-dom";
 import * as Yup from "yup";
 import axios from "axios";
+
 
 
 const validationSchema = Yup.object().shape({
@@ -27,6 +29,7 @@ const validationSchema = Yup.object().shape({
 });
 
 const PropertyForm = () => {
+  const dispatch = useDispatch();
   const id = localStorage.getItem("loggedIn");
   const [image, setImage] = useState(null);
   const [previewImage, setPreviewImage] = useState(null);
@@ -45,12 +48,8 @@ const PropertyForm = () => {
 
       const imageUrl = response.data.secure_url;
       values.image = imageUrl;
-      console.log(id);
-      // await axios.post(`http://localhost:3001/user/${id}/property`, values);
-      await axios.post(
-        `https://pf-grupo12-production.up.railway.app/user/${id}/property`,
-        values
-      );
+
+      dispatch(newPostProperty(id,values))
 
       console.log(response.data);
       alert("Created property");

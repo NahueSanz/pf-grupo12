@@ -15,7 +15,6 @@ function PerfilUser () {
     const { id } = useParams();
     const dispatch = useDispatch();
     const user = useSelector(state => state.user);
-    console.log(user);
 
     useEffect(() => {
 
