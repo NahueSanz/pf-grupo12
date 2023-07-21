@@ -113,7 +113,7 @@ const AdminTableUsers = () => {
                 <TableCell>{user.id}</TableCell>
 								<TableCell>{user.name===null||user.lastaname===null?null:`${user.name} ${user.lastaname}`}</TableCell>
                 <TableCell>{user.createdAt}</TableCell>
-                <TableCell>{user.favorite.length}</TableCell>
+                <TableCell>{user.Properties.length}</TableCell>
                 <TableCell>
                   <Switch
                     checked={user.enabled}

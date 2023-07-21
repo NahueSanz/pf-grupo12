@@ -1,19 +1,40 @@
+import { 
+  GET_PROPERTIES,
+  GET_PROPERTY_DETAIL,
+  GET_PROPERTIES_BY_NAME,
+  POST_NEW_PROPERTY,
+  APPLY_FILTERS,
+  ORDER_PRICE,
+  FIRST_PAGE,
+  NEXT_PAGE,
+  PREV_PAGE,
+  SEARCH_BY_TITLE,
+  GET_USERS,
+  GET_USER,
+  GET_ADMINS,
+  REGISTER,
+  LOGIN,
+  LOGOUT
+} from "./actionTypes";
+
 const initialState = {
   properties: [],
   propertyDetail: {},
   allProperties: [],
   users: [],
   allUsers:[],
+  admins: [],
+  allAdmins: [],
   page: 1,
   searchTerm: "",
   loggedIn: Boolean(localStorage.getItem("loggedIn")) || false,
   id: '',
-  user: {}
+  user: {},
 };
 
 const rootReducer = (state = initialState, action) => {
   switch (action.type) {
-    case "GET_PROPERTIES":
+    case GET_PROPERTIES:
       return {
         ...state,
         properties: action.payload,
@@ -21,34 +42,53 @@ const rootReducer = (state = initialState, action) => {
         searchTerm: "",
       };
 
-    case "GET_PROPERTY_DETAIL":
+    case GET_PROPERTY_DETAIL:
       return {
         ...state,
         propertyDetail: action.payload,
       };
 
-    case "GET_PROPERTIES_BY_NAME":
+    case GET_PROPERTIES_BY_NAME:
       return {
         ...state,
         searchTerm: action.searchName,
         properties: action.payload,
       };
+    case POST_NEW_PROPERTY:
+      return{
+        ...state
+      }
+    case SEARCH_BY_TITLE:
+      return {
+        ...state,
+        searchTerm: action.searchName,
+        properties: action.payload,
+      }; 
 
-    case "GET_USERS":
+    case GET_USERS:
       return {
         ...state,
         users: action.payload,
         allUsers: action.payload
-      }
-
-    case "SEARCH_BY_TITLE":
-      return {
-        ...state,
-        searchTerm: action.searchName,
-        properties: action.payload,
       };
 
-    case "APPLY_FILTERS":
+    case GET_USER:
+      return{
+        ...state,
+        user: action.payload
+      };
+
+    case GET_ADMINS:
+      const filteredAdmins = action.payload.filter((admin)=>{
+        admin.id!==localStorage.getItem("loggedIn");
+      })
+      return{
+        ...state,
+        admins: filteredAdmins,
+        allAdmins: action.payload,
+      }
+
+    case APPLY_FILTERS:
       var filteringProperties = [...state.properties];
       // Aplicar el filtro filterByPriceMin
       if (action.payload.filterByPriceMin !== "") {
@@ -84,7 +124,7 @@ const rootReducer = (state = initialState, action) => {
         page: 1,
       };
 
-    case "ORDER_PRICE":
+    case ORDER_PRICE:
       if (action.payload === "All") {
         return {
           ...state,
@@ -102,42 +142,46 @@ const rootReducer = (state = initialState, action) => {
           ...state,
           properties: orderPrice, // Mostrar los datos ordenados
         };
-      }
+      };
 
-    case "FIRST_PAGE":
+    case FIRST_PAGE:
       return {
         ...state,
         page: 1,
       };
-    case "PREV_PAGE":
+
+    case NEXT_PAGE:
+      return {
+        ...state,
+        page: state.page + action.payload,
+      }; 
+
+    case PREV_PAGE:
       return {
         ...state,
         page: state.page - action.payload,
       };
-    case "NEXT_PAGE":
+    
+    case REGISTER:
       return {
-        ...state,
-        page: state.page + action.payload,
+        ...state
       };
 
-    case "LOGIN":
+    case LOGIN:
         localStorage.setItem("loggedIn", action.payload);
         return {
           ...state,
           loggedIn: action.payload,
           id: action.payload
         };
-    case "LOGOUT":
+
+    case LOGOUT:
       localStorage.setItem("loggedIn", "");
       return {
         ...state,
         loggedIn: false,
       };
-      case 'GET_USER':
-        return{
-          ...state,
-          user: action.payload
-        }
+      
     default:
       return state;
   }

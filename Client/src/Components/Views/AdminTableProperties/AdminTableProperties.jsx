@@ -31,7 +31,7 @@ const AdminTableProperties = () => {
   };
   //Busqueda de propiedad mediante dueño
   const filteredData = data.filter((prop) =>
-    prop.UserId.toLowerCase().includes(searchText.toLowerCase())
+    prop.title.toLowerCase().includes(searchText.toLowerCase())
   );
 
   return (
@@ -71,7 +71,7 @@ const AdminTableProperties = () => {
                 <TableCell>{prop.id}</TableCell>
                 <TableCell>{prop.title}</TableCell>
                 <TableCell>{prop.createdAt}</TableCell>
-                <TableCell>{prop.UserId}</TableCell>
+                <TableCell>{prop.User.name || prop.User.lastname?`${prop.User.name} ${prop.User.lastname}`:null}</TableCell>
                 <TableCell>
                   <Switch
                     checked={prop.enabled}
