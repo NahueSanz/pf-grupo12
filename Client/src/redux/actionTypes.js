@@ -14,3 +14,4 @@ export const PREV_PAGE = "PREV_PAGE";
 export const REGISTER = "REGISTER";
 export const LOGIN = "LOGIN";
 export const LOGOUT = "LOGOUT";
+export const UPDATE_USER = "UPDATE_USER";

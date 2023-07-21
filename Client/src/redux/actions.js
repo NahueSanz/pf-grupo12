@@ -15,7 +15,8 @@ import {
   GET_ADMINS,
   REGISTER,
   LOGIN,
-  LOGOUT
+  LOGOUT,
+  UPDATE_USER
 } from "./actionTypes";
 
 
@@ -210,3 +211,23 @@ export const login = (id) => ({
 export const logout = () => ({
   type: LOGOUT,
 });
+
+
+export const updateUser = (id, userData) => {
+  return async function (dispatch) {
+    try {
+      const res = await axios.put(`${urlLocal}/user/update/${id}`, userData);
+      return dispatch({
+        type: UPDATE_USER,
+        payload: res.data,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+
+
+
+
+

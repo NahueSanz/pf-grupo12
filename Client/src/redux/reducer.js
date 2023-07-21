@@ -14,7 +14,8 @@ import {
   GET_ADMINS,
   REGISTER,
   LOGIN,
-  LOGOUT
+  LOGOUT,
+  UPDATE_USER
 } from "./actionTypes";
 
 const initialState = {
@@ -181,7 +182,14 @@ const rootReducer = (state = initialState, action) => {
         ...state,
         loggedIn: false,
       };
-      
+  
+      case UPDATE_USER:
+        localStorage.setItem("loggedIn", action.payload);
+        return{
+          ...state,
+          user: action.payload
+        }
+
     default:
       return state;
   }
