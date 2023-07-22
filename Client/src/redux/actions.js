@@ -189,13 +189,16 @@ export function nextPage(quantity) {
 }
 
 export function register(userData) {
+  console.log("holi", userData)
   return async function (dispatch) {
     try {
       const res = await axios.post(`${urlLocal}/public/register`,userData);
       //const res = await axios.post(`${url}/public/register`,userData);
+     
       return dispatch({
         type: REGISTER,
         payload: res.data,
+       
       });
     } catch (error) {
       console.log(error.message);
