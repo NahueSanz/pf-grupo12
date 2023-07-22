@@ -4,6 +4,8 @@ const {
   getAllUserProperties,
   getUserPropertyById,
   deleteUserProperty,
+  getReview,
+  createUserReview,
 } = require("../controllers/userControllers");
 /************** HANDLERS DEL USUARIO AUTENTICADO ****************/
 
@@ -208,6 +210,36 @@ const deletePropertyUserHandler = async (req, res) => {
   }
 };
 
+const getPropertyReview = async (req, res) => {
+  const  idCasa  = req.params.id;
+  try {
+    const review = await getReview(idCasa);
+
+    if (review.length === 0) {
+      throw new Error("Reviews not found");
+    }
+    res.status(200).json(review);
+  } catch (error) {
+    res.status(404).json({ error: error.message });
+  }
+};
+
+const createPropertyReview = async (req, res) => {
+  const  idCasa  = req.params.id;
+  const { review, score, user } = req.body;
+  try {
+    if ((!review, !score, !user)) {
+      throw Error("All fields are not complete");
+    }
+    const newReview = await createUserReview(review, score, user, idCasa);
+    if (!newReview) {
+      throw Error("Review is not created");
+    }
+    res.status(200).json(newReview);
+  } catch (error) {
+    res.status(404).json({ error: error.message });
+  }
+};
 module.exports = {
   getUserByIdHandler,
   updateUserHandler,
@@ -216,4 +248,6 @@ module.exports = {
   getPropertyUserByIdHandler,
   updatePropertyUserHandler,
   deletePropertyUserHandler,
+  getPropertyReview,
+  createPropertyReview,
 };
