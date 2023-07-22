@@ -1,36 +1,39 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
 import style from "./PanelRegistrarse.module.css";
 import Alert from "react-bootstrap/Alert";
-import { register } from "../../../redux/actions";
+import axios from "axios";
+
+
 import {
   getAuth,
   createUserWithEmailAndPassword,
   sendEmailVerification,
 } from "firebase/auth";
 
-
 function PanelRegistrarse() {
-  const dispatch = useDispatch();
   const redVariant = "danger";
-  //muestra o no en pantalla el form de registro
+  // muestra o no en pantalla el form de registro
   const [show, setShow] = useState(false);
-  //muestra o no la contraseña
+  // muestra o no la contraseña
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
+    name: "",
+    lastname: "",
     email: "",
     password: "",
   });
-  //errores de BDD o validaciones, se esta usando de firebase
+  // errores de BDD o validaciones, se está usando de firebase
   const [error, setError] = useState(null);
 
   const handleClose = () => {
     setShow(false);
     setError(null);
     setFormData({
+      name: "",
+      lastname: "",
       email: "",
       password: "",
     });
@@ -40,20 +43,20 @@ function PanelRegistrarse() {
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
-  //Al presionar el boton save changes vrea el usuario en firebase y BDD
+  // Al presionar el botón save changes crea el usuario en firebase y BDD
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      //trae los datos del usuario de firebase
+      // trae los datos del usuario de firebase
       const auth = getAuth();
-      //crea el usuario en firebase con email y contraseña
+      // crea el usuario en firebase con email y contraseña
       const userCredential = await createUserWithEmailAndPassword(
         auth,
         formData.email,
         formData.password
       );
-      //Manda al correo un email con el registro del usuario
+      // Manda al correo un email con el registro del usuario
       const sendVerificationEmail = async () => {
         const auth = getAuth(); // Obtener instancia de autenticación de Firebase
         await sendEmailVerification(auth.currentUser);
@@ -61,14 +64,23 @@ function PanelRegistrarse() {
       sendVerificationEmail().catch((error) => console.log(error));
 
       const userData = {
+        name: formData.name,
+        lastname: formData.lastname,
         email: formData.email,
         id: userCredential.user.uid,
       };
-      //Crea un usuario en la BDD con el email y id proporcionado por Firebase
-      dispatch(register(userData))
+      // Crea un usuario en la BDD con los datos proporcionados
+      await axios
+        .post("http://localhost:3001/public/register", userData)
+        //.post("https://pf-grupo12-production.up.railway.app/public/register", userData)
+
+        .then((response) => console.log("Response register: ", response.data))
+        .catch((error) => console.log("Error Register: ", error));
 
       setShow(false);
       setFormData({
+        name: "",
+        lastname: "",
         email: "",
         password: "",
       });
@@ -103,6 +115,28 @@ function PanelRegistrarse() {
         </Modal.Header>
         <Modal.Body className={style.body}>
           <Form onSubmit={handleSubmit}>
+            <Form.Group className="mb-3" controlId="formBasicName">
+              <Form.Label>Name</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Enter name"
+                name="name"
+                onChange={handleChange}
+                value={formData.name}
+              />
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="formBasicLastname">
+              <Form.Label>Lastname</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Enter lastname"
+                name="lastname"
+                onChange={handleChange}
+                value={formData.lastname}
+              />
+            </Form.Group>
+            
+            
             <Form.Group className="mb-3" controlId="formBasicEmail">
               <Form.Label>Email</Form.Label>
               <Form.Control
@@ -114,7 +148,6 @@ function PanelRegistrarse() {
               />
               <Form.Text className="text-muted"></Form.Text>
             </Form.Group>
-
             <Form.Group className="mb-4" controlId="formBasicPassword">
               <Form.Label>Password</Form.Label>
               <Form.Control
@@ -132,7 +165,6 @@ function PanelRegistrarse() {
               />
             </Form.Group>
             {error && <Alert variant={redVariant}>{error}</Alert>}
-
             <Button type="submit" variant="danger">
               Save Changes
             </Button>

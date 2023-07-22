@@ -28,6 +28,7 @@ const AboutUs = () => {
          <Row>
           <Col className='col-12 mt-2'>
             <h3 className='text-danger text-start text-uppercase text-decoration-underline'>Why Us?</h3>
+            <iframe width="400" height="260" src="https://www.youtube.com/embed/kYorkpYEme8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
           </Col>
           <AboutUsItem img={Secure} title={'Secure'} text={'We collaborate with verified and trustworthy hosts who have undergone rigorous selection processes'}/>
           <AboutUsItem img={Comfortable} title={'Comfortable'} text={'We offer a carefully chosen accommodations for your perfect stay. Wide selection to meet your needs.'}/>
