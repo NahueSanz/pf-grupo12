@@ -6,6 +6,9 @@ const {
   deleteUserProperty,
   getReview,
   createUserReview,
+  getUserFavById,
+  setUserFavorites,
+  removeUserFav,
 } = require("../controllers/userControllers");
 /************** HANDLERS DEL USUARIO AUTENTICADO ****************/
 
@@ -211,7 +214,7 @@ const deletePropertyUserHandler = async (req, res) => {
 };
 
 const getPropertyReview = async (req, res) => {
-  const  idCasa  = req.params.id;
+  const idCasa = req.params.id;
   try {
     const review = await getReview(idCasa);
 
@@ -225,7 +228,7 @@ const getPropertyReview = async (req, res) => {
 };
 
 const createPropertyReview = async (req, res) => {
-  const  idCasa  = req.params.id;
+  const idCasa = req.params.id;
   const { review, score, user } = req.body;
   try {
     if ((!review, !score, !user)) {
@@ -240,6 +243,43 @@ const createPropertyReview = async (req, res) => {
     res.status(404).json({ error: error.message });
   }
 };
+const getUserFavs = async (req, res) => {
+  const { userId } = req.params;
+  try {
+    const userFav = await getUserFavById(userId);
+    if (!userFav) {
+      throw Error("User not found");
+    }
+    res.status(200).json(userFav);
+  } catch (error) {
+    res.status(404).json({ error: error.message });
+  }
+};
+
+const setUserFavs = async (req, res) => {
+  const userId = req.params.userId;
+  const houseId = req.body.houseId;
+
+  try {
+    const message = await setUserFavorites(userId, houseId);
+    res.status(200).json({ message });
+  } catch (error) {
+    res.status(404).json({ error: error.message });
+  }
+};
+const deleteUserFav = async (req, res) => {
+  const userId = req.params.userId;
+  const houseId = req.params.houseId;
+
+  try {
+    const message = await removeUserFav(userId, houseId);
+
+    res.status(200).json({ message });
+  } catch (error) {
+    res.status(404).json({ error: error.message });
+  }
+};
+
 module.exports = {
   getUserByIdHandler,
   updateUserHandler,
@@ -250,4 +290,7 @@ module.exports = {
   deletePropertyUserHandler,
   getPropertyReview,
   createPropertyReview,
+  getUserFavs,
+  setUserFavs,
+  deleteUserFav,
 };

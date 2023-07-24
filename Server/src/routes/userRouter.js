@@ -9,6 +9,9 @@ const {
   deletePropertyUserHandler,
   getPropertyReview,
   createPropertyReview,
+  getUserFavs,
+  setUserFavs,
+  deleteUserFav,
 } = require("../handlers/userHanders");
 
 const userRouter = Router();
@@ -33,5 +36,11 @@ userRouter.delete("/property/:id", deletePropertyUserHandler);
 userRouter.get("/property/:id/review", getPropertyReview);
 //Crear una nueva review
 userRouter.post("/property/:id/review", createPropertyReview);
+//Obtener los favoritos
+userRouter.get("/property/:userId/fav", getUserFavs);
+//Guardar en favoritos
+userRouter.post("/property/:userId/fav", setUserFavs);
+//Eliminar de favoritos
+userRouter.delete("/property/:userId/fav/:houseId", deleteUserFav);
 
 module.exports = userRouter;
