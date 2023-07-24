@@ -16,7 +16,9 @@ import {
   REGISTER,
   LOGIN,
   LOGOUT,
-  UPDATE_USER
+  UPDATE_USER,
+  REVIEWS_PROPERTY,
+  GET_REVIEWS_PROPERTY
 } from "./actionTypes";
 
 
@@ -230,7 +232,35 @@ export const updateUser = (id, userData) => {
   };
 };
 
+export const postReviewsProperty = (idCasa, values)=>{
+  return async function (dispatch){
+        try {
+          const res = await axios.post(`${urlLocal}/user/property/${idCasa}/review`, values); 
 
+          return dispatch({
+            type: REVIEWS_PROPERTY,
+            payload: res.data,
+          });
+        } catch (error) {
+          console.log(error);
+        }
+      };
+    }
+
+export const getReviewsProperty = (idCasa) =>{
+  return async function (dispatch) {
+    try {
+      const res = await axios.get(`${urlLocal}/user/property/${idCasa}/review`);
+      return dispatch({
+        type: GET_REVIEWS_PROPERTY,
+        payload: res.data.Reviews,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+}
 
 
 

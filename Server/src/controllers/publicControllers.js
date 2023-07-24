@@ -39,15 +39,13 @@ const createUser = async (email,id, name, lastname) => {
 const getAllProperties = async () => {
   try {
     const properties = await Property.findAll({
-      include:[
+      include: [
         {
           model: User,
-          attributes: [
-            "name",
-            "lastname"
-          ],
+          attributes: ["name", "lastname"],
         },
       ],
+
     });
 
     return properties;
