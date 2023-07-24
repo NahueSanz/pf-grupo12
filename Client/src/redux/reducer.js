@@ -18,6 +18,8 @@ import {
   LOGIN,
   LOGOUT,
   UPDATE_USER,
+  REVIEWS_PROPERTY,
+  GET_REVIEWS_PROPERTY
 } from "./actionTypes";
 
 const initialState = {
@@ -28,6 +30,8 @@ const initialState = {
   allUsers:[],
   admins: [],
   allAdmins: [],
+  review: [],
+  allReview: [],
   page: 1,
   searchTerm: "",
   loggedIn: Boolean(localStorage.getItem("loggedIn")) || false,
@@ -201,6 +205,27 @@ const rootReducer = (state = initialState, action) => {
         ...state,
         loggedIn: false,
       };
+  
+      case UPDATE_USER:
+        localStorage.setItem("loggedIn", action.payload);
+        return{
+          ...state,
+          user: action.payload
+        };
+    
+      case REVIEWS_PROPERTY:
+        return{
+          ...state
+        }
+      
+      case GET_REVIEWS_PROPERTY:
+        return {
+          ...state,
+          review: action.payload,
+          allReview: action.payload
+        };
+
+
 
     default:
       return state;

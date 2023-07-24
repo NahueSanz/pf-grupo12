@@ -1,24 +1,27 @@
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import StarRatings from 'react-star-ratings';
 import Form from 'react-bootstrap/Form';
 import { getAuth } from "firebase/auth";
+import { postReviewsProperty } from "../../../redux/actions";
 
-function ReviewsPanel() {
+function ReviewsPanel({idCasa}) {
   const [show, setShow] = useState(false);
-  const [rating, setRating] = useState(0);
-  const [review, setReview] = useState('');
+  const [score, setScore] = useState(0);
   const [formData, setFormData] = useState({
-    comentario: '',
+    review: '',
   });
+
+  const dispatch = useDispatch();
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  const handleRatingChange = (newRating) => {
-    setRating(newRating);
-    console.log(newRating);
+  const handleScoreChange = (newScore) => {
+    setScore(newScore);
+    console.log(newScore);
   };
 
   const handleSubmit = (event) => {
@@ -28,9 +31,20 @@ function ReviewsPanel() {
     const currentUser = auth.currentUser;
     const uid = currentUser.uid;
 
-    console.log("Este es el rating:", rating);
-    console.log("Este es el UID del usuario:", uid);
-    console.log("Estos son los datos del formulario:", formData);
+    // Agregar el rating al objeto formData antes de enviarlo
+    const dataToSend = {
+      ...formData,
+      score: score,
+      user: uid,
+    };
+
+    console.log("Datos a enviar al backend:", dataToSend);
+
+    // Llamar a la acción para enviar la reseña al backend
+    dispatch(postReviewsProperty(idCasa, dataToSend));
+
+    // Cerrar el modal después de enviar la reseña
+    handleClose();
   };
 
   const handleChange = (e) => {
@@ -53,10 +67,10 @@ function ReviewsPanel() {
         </Modal.Header>
         <Modal.Body>
           <StarRatings
-            rating={rating}
+            rating={score}
             starRatedColor="#FFC107"
             starHoverColor="#FFC107"
-            changeRating={handleRatingChange}
+            changeRating={handleScoreChange}
             numberOfStars={5}
             starDimension="40px"
             starSpacing="6px"
@@ -66,9 +80,9 @@ function ReviewsPanel() {
               <Form.Label>Deja tu opinión acerca de esta propiedad</Form.Label>
               <Form.Control
                 as="textarea"
-                name="comentario"
+                name="review"
                 rows={3}
-                value={formData.comentario}
+                value={formData.review}
                 onChange={handleChange}
               />
               <Button type="submit">Publicar</Button>

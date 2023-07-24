@@ -1,3 +1,28 @@
 .body button{
-  margin-left: 35%;
+  width: 150px;
+  margin-top: 20px;
+}
+.tittle{
+  margin-left: 38%;
+}
+.form{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+}
+.register{
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 90%;
+  
+}
+.register .desc{
+  color: rgb(122, 122, 122);
+}
+.formGroup{
+  width: 300px;
+  margin: 20px;
 }

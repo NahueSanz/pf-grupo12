@@ -51,7 +51,9 @@ function PanelRegistrarse() {
       const userCredential = await createUserWithEmailAndPassword(
         auth,
         formData.email,
-        formData.password
+        formData.password,
+        formData.name,
+        formData.lastname
       );
       //Manda al correo un email con el registro del usuario
       const sendVerificationEmail = async () => {
@@ -62,6 +64,8 @@ function PanelRegistrarse() {
 
       const userData = {
         email: formData.email,
+        name: formData.name,
+        lastname: formData.lastname,
         id: userCredential.user.uid,
       };
       //Crea un usuario en la BDD con el email y id proporcionado por Firebase
@@ -71,6 +75,8 @@ function PanelRegistrarse() {
       setFormData({
         email: "",
         password: "",
+        name: "",
+        lastname: ""
       });
       setError(null);
 
@@ -97,14 +103,46 @@ function PanelRegistrarse() {
         Sign up
       </a>
 
-      <Modal show={show} onHide={handleClose}>
+      <Modal show={show} onHide={handleClose} >
         <Modal.Header closeButton>
-          <Modal.Title>Sign Up</Modal.Title>
+        <Modal.Title  className={style.tittle}>Welcome</Modal.Title>
+          
         </Modal.Header>
         <Modal.Body className={style.body}>
-          <Form onSubmit={handleSubmit}>
-            <Form.Group className="mb-3" controlId="formBasicEmail">
-              <Form.Label>Email</Form.Label>
+          <Form onSubmit={handleSubmit} className={style.form} >
+          
+
+            <div className={style.register}>
+               <Form.Label className={style.desc}>Please enter your personal info</Form.Label>
+            <Form.Group className={`mb-3 ${style.formGroup}`} controlId="formBasicEmail">
+              {/* <Form.Label>Name</Form.Label> */}
+              <Form.Control
+                type="text"
+                placeholder="Name"
+                name="name"
+                onChange={handleChange}
+                value={formData.name}
+              />
+              <Form.Text className="text-muted"></Form.Text>
+            </Form.Group>
+
+
+            <Form.Group className={`mb-3 ${style.formGroup}`} controlId="formBasicEmail">
+              {/* <Form.Label>Last Name</Form.Label> */}
+              <Form.Control
+                type="text"
+                placeholder="Last name"
+                name="lastname"
+                onChange={handleChange}
+                value={formData.lastname}
+              />
+              <Form.Text className="text-muted"></Form.Text>
+            </Form.Group>
+
+
+
+            <Form.Group className={`mb-3 ${style.formGroup}`} controlId="formBasicEmail">
+              {/* <Form.Label>Email</Form.Label> */}
               <Form.Control
                 type="email"
                 placeholder="Enter email"
@@ -115,8 +153,8 @@ function PanelRegistrarse() {
               <Form.Text className="text-muted"></Form.Text>
             </Form.Group>
 
-            <Form.Group className="mb-4" controlId="formBasicPassword">
-              <Form.Label>Password</Form.Label>
+            <Form.Group className={`mb-4 ${style.formGroup}`} controlId="formBasicPassword">
+              {/* <Form.Label>Password</Form.Label> */}
               <Form.Control
                 type={showPassword ? "text" : "password"}
                 placeholder="Password"
@@ -133,8 +171,12 @@ function PanelRegistrarse() {
             </Form.Group>
             {error && <Alert variant={redVariant}>{error}</Alert>}
 
+
+            </div>
+
+         
             <Button type="submit" variant="danger">
-              Save Changes
+              Sign Up
             </Button>
           </Form>
         </Modal.Body>

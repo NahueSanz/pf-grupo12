@@ -64,12 +64,7 @@ function LoginPanel() {
         formData.email,
         formData.password
       );
-      if(user){
-        console.log(user.uid);
-        dispatch(getUser(user.uid));
-      }if (!userDB.enabled) {
-        throw Error("usuario bloqueado");
-      }
+
 
       setFormData({
         email: "",
@@ -86,27 +81,37 @@ function LoginPanel() {
   const loginGoogle = async () => {
     //Crea el usuario en Firebase al registrarse con google
     await signInWithPopup(auth, gProvider)
-      .then(async (result) => {
+      .then( (result) => {
         // Obtener credenciales del usuario creado
         const id = result.user.uid;
         const email = result.user.email;
+        const nameUser = result.user.displayName;
+        const nameArray = nameUser.split(' ');
+
+        // Ahora, vamos a guardar los nombres en dos variables distintas
+        const name = nameArray[0]; // El primer elemento del array será el primer nombre
+        const lastname = nameArray.slice(1).join(' '); //desde el segundo elemnto en adelante
+
+  
         //Tratar de que no mande un correo si ya estas registrado: pensado una ruta para realizar condiciones
         //manda un email si te registras con google
         const sendVerificationEmail = async () => {
           const auth = getAuth();
           await sendEmailVerification(auth.currentUser);
         };
+
         sendVerificationEmail().catch((error) => console.log(error));
 
         const userData = {
           email,
           id,
+          name,
+          lastname
         };
-        dispatch(getUser(id));
-        if (!userDB) {
-          //Crea el usuario en la BDD
-          dispatch(register(userData));
-        }
+        console.log(userData)
+        //Tratar de no crear un usuario si ya estas registrado
+        //Crea el usuario en la BDD
+        dispatch(register(userData));
 
         // Crear un objeto credential con las credenciales del usuario
         const credential = GoogleAuthProvider.credentialFromResult(result);

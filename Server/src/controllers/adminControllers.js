@@ -1,17 +1,19 @@
-const { User, Property } = require("../db");
+const { User, Property, Review } = require("../db");
 /**************** CONTROLLERS DEL USUARIO AUTORIZADO(ADMIN) ****************/
 
 //Obtener todos los usuarios con rol usuario de la BDD
 const getAllUsers = async () => {
   try {
     const users = await User.findAll({
-      where:{
-        role: "user"
+      where: {
+        role: "user",
       },
-      include:[{
-        model: Property,
-        attributes: ["id","title","type"],
-      }]
+      include: [
+        {
+          model: Property,
+          attributes: ["id", "title", "type"],
+        },
+      ],
     });
     return users;
   } catch (error) {
@@ -22,13 +24,15 @@ const getAllUsers = async () => {
 const getAllAdmins = async () => {
   try {
     const admins = await User.findAll({
-      where:{
-        role: "admin"
+      where: {
+        role: "admin",
       },
-      include:[{
-        model: Property,
-        attributes: ["id","title","type"],
-      }]
+      include: [
+        {
+          model: Property,
+          attributes: ["id", "title", "type"],
+        },
+      ],
     });
     return admins;
   } catch (error) {
@@ -45,12 +49,13 @@ const enabledUser = async (id,enabled) => {
     }
     await user.update({enabled: enabled});
     await user.save();
-    if (enabled) {
-      return "User enabled"
+    if (!enabled) {
+      throw new Error("User disabled");
     }
-    return "User disabled";
+    return {message:"User enabled", enabled:enabled};
+    
   } catch (error) {
-    throw new Error("Error while updating enabled user");
+    throw new Error(error.message);
   }
 };
 //Cambiar si una propiedad esta habilitada o no
@@ -71,4 +76,23 @@ const enabledProperty = async (id,enabled) => {
   }
 };
 
-module.exports = { getAllUsers, getAllAdmins, enabledUser, enabledProperty  };
+const getReviewByPk = async (id) => {
+  try {
+    const review = await Review.findByPk(id);
+    if (!review) {
+      throw new Error("Property not found");
+    }
+
+    review.enabled = !review.enabled;
+    await review.save();
+
+    return {
+      message: "Campo booleano cambiado exitosamente.",
+      newValue: review.enabled,
+    };
+  } catch (error) {
+    throw new Error("Error al cambiar el campo booleano: " + error.message);
+  }
+};
+
+module.exports = { getAllUsers, getReviewByPk, getAllAdmins, enabledUser, enabledProperty };
