@@ -19,7 +19,6 @@ import {
   REGISTER,
   LOGIN,
   LOGOUT,
-  UPDATE_USER,
   REVIEWS_PROPERTY,
   GET_REVIEWS_PROPERTY
 } from "./actionTypes";
@@ -236,7 +235,6 @@ export function nextPage(quantity) {
 }
 
 export function register(userData) {
-  console.log("holi", userData)
   return async function (dispatch) {
     try {
       const res = await axios.post(`${urlLocal}/public/register`,userData);
@@ -261,21 +259,6 @@ export const login = (id) => ({
 export const logout = () => ({
   type: LOGOUT,
 });
-
-
-export const updateUser = (id, userData) => {
-  return async function (dispatch) {
-    try {
-      const res = await axios.put(`${urlLocal}/user/update/${id}`, userData);
-      return dispatch({
-        type: UPDATE_USER,
-        payload: res.data,
-      });
-    } catch (error) {
-      console.log(error);
-    }
-  };
-};
 
 export const postReviewsProperty = (idCasa, values)=>{
   return async function (dispatch){

@@ -61,10 +61,12 @@ const rootReducer = (state = initialState, action) => {
         searchTerm: action.searchName,
         properties: action.payload,
       };
+
     case POST_NEW_PROPERTY:
       return{
         ...state
       }
+
     case SEARCH_BY_TITLE:
       return {
         ...state,
@@ -87,11 +89,10 @@ const rootReducer = (state = initialState, action) => {
     case GET_USER:
       return{
         ...state,
-        user: action.payload
+        user: action.payload,
       };
     
     case UPDATE_USER:
-      //localStorage.setItem("loggedIn", action.payload);
       return{
         ...state,
         user: action.payload
@@ -204,6 +205,7 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         loggedIn: false,
+        enabledUser: true
       };
   
       case UPDATE_USER:

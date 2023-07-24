@@ -64,6 +64,9 @@ function LoginPanel() {
         formData.email,
         formData.password
       );
+      if (user) {
+        dispatch(getUser(user.uid));
+      }
 
 
       setFormData({
@@ -108,7 +111,7 @@ function LoginPanel() {
           name,
           lastname
         };
-        console.log(userData)
+        dispatch(getUser(id));
         //Tratar de no crear un usuario si ya estas registrado
         //Crea el usuario en la BDD
         dispatch(register(userData));
