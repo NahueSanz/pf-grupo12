@@ -22,12 +22,12 @@ const getPropertiesbyTitle = async (title) => {
 };
 
 //Crear un nuevo usuario en la BDD
-const createUser = async (email,id) => {
+const createUser = async (email,id, name, lastname) => {
   const [newUser, created] = await User.findOrCreate({
     //busca por estos datos al usuario
-    where: { email, id },
+    where: { email, id, name, lastname},
     //sino lo encuentra lo crea con los valores del defaults
-    defaults: { email, id },
+    defaults: { email, id, name, lastname},
   });
   if (!created) {
     throw new Error("User already exists");
@@ -39,15 +39,13 @@ const createUser = async (email,id) => {
 const getAllProperties = async () => {
   try {
     const properties = await Property.findAll({
-      include:[
+      include: [
         {
           model: User,
-          attributes: [
-            "name",
-            "lastname"
-          ],
+          attributes: ["name", "lastname"],
         },
       ],
+
     });
 
     return properties;

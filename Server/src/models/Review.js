@@ -20,7 +20,7 @@ module.exports = (sequelize) => {
       },
       user: {
         type: DataTypes.STRING,
-        unique: true,
+        // unique: true,
       },
       review: {
         type: DataTypes.STRING,

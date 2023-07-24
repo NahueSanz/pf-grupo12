@@ -13,18 +13,36 @@ import FavoritesAddNotification from '../../Inc/ModalPropertypage/ModalProperty'
 import locationIcon from '../../../assets/locationIcon.svg';
 import profilePicGuess from '../../../images/guessProfilePic.webp';
 import languageIcon from '../../../assets/languageIcon.svg';
+import ReviewsPanel from '../../Inc/ReviewsPanel/ReviewsPanel'
+import PanelComentarios from '../../Inc/PanelComentarios/PanelComentarios'
 import style from './PropertyPage.module.css'
 import { Link } from "react-router-dom";
+
+function calcularPromedio(arr) {
+  if (arr.length === 0) return 0;
+  
+  const suma = arr.reduce((acumulador, valorActual) => acumulador + valorActual, 0);
+  const promedio = suma / arr.length;
+  return promedio;
+}
+
 
 function DetailPropertyPage() {
   const { id } = useParams();
   const dispatch = useDispatch();
   const property = useSelector((state) => state.propertyDetail);
+  const reviews = useSelector((state) => state.review);
+  const arrScore= reviews.map(el=>el.score)
+
+
+  const promedio= calcularPromedio(arrScore);
+ 
 
   const owner = property.User?.name;
   const ownerImage = property.User?.image || profilePicGuess;
   const ownerLanguage = property.User?.language;
   const ownerDescription = property.User?.description;
+
 
   useEffect(() => {
     async function getPropertyData(id) {
@@ -51,7 +69,7 @@ function DetailPropertyPage() {
                 <p className='d-inline-flex align-items-center'>
                   <small className='fw-normal'>{property.guests} guests │ </small>
                   <img className='d-inline' style={{ height: "22px" }} src={starIcon} alt="Star icon"/>
-                  <span className="ms-1">4,97</span>
+                  <span className="ms-1">{promedio}</span>
                 </p>
               </div>
             </Col>
@@ -116,6 +134,8 @@ function DetailPropertyPage() {
               <Button className='btn-danger btn-sm my-2 mx-2' as={Link} to="/payment">Reserve</Button>
             </Col>
           </Row>
+          <ReviewsPanel idCasa={id}/>
+          <PanelComentarios idCasa={id}/>
         </Container>
       );
 }

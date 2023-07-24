@@ -51,7 +51,7 @@ const PropertyForm = () => {
 
       dispatch(newPostProperty(id,values))
 
-      console.log(response.data);
+
       alert("Created property");
       localStorage.setItem("Form", "{}");
       resetForm();

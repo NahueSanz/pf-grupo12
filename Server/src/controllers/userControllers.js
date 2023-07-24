@@ -62,9 +62,11 @@ const createUserProperty = async (
   });
   return newProperty;
 };
+
+
 const createUserReview = async (review, score, user, idCasa) => {
  const existingReview = await Review.findOne({
-    where: { user: user, PropertyId: idCasa },
+    where: { UserId: user, PropertyId: idCasa },
   });
   console.log(existingReview, idCasa);
   if (existingReview) {
@@ -73,11 +75,15 @@ const createUserReview = async (review, score, user, idCasa) => {
   const newReview = await Review.create({
     review,
     score,
-    user,
+    UserId: user,
     PropertyId: idCasa,
   });
   return newReview;
 };
+
+
+
+
 //Se obtendra la propiedad de un usuario por su ID de la propiedad
 const getUserPropertyById = async (id) => {
   try {
@@ -117,7 +123,13 @@ const getReview = async (id) => {
       include: [
         {
           model: Review,
-          attributes: ["review", "score", "user"],
+          attributes: ["review", "score"],
+          include: [
+            {
+              model: User,
+              attributes: ["name", "lastname"],
+            }
+          ]
         },
       ],
     });

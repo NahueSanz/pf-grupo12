@@ -15,3 +15,5 @@ export const REGISTER = "REGISTER";
 export const LOGIN = "LOGIN";
 export const LOGOUT = "LOGOUT";
 export const UPDATE_USER = "UPDATE_USER";
+export const REVIEWS_PROPERTY= "REVIEWS_PROPERTY";
+export const GET_REVIEWS_PROPERTY= "GET_REVIEWS_PROPERTY";
