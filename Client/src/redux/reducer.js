@@ -3,6 +3,7 @@ import {
   GET_PROPERTY_DETAIL,
   GET_PROPERTIES_BY_NAME,
   POST_NEW_PROPERTY,
+  ENABLED_PROPERTY,
   APPLY_FILTERS,
   ORDER_PRICE,
   FIRST_PAGE,
@@ -11,11 +12,12 @@ import {
   SEARCH_BY_TITLE,
   GET_USERS,
   GET_USER,
+  ENABLED_USER,
   GET_ADMINS,
   REGISTER,
   LOGIN,
   LOGOUT,
-  UPDATE_USER
+  UPDATE_USER,
 } from "./actionTypes";
 
 const initialState = {
@@ -66,6 +68,11 @@ const rootReducer = (state = initialState, action) => {
         properties: action.payload,
       }; 
 
+    case ENABLED_PROPERTY:
+      return{
+        ...state,
+      }
+
     case GET_USERS:
       return {
         ...state,
@@ -78,6 +85,18 @@ const rootReducer = (state = initialState, action) => {
         ...state,
         user: action.payload
       };
+    
+    case UPDATE_USER:
+      //localStorage.setItem("loggedIn", action.payload);
+      return{
+        ...state,
+        user: action.payload
+      }
+
+    case ENABLED_USER:
+      return{
+        ...state,
+      }
 
     case GET_ADMINS:
       const filteredAdmins = action.payload.filter((admin)=>{
@@ -182,13 +201,6 @@ const rootReducer = (state = initialState, action) => {
         ...state,
         loggedIn: false,
       };
-  
-      case UPDATE_USER:
-        localStorage.setItem("loggedIn", action.payload);
-        return{
-          ...state,
-          user: action.payload
-        }
 
     default:
       return state;

@@ -35,17 +35,40 @@ const getAllAdmins = async () => {
     throw new Error("Error while getting admins");
   }
 };
-//Eliminar un usuario de la BDD
-const deleteUser = async (id) => {
+//Cambiar si un usurio esta habilitado o no
+const enabledUser = async (id,enabled) => {
   try {
-    const deletedUser = await User.destroy({ where: { id } });
-    if (deletedUser === 0) {
+    console.log(enabled);
+    const user = await User.findByPk(id);
+    if (!user) {
       throw new Error("User not found");
     }
-    return "User deleted";
+    await user.update({enabled: enabled});
+    await user.save();
+    if (enabled) {
+      return "User enabled"
+    }
+    return "User disabled";
   } catch (error) {
-    throw new Error("Error while deleting user");
+    throw new Error("Error while updating enabled user");
+  }
+};
+//Cambiar si una propiedad esta habilitada o no
+const enabledProperty = async (id,enabled) => {
+  try {
+    const property = await Property.findByPk(id);
+    if (!property) {
+      throw new Error("Property not found");
+    }
+    await property.update({enabled: enabled});
+    await property.save();
+    if (enabled) {
+      return "Property enabled"
+    }
+    return "Property disabled";
+  } catch (error) {
+    throw new Error("Error while updating enabled property");
   }
 };
 
-module.exports = { getAllUsers, getAllAdmins, deleteUser };
+module.exports = { getAllUsers, getAllAdmins, enabledUser, enabledProperty  };

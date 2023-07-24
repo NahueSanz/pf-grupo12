@@ -5,7 +5,7 @@ import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
 import firebaseApp from "../../../fb";
 import Alert from "react-bootstrap/Alert";
-import { register } from "../../../redux/actions";
+import { getUser, register } from "../../../redux/actions";
 import style from "./LoginPanel.module.css";
 import {
   getAuth,
@@ -15,7 +15,6 @@ import {
   signInWithPopup,
   sendEmailVerification,
 } from "firebase/auth";
-import axios from "axios";
 
 const auth = getAuth(firebaseApp);
 const gProvider = new GoogleAuthProvider();
@@ -23,13 +22,14 @@ const gProvider = new GoogleAuthProvider();
 function LoginPanel() {
   const redVariant = "danger";
   const dispatch = useDispatch();
+  const userDB = useSelector(state=>state.user);
   //Para mostrar o no el formulario de login
   const [show, setShow] = useState(false);
   //Para mostrar o no la contraseña
   const [showPassword, setShowPassword] = useState(false);
 
   const [formData, setFormData] = useState({
-    email: /*localStorage.getItem("email") || */ "", //para que trae el localstorage de email
+    email: "",
     password: "",
   });
   //errores de validaciones o BDD, usamos errores de firebase
@@ -64,6 +64,12 @@ function LoginPanel() {
         formData.email,
         formData.password
       );
+      if(user){
+        console.log(user.uid);
+        dispatch(getUser(user.uid));
+      }if (!userDB.enabled) {
+        throw Error("usuario bloqueado");
+      }
 
       setFormData({
         email: "",
@@ -96,9 +102,11 @@ function LoginPanel() {
           email,
           id,
         };
-        //Tratar de no crear un usuario si ya estas registrado
-        //Crea el usuario en la BDD
-        dispatch(register(userData));
+        dispatch(getUser(id));
+        if (!userDB) {
+          //Crea el usuario en la BDD
+          dispatch(register(userData));
+        }
 
         // Crear un objeto credential con las credenciales del usuario
         const credential = GoogleAuthProvider.credentialFromResult(result);
