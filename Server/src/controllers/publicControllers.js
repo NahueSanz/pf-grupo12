@@ -1,4 +1,4 @@
-const { Property, User } = require("../db");
+const { Property, User, Review } = require("../db");
 const { Op } = require("sequelize");
 
 /********************* CONTROLLERS PUBLICOS *********************/
@@ -41,9 +41,13 @@ const getAllProperties = async () => {
     const properties = await Property.findAll({
       include: [
         {
-          model: User,
-          attributes: ["name", "lastname"],
+          model: Review,
+          attributes: ["score"],
         },
+        {
+          model: User,
+          attributes: ["name","lastname"],
+        }
       ],
 
     });

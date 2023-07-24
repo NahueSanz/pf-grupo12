@@ -1,12 +1,12 @@
 import { useState } from "react";
-import {useSelector } from "react-redux";
-//import { Table } from 'react-bootstrap';
-//import Form from 'react-bootstrap/Form';
+import { useDispatch, useSelector } from "react-redux";
+import { changeEnabledUser } from "../../../redux/actions";
 import styles from "./AdminTableUsers.module.css";
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TablePagination, Paper, TextField, Switch, Typography, Grid } from '@mui/material';
 import '@fontsource/roboto/400.css';
 
 const AdminTableUsers = () => {
+  const dispatch = useDispatch();
 	//users estado
 	const users = useSelector((state) => state.users);
 	const [ data, setData ] = useState(users);
@@ -15,52 +15,13 @@ const AdminTableUsers = () => {
 	const [rowsPerPage, setRowsPerPage] = useState(5);
 	//Search estado
 	const [searchText, setSearchText] = useState('');
-
+  //Se cambia el campo enabled del usuario para habilitarlo o no
 	const handleToggle = (id) => {
 		setData((prevState) =>
 			prevState.map((user) => (user.id === id ? { ...user, enabled: !user.enabled } : user))
 		);
+    dispatch(changeEnabledUser(id,{enabled:!(data.find(user=>user.id===id).enabled)}));
 	};
-	//REACT BOOTSTRAP
-	// return (
-	// 	<Table striped bordered hover responsive className={styles.container}>
-	// 		<thead>
-	// 			<tr>
-	// 				<th>ID</th>
-	// 				<th>Name</th>
-	// 				<th>Creation Date</th>
-	// 				<th>Number of usererties</th>
-	// 				<th>Is Active</th>
-	// 			</tr>
-	// 		</thead>
-	// 		<tbody>
-	// 			{data?.map((user) => (
-	// 				<tr key={user.id}>
-	// 					<td className="align-middle">{user.id}</td>
-	// 					<td className="align-middle">{
-	// 					user.name!==null && user.lastname!==null
-	// 						? `${user.name} ${user.lastname}`
-	// 						: null}
-	// 					</td>
-	// 					<td className="align-middle">{user.createdAt}</td>
-	// 					<td className="align-middle">{user.favorite.length}</td>{/* Implementar logica */}
-	// 					<td className="align-middle">
-	// 						<Form>
-	// 							<Form.Check // prettier-ignore
-	// 								type="switch"
-	// 								id={user.id}
-	// 								label={user.enabled?"Enabled":"Disabled"}
-	// 								checked={user.enabled}
-	// 								onChange={() => handleToggle(user.id)}
-	// 								className={`form-switch ${styles['custom-switch']}`}
-	// 							/>
-	// 						</Form>
-	// 					</td>
-	// 				</tr>
-	// 			))}
-	// 		</tbody>
-	// 	</Table>
-	// );
 
 	//Cambio de pagina
   const handleChangePage = (event, newPage) => {
@@ -71,9 +32,9 @@ const AdminTableUsers = () => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
-  //Busqueda de useriedad mediante dueño
+  //Busqueda de usuario por su nombre y apellido
   const filteredData = data.filter((user) =>
-    user.id.toLowerCase().includes(searchText.toLowerCase())
+    (`${user.name} ${user.lastname}`).toLowerCase().includes(searchText.toLowerCase())
   );
 
   return (
@@ -111,7 +72,7 @@ const AdminTableUsers = () => {
             {filteredData.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((user) => (
               <TableRow key={user.id} className={styles.fila}>
                 <TableCell>{user.id}</TableCell>
-								<TableCell>{user.name===null||user.lastaname===null?null:`${user.name} ${user.lastaname}`}</TableCell>
+								<TableCell>{user.name===null||user.lastname===null?null:`${user.name} ${user.lastname}`}</TableCell>
                 <TableCell>{user.createdAt}</TableCell>
                 <TableCell>{user.Properties.length}</TableCell>
                 <TableCell>

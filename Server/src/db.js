@@ -44,10 +44,10 @@ const { User, Property, Review } = sequelize.models;
 
 // Aca vendrian las relaciones
 User.hasMany(Property);
-User.hasMany(Review);
 Property.belongsTo(User);
-Property.hasMany(Review);
+User.hasMany(Review);
 Review.belongsTo(User);
+Property.hasMany(Review);
 Review.belongsTo(Property);
 
 

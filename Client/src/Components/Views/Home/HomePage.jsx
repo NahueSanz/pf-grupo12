@@ -9,14 +9,18 @@ import { Pagination } from "react-bootstrap";
 
 function HomePage() {
   
-
   const dispatch = useDispatch();
+  const id = localStorage.getItem("loggedIn");
   const properties = useSelector((state) => state.properties);
-  const searchTerm = useSelector((state)=>state.searchTerm)
+  const searchTerm = useSelector((state)=>state.searchTerm);
+  
   
 
   useEffect(() => {
     dispatch(actions.getProperties()).catch((error) => {
+      console.error(error);
+    });
+    dispatch(actions.getUser(id)).catch((error) => {
       console.error(error);
     });
   }, [dispatch]);
