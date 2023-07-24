@@ -30,9 +30,9 @@ publicRouter.get("/property/:email", async function (req, res) {
 
     const html2 = `
   <h1>Hola Nuevo Usuario :)</h1>
-  <p>Gracias por Reservar tu alojamiento preferido, las fechas de la reserva son: dd/mm/yyyy. </p>
+  <p>Gracias por Reservar tu alojamiento preferido </p>
   <p>Que pases una linda temporada<p>
-`;
+  `;
     const transporter = nodeMailer.createTransport({
       host: "smtp.gmail.com",
       port: 465,
@@ -53,6 +53,21 @@ publicRouter.get("/property/:email", async function (req, res) {
       to: email,
       subject: emailSubject,
       html: emailHtml,
+      attachments: [
+        {
+          filename: "house1.jpg",
+          path: "https://res.cloudinary.com/dgsnukgdu/image/upload/v1689704501/aloharsur88/HouseMedellin_gdzq1c.jpg",
+          cid: "aloharsur88@gmail.com",
+        },
+        {
+          filename: "house2.jpg",
+          path: "https://res.cloudinary.com/dgsnukgdu/image/upload/v1689704501/aloharsur88/HouseMedellin_gdzq1c.jpg",
+        },
+        {
+          filename: "house3.jpg",
+          path: "https://res.cloudinary.com/dgsnukgdu/image/upload/v1689704501/aloharsur88/HouseMedellin_gdzq1c.jpg",
+        },
+      ],
     });
     console.log("Message sent: " + info.messageId);
     return info;
