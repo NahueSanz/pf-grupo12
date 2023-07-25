@@ -5,7 +5,7 @@ import {useSelector } from "react-redux";
 import styles from "./AdminTableUsers.module.css";
 import {Table,TableBody,TableCell,TableContainer,TableHead,TableRow,TablePagination,Paper,TextField,Switch,Typography,Grid,Modal,Backdrop,Fade} from "@mui/material";import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/400.css';
-import { Button, Card, Carousel} from "react-bootstrap";
+import {Card} from "react-bootstrap";
 
 
 const AdminTableUsers = () => {
@@ -23,46 +23,6 @@ const AdminTableUsers = () => {
 			prevState.map((user) => (user.id === id ? { ...user, enabled: !user.enabled } : user))
 		);
 	};
-	//REACT BOOTSTRAP
-	// return (
-	// 	<Table striped bordered hover responsive className={styles.container}>
-	// 		<thead>
-	// 			<tr>
-	// 				<th>ID</th>
-	// 				<th>Name</th>
-	// 				<th>Creation Date</th>
-	// 				<th>Number of usererties</th>
-	// 				<th>Is Active</th>
-	// 			</tr>
-	// 		</thead>
-	// 		<tbody>
-	// 			{data?.map((user) => (
-	// 				<tr key={user.id}>
-	// 					<td className="align-middle">{user.id}</td>
-	// 					<td className="align-middle">{
-	// 					user.name!==null && user.lastname!==null
-	// 						? `${user.name} ${user.lastname}`
-	// 						: null}
-	// 					</td>
-	// 					<td className="align-middle">{user.createdAt}</td>
-	// 					<td className="align-middle">{user.favorite.length}</td>{/* Implementar logica */}
-	// 					<td className="align-middle">
-	// 						<Form>
-	// 							<Form.Check // prettier-ignore
-	// 								type="switch"
-	// 								id={user.id}
-	// 								label={user.enabled?"Enabled":"Disabled"}
-	// 								checked={user.enabled}
-	// 								onChange={() => handleToggle(user.id)}
-	// 								className={`form-switch ${styles['custom-switch']}`}
-	// 							/>
-	// 						</Form>
-	// 					</td>
-	// 				</tr>
-	// 			))}
-	// 		</tbody>
-	// 	</Table>
-	// );
 
 	//Cambio de pagina
   const handleChangePage = (event, newPage) => {

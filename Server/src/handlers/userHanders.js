@@ -204,9 +204,7 @@ const deletePropertyUserHandler = async (req, res) => {
   const { id } = req.params;
   try {
     const deleteProperty = await deleteUserProperty(id);
-    if (deleteProperty !== "User property deleted") {
-      throw Error("User property not found to delete");
-    }
+
     res.status(200).json(deleteProperty);
   } catch (error) {
     res.status(404).json({ error: error.message });
