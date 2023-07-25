@@ -14,8 +14,6 @@ function HomePage() {
   const properties = useSelector((state) => state.properties);
   const searchTerm = useSelector((state)=>state.searchTerm);
   
-  
-
   useEffect(() => {
     dispatch(actions.getProperties()).catch((error) => {
       console.error(error);

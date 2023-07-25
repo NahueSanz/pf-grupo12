@@ -21,7 +21,7 @@ function calcularPromedio(arr) {
   
   const suma = arr.reduce((acumulador, valorActual) => acumulador + valorActual, 0);
   const promedio = suma / arr.length;
-  return promedio;
+  return Number(promedio.toFixed(1));
 }
 
 

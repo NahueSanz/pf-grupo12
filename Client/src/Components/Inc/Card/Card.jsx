@@ -1,18 +1,14 @@
-import axios from "axios";
 import style from "./Card.module.css";
 import Card from "react-bootstrap/Card";
 import { Link } from "react-router-dom";
-import { useEffect, useState } from "react";
-
+import { useSelector } from 'react-redux';
 
 
 function calcularPromedio(arr) {
   if (arr.length === 0) return 0;
-  
   const suma = arr.reduce((acumulador, valorActual) => acumulador + valorActual, 0);
   const promedio = suma / arr.length;
-  return promedio;
-  
+  return Number(promedio.toFixed(1));
 }
 
 function CardComponent({
@@ -24,18 +20,13 @@ function CardComponent({
   endDate,
   price,
 }) {
-  const [promedio, setPromedio] = useState(0)
+  const properties = useSelector((state) => state.properties);
+  const property = properties.find((property) => property.id === id);
   
-  async function getPromedioReviews(id){
-    const res = await axios.get(`http://localhost:3001/user/property/${id}/review`)
-    const arrScore= res.data.Reviews.map(el=>el.score)
-    setPromedio(calcularPromedio(arrScore));
-  }
 
-  useEffect(()=> {
-    getPromedioReviews(id)
-  },[id])
-
+  const scoresArray = property ? property.Reviews.map((review) => review.score) : [];
+  const promedio = calcularPromedio(scoresArray);
+ 
 
   return (
     <Card className={style.card} style={{ width: "20vw", height: "25vw" }}>
@@ -50,9 +41,9 @@ function CardComponent({
 
         <p>{description}</p>
         <p>
-          Availiabe from {startDate} to {endDate}
+          Available from {startDate} to {endDate}
         </p>
-        <h6>${price} USD night</h6>
+        <h6>${price} USD per night</h6>
       </Card.Body>
     </Card>
   );
