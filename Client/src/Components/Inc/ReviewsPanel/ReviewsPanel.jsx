@@ -6,6 +6,7 @@ import StarRatings from 'react-star-ratings';
 import Form from 'react-bootstrap/Form';
 import { getAuth } from "firebase/auth";
 import { postReviewsProperty } from "../../../redux/actions";
+import style from "./ReviewsPanel.module.css"
 
 function ReviewsPanel({idCasa}) {
   const [show, setShow] = useState(false);
@@ -23,6 +24,8 @@ function ReviewsPanel({idCasa}) {
     setScore(newScore);
     console.log(newScore);
   };
+
+  
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -45,6 +48,8 @@ function ReviewsPanel({idCasa}) {
 
     // Cerrar el modal después de enviar la reseña
     handleClose();
+
+    window.location.reload();
   };
 
   const handleChange = (e) => {
@@ -61,11 +66,11 @@ function ReviewsPanel({idCasa}) {
         Calificar
       </Button>
 
-      <Modal show={show} onHide={handleClose}>
+      <Modal show={show} onHide={handleClose} >
         <Modal.Header closeButton>
-          <Modal.Title>Deja una reseña</Modal.Title>
+          {/* <Modal.Title className={style.title}>Review</Modal.Title> */}
         </Modal.Header>
-        <Modal.Body>
+        <Modal.Body className={style.modal}>
           <StarRatings
             rating={score}
             starRatedColor="#FFC107"
@@ -74,18 +79,25 @@ function ReviewsPanel({idCasa}) {
             numberOfStars={5}
             starDimension="40px"
             starSpacing="6px"
+            className={style.rating}
+          
           />
           <Form onSubmit={handleSubmit}>
             <Form.Group controlId="reviewForm">
-              <Form.Label>Deja tu opinión acerca de esta propiedad</Form.Label>
+              <div className={style.comentario}>
+              <Form.Label>Please leave your opinion about this property</Form.Label>
               <Form.Control
                 as="textarea"
                 name="review"
                 rows={3}
                 value={formData.review}
                 onChange={handleChange}
+                // className={style.comentario}
               />
-              <Button type="submit">Publicar</Button>
+
+              </div>
+              
+              <Button type="submit" className={style.button}>Submit</Button>
             </Form.Group>
           </Form>
         </Modal.Body>

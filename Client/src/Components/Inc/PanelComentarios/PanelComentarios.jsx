@@ -4,7 +4,8 @@ import Modal from 'react-bootstrap/Modal';
 import Comentarios from '../Comentarios/Comentarios'
 import { useEffect} from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {getReviewsProperty}from "../../../redux/actions"
+import {getReviewsProperty}from "../../../redux/actions";
+import style from "./PanelComentarios.module.css"
 
 function Example({idCasa}) {
   const [show, setShow] = useState(false);
@@ -38,26 +39,29 @@ function Example({idCasa}) {
         onHide={() => setShow(false)}
         dialogClassName="modal-90w"
         aria-labelledby="example-custom-modal-styling-title"
+        className={style.containerModal}
       >
         <Modal.Header closeButton>
-          <Modal.Title id="example-custom-modal-styling-title">
-            Custom Modal Styling
+          <Modal.Title id="example-custom-modal-styling-title" className={style.title}>
+            Reviews
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
 
-        <div>
-        {reviews?.map((element) => {
-          return (
-            <Comentarios
-              key={element.idCasa}
-              id={element.idCasa}
-              review={element.review}
-              score={element.score}
-              user={element.User}
-            />
-          );
-        })}
+        <div className={style.comentarios}>
+        {reviews && reviews.length > 0 ? (
+              reviews.map((element) => (
+                <Comentarios
+                  key={element.idCasa}
+                  id={element.idCasa}
+                  review={element.review}
+                  score={element.score}
+                  user={element.User}
+                />
+              ))
+            ) : (
+              <p>No hay comentarios disponibles.</p>
+            )}
       </div>
         
         </Modal.Body>

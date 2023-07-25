@@ -127,7 +127,7 @@ const getReview = async (id) => {
           include: [
             {
               model: User,
-              attributes: ["name", "lastname"],
+              attributes: ["name", "lastname", "image"],
             }
           ]
         },
