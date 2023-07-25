@@ -105,8 +105,6 @@ const deleteUserProperty = async (id) => {
     if (deletedProperty === 0) {
       throw new Error("User property not found");
     }
-    deletedProperty.enabled = !deletedProperty.enabled;
-    await deletedProperty.save();
 
     if(deletedProperty.enabled === true){
       return "User property enabled"
@@ -126,7 +124,7 @@ const getReview = async (id) => {
           include: [
             {
               model: User,
-              attributes: ["name", "lastname"],
+              attributes: ["name", "lastname", "image"],
             },
           ],
         },

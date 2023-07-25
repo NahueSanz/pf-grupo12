@@ -5,18 +5,31 @@ import { Button } from "react-bootstrap";
 import { countries } from "../../../utils/countries";
 import styles from "./PropertyForm.module.css";
 import { newPostProperty } from "../../../redux/actions";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate} from "react-router-dom";
+
 import * as Yup from "yup";
 import axios from "axios";
 
 const validationSchema = Yup.object().shape({
-  title: Yup.string().required("Title is required"),
+  title: Yup.string()
+  .required("Title is required")
+  .test("is-not-only-spaces", "Title cannot contain only spaces", (value) => {
+    return value && value.trim().length > 0;
+  }),
   type: Yup.string().required("Type is required"),
-  address: Yup.string().required("Address is required"),
+  address: Yup.string()
+  .required("Address is required")
+  .test("is-not-only-spaces", "Address cannot contain only spaces", (value) => {
+    return value && value.trim().length > 0;
+  }),
   country: Yup.string().required("Country is required"),
   guests: Yup.number().required("Guests is required"),
   price: Yup.number().required("Price is required"),
-  description: Yup.string().required("Description is required"),
+  description: Yup.string()
+    .required("Description is required")
+    .test("is-not-only-spaces", "Description cannot contain only spaces", (value) => {
+      return value && value.trim().length > 0;
+    }),
   startDate: Yup.date()
     .required("Start Date is required")
     .min(new Date(), "Start Date must be in the future")
@@ -28,6 +41,7 @@ const validationSchema = Yup.object().shape({
 
 const PropertyForm = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const id = localStorage.getItem("loggedIn");
   const [image, setImage] = useState(null);
   const [previewImage, setPreviewImage] = useState(null);
@@ -49,8 +63,10 @@ const PropertyForm = () => {
 
       dispatch(newPostProperty(id, values));
 
+      navigate('/home');
 
-      alert("Created property");
+
+      // alert("Created property");
       localStorage.setItem("Form", "{}");
       resetForm();
     } catch (error) {
@@ -338,6 +354,7 @@ const PropertyForm = () => {
             >
               {isSubmitting ? "Submitting..." : "Submit"}
             </Button>
+
           </Form>
         </div>
       )}
