@@ -63,9 +63,8 @@ const createUserProperty = async (
   return newProperty;
 };
 
-
 const createUserReview = async (review, score, user, idCasa) => {
- const existingReview = await Review.findOne({
+  const existingReview = await Review.findOne({
     where: { UserId: user, PropertyId: idCasa },
   });
   console.log(existingReview, idCasa);
@@ -80,9 +79,6 @@ const createUserReview = async (review, score, user, idCasa) => {
   });
   return newReview;
 };
-
-
-
 
 //Se obtendra la propiedad de un usuario por su ID de la propiedad
 const getUserPropertyById = async (id) => {
@@ -104,15 +100,18 @@ const getUserPropertyById = async (id) => {
 //Se eliminara una propiedad del usuario
 const deleteUserProperty = async (id) => {
   try {
-    const deletedProperty = await Property.destroy({
-      where: { id },
-    });
+    const deletedProperty = await Property.findByPk(id);
 
     if (deletedProperty === 0) {
       throw new Error("User property not found");
     }
+    deletedProperty.enabled = !deletedProperty.enabled;
+    await deletedProperty.save();
 
-    return "User property deleted";
+    if(deletedProperty.enabled === true){
+      return "User property enabled"
+    }
+    return "User property disabled";
   } catch (error) {
     throw new Error("Error deleting a user property");
   }
@@ -128,8 +127,8 @@ const getReview = async (id) => {
             {
               model: User,
               attributes: ["name", "lastname"],
-            }
-          ]
+            },
+          ],
         },
       ],
     });
