@@ -134,7 +134,7 @@ const AdminTableProperties = () => {
         <Fade in={isModalOpen} className={styles.fade}>{/* Add the content of the modal using selectedProperty */}
           <Card className={styles.propertyCard}>
             <Card.Header className={styles.cardHeader}><h5>Id: {selectedProperty.id}</h5><h5>Owner: {selectedProperty.User?.name || "Name not registered"}</h5></Card.Header> 
-            <Card.Img variant="top" src={selectedProperty} className={styles.cardImage}/>
+            <Card.Img variant="top" src={selectedProperty.image} className={styles.cardImage}/>
             <Card.Title className={styles.cardTitle}>{selectedProperty.title}</Card.Title>
             <Card.Body className={styles.cardBody}>
               <div className={styles.cardInfo}>

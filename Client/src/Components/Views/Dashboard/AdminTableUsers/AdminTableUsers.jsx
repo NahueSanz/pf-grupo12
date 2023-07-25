@@ -177,7 +177,7 @@ const AdminTableUsers = () => {
         <Fade in={isModalOpen} className={styles.fade}>
           <Card className={styles.userCard}>
             <Card.Header className={styles.cardHeader}><h5>Id: {selectedUser.id}</h5><h5>email: {selectedUser.email}</h5></Card.Header> 
-            <Card.Img variant="top" src={selectedUser} className={styles.cardImage}/> 
+            <Card.Img variant="top" src={selectedUser.image} className={styles.cardImage}/> 
             <Card.Title className={styles.cardTitle}>Name: {selectedUser.name?selectedUser.name:"Not registered"}</Card.Title>
             <Card.Title className={styles.cardTitle}>Last name: {selectedUser.lastName?selectedUser.lastName:"Not registered"}</Card.Title>
             <Card.Body className={styles.cardBody}>
