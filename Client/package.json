@@ -20,6 +20,7 @@
     "bootstrap": "^5.3.0",
     "bootstrap-icons": "^1.10.5",
     "cloudinary": "^1.37.3",
+    "date-fns": "^2.30.0",
     "firebase": "^10.0.0",
     "formik": "^2.4.2",
     "jest": "^29.5.0",

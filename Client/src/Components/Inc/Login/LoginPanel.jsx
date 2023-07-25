@@ -55,7 +55,7 @@ function LoginPanel() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    localStorage.setItem("email", e.target.email.value);
     try {
       const auth = getAuth(); // Obtener instancia de autenticación de Firebase
       //Login con Firebase pasando email y contraseña
