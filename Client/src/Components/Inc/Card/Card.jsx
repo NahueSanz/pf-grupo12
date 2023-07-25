@@ -24,7 +24,7 @@ function CardComponent({
   const property = properties.find((property) => property.id === id);
   
 
-  const scoresArray = property ? property.Reviews.map((review) => review.score) : [];
+  const scoresArray = property.Reviews?.map((review) => review.score) ?? [];
   const promedio = calcularPromedio(scoresArray);
  
 

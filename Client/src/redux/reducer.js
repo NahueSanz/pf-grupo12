@@ -114,7 +114,7 @@ const rootReducer = (state = initialState, action) => {
       }
 
     case APPLY_FILTERS:
-      var filteringProperties = [...state.properties];
+      var filteringProperties = [...state.allProperties];
       // Aplicar el filtro filterByPriceMin
       if (action.payload.filterByPriceMin !== "") {
         filteringProperties = filteringProperties.filter(

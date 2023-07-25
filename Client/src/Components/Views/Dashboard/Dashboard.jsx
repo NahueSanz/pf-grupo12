@@ -4,13 +4,13 @@ import {Button, Card  } from 'react-bootstrap';
 import "bootstrap-icons/font/bootstrap-icons.css"
 import style from "./Dashboard.module.css";
 import { Link } from "react-router-dom";
-import AdminTableUsers from '../AdminTableUsers/AdminTableUsers';
-import AdminTableProperties from '../AdminTableProperties/AdminTableProperties';
+import AdminTableUsers from './AdminTableUsers/AdminTableUsers';
+import AdminTableProperties from './AdminTableProperties/AdminTableProperties';
 import { getProperties, getUsers } from "../../../redux/actions";
 
 const Dashboard = () => {
 	const dispatch = useDispatch();
-	const [activeButton, setActiveButton] = useState('');
+	const [activeButton, setActiveButton] = useState("properties");
 
 	const handleClickProperties = () => {
 			setActiveButton("properties");

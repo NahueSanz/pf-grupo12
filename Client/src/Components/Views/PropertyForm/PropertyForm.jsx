@@ -2,15 +2,13 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { Button } from "react-bootstrap";
-import { countries } from "../../../utils/countries"
+import { countries } from "../../../utils/countries";
 import styles from "./PropertyForm.module.css";
 import { newPostProperty } from "../../../redux/actions";
 import { Link, useParams, useNavigate} from "react-router-dom";
 
 import * as Yup from "yup";
 import axios from "axios";
-
-
 
 const validationSchema = Yup.object().shape({
   title: Yup.string()
@@ -63,7 +61,7 @@ const PropertyForm = () => {
       const imageUrl = response.data.secure_url;
       values.image = imageUrl;
 
-      dispatch(newPostProperty(id,values))
+      dispatch(newPostProperty(id, values));
 
       navigate('/home');
 
@@ -146,18 +144,19 @@ const PropertyForm = () => {
       onSubmit={handleSubmit}
     >
       {({ isSubmitting }) => (
-
         <div className={styles.containerPrincipal}>
-
           <Form className={styles.form} onChange={handleChange}>
             <h2>New Property</h2>
             <div className={styles.container}>
-
               <div className={styles.container1}>
-
                 <div className={`form-group ${styles.formGroup}`}>
                   <label htmlFor="title">Title</label>
-                  <Field type="text" name="title" className={`form-control ${styles.formControl}`} required />
+                  <Field
+                    type="text"
+                    name="title"
+                    className={`form-control ${styles.formControl}`}
+                    required
+                  />
                   <ErrorMessage
                     name="title"
                     component="div"
@@ -165,14 +164,17 @@ const PropertyForm = () => {
                   />
                 </div>
 
-
                 <div className={styles.selects}>
-
                   {/* TIPOS DE PROPIEDADES */}
 
                   <div className={`form-group ${styles.formGroup}`}>
                     <label htmlFor="type">Type</label>
-                    <Field as="select" name="type" className={`form-control ${styles.formControl}`} required>
+                    <Field
+                      as="select"
+                      name="type"
+                      className={`form-control ${styles.formControl}`}
+                      required
+                    >
                       <option value="">Select type</option>
                       <option value="Apartment">Apartment</option>
                       <option value="Hotel">Hotel</option>
@@ -190,7 +192,12 @@ const PropertyForm = () => {
 
                   <div className={`form-group ${styles.formGroup}`}>
                     <label htmlFor="country">Country</label>
-                    <Field as="select" name="country" className={`form-control ${styles.formControl}`} required>
+                    <Field
+                      as="select"
+                      name="country"
+                      className={`form-control ${styles.formControl}`}
+                      required
+                    >
                       <option value="">Países</option>
                       {countries.map((country) => (
                         <option key={country} value={country}>
@@ -204,7 +211,6 @@ const PropertyForm = () => {
                       className={`error-message ${styles.error}`}
                     />
                   </div>
-
                 </div>
 
                 <div className={`form-group ${styles.formGroup}`}>
@@ -222,11 +228,9 @@ const PropertyForm = () => {
                   />
                 </div>
 
-
                 {/* GUESTS AND PRICE */}
 
                 <div className={styles.selects}>
-
                   <div className={`form-group ${styles.formGroup}`}>
                     <label htmlFor="startDate">Start Date</label>
                     <Field
@@ -242,7 +246,6 @@ const PropertyForm = () => {
                     />
                   </div>
 
-
                   <div className={`form-group ${styles.formGroup}`}>
                     <label htmlFor="price">Price</label>
                     <Field
@@ -257,16 +260,11 @@ const PropertyForm = () => {
                       className={`error-message ${styles.error}`}
                     />
                   </div>
-
                 </div>
-
 
                 {/* START DATE AND END DATE */}
 
                 <div className={styles.selects}>
-
-
-
                   <div className={`form-group ${styles.formGroup}`}>
                     <label htmlFor="endDate">End Date</label>
                     <Field
@@ -282,7 +280,6 @@ const PropertyForm = () => {
                     />
                   </div>
 
-
                   <div className={`form-group ${styles.formGroup}`}>
                     <label htmlFor="guests">Guests</label>
                     <Field
@@ -297,11 +294,8 @@ const PropertyForm = () => {
                       className={`error-message ${styles.error}`}
                     />
                   </div>
-
                 </div>
-
               </div>
-
 
               {/* DESCRIPTION AND IMAGE */}
 
@@ -338,7 +332,6 @@ const PropertyForm = () => {
                         className={styles.imagePreview}
                       />
                     </div>
-
                   )}
 
                   <ErrorMessage
@@ -351,17 +344,19 @@ const PropertyForm = () => {
             Cargar imagen
           </Button> */}
               </div>
-
             </div>
 
-            <Button variant="primary" type="submit" disabled={isSubmitting} className={styles.submit}>
+            <Button
+              variant="primary"
+              type="submit"
+              disabled={isSubmitting}
+              className={styles.submit}
+            >
               {isSubmitting ? "Submitting..." : "Submit"}
             </Button>
 
           </Form>
-
         </div>
-
       )}
     </Formik>
   );

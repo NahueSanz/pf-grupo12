@@ -8,54 +8,6 @@ const {
 } = require("../controllers/publicControllers");
 /********* HANDLERS PARA LAS RUTAS PUBLICAS(NO AUTENTICADO) *********/
 
-const nodeMailer = require("nodemailer");
-
-const html = `
-  <h1>Hola Nuevo Usuario :)</h1>
-  <p>De parte de Alohar le damos la Bienvenida; estamos muy felices de tenerte como parte de esta gran familia</p>
-`;
-
-const html2 = `
-  <h1>Hola Nuevo Usuario :)</h1>
-  <p>Gracias por Reservar tu alojamiento preferido, las fechas de la reserva son: dd/mm/yyyy. </p>
-  <p>Que pases una linda temporada<p>
-`;
-
-const sendEmail = async (toEmail, type) => {
-  const transporter = nodeMailer.createTransport({
-    host: "smtp.gmail.com",
-    port: 465,
-    secure: true,
-    auth: {
-      user: "edisonprise@gmail.com",
-      pass: "bcoagfopeblzaybz",
-    },
-  });
-
-  let emailSubject;
-  let emailHtml;
-
-  if (type === "welcome") {
-    emailSubject = "Alohar, Gracias por Registrarse";
-    emailHtml = html;
-  } else if (type === "reservation") {
-    emailSubject = "Alohar, Gracias por tu Reserva";
-    emailHtml = html2;
-  } else {
-    throw new Error("Invalid email type");
-  }
-
-  const info = await transporter.sendMail({
-    from: "<edisonprise@gmail.com>",
-    to: toEmail,
-    subject: emailSubject,
-    html: emailHtml,
-  });
-
-  console.log("Message sent: " + info.messageId);
-  return info;
-};
-
 const registerUserHandler = async (req, res) => {
   var { email, id, name, lastname } = req.body;
 

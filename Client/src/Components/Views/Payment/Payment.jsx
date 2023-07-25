@@ -1,5 +1,5 @@
 import style from "./Payment.module.css";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Card, Row, Col, ListGroup } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import "react-date-range/dist/styles.css";
@@ -7,10 +7,6 @@ import "react-date-range/dist/theme/default.css";
 import { DateRange } from "react-date-range";
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 
-async function hola(email) {
-  let dato = await fetch("http://localhost:3001/public/property/" + email);
-  return await dato.json();
-}
 function Payment() {
   const property = useSelector((state) => state.propertyDetail);
   const [selectedRange, setSelectedRange] = useState([
@@ -20,12 +16,7 @@ function Payment() {
       key: "selection",
     },
   ]);
-  useEffect(() => {
-    let local = localStorage;
-    let det = local.getItem("email");
-    console.log(det);
-    console.log(hola(det));
-  });
+
   const paypalOptions = {
     "client-id": "test",
     currency: "USD",
