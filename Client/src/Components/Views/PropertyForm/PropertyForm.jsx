@@ -49,7 +49,7 @@ const PropertyForm = () => {
 
       dispatch(newPostProperty(id, values));
 
-      console.log(values);
+
       alert("Created property");
       localStorage.setItem("Form", "{}");
       resetForm();

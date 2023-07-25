@@ -1,7 +1,8 @@
 const {
   getAllUsers,
   getAllAdmins,
-  deleteUser,
+  enabledUser,
+  enabledProperty,
   getReviewByPk,
 } = require("../controllers/adminControllers");
 /************ HANDLERS DEL USUARIO AUTORIZADO(ADMIN) ************/
@@ -30,15 +31,26 @@ const getAllAdminsHandler = async (req, res) => {
     res.status(404).json({ error: error.message });
   }
 };
-//Eliminar un usuario por ID
-const deleteUserHandler = async (req, res) => {
+//Cambiar si un usuario esta habilitado o no
+const changeEnabledUserHandler = async (req, res) => {
   const { id } = req.params;
+  const { enabled } = req.body;
   try {
-    const deletedUser = await deleteUser(id);
-    if (deletedUser !== "User deleted") {
-      throw Error("User not found to delete");
-    }
-    res.status().json(deletedUser);
+    const updateEnabledUser = await enabledUser(id,enabled);
+    console.log(updateEnabledUser);
+    res.status(200).json(updateEnabledUser);
+  } catch (error) {
+    res.status(404).json({ message: error.message, enabled: false });
+  }
+};
+//Cambiar si un usuario esta habilitado o no
+const changeEnabledPropertyHandler = async (req, res) => {
+  const { id } = req.params;
+  const { enabled } = req.body;
+  try {
+    const updateEnabledProperty = await enabledProperty(id,enabled);
+    console.log(updateEnabledProperty);
+    res.status(200).json(updateEnabledProperty);
   } catch (error) {
     res.status(404).json({ error: error.message });
   }
@@ -57,6 +69,7 @@ const changeEnableReview = (req, res) => {
 module.exports = {
   getAllUsersHandler,
   getAllAdminsHandler,
-  deleteUserHandler,
+  changeEnabledUserHandler,
+  changeEnabledPropertyHandler,
   changeEnableReview,
 };

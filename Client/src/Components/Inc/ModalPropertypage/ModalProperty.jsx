@@ -1,15 +1,7 @@
-// import '../../Views/DetailProperty/PropertyPage.css'
 import { useState } from "react";
-import Button from "react-bootstrap/Button";
-import Modal from "react-bootstrap/Modal";
-// import closeIcon from '../../../assets/CloseIcon.svg'
-// import favoriteIcon from '../../../assets/favoriteIcon.svg'
-// import favoriteFillIcon from '../../../assets/favoriteFillIcon.svg'
+import { Button, Modal, Col } from "react-bootstrap";
 
 function FavoritesAddNotification({ title }) {
-  const closeIcon = "";
-  const favoriteIcon = "";
-  const favoriteFillIcon = "";
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
@@ -23,7 +15,7 @@ function FavoritesAddNotification({ title }) {
           className="addButton"
           onClick={handleShow}
         >
-          <img src={favoriteIcon} alt="Favorite" style={{ height: "25px" }} />
+          <i class="bi bi-heart"></i>
         </Button>
       ) : (
         <Button
@@ -31,11 +23,7 @@ function FavoritesAddNotification({ title }) {
           variant="danger"
           onClick={handleShow}
         >
-          <img
-            src={favoriteFillIcon}
-            alt="Favorite Filled"
-            style={{ height: "25px", cursor: "pointer" }}
-          />
+         <i className="bi bi-heart-fill"></i>
         </Button>
       )}
       <Modal
@@ -45,13 +33,10 @@ function FavoritesAddNotification({ title }) {
         keyboard={false}
       >
         <Modal.Body>
-          {`${title} added to favorites`}
-          <img
-            src={closeIcon}
-            alt="Close"
-            style={{ height: "25px", float: "right", cursor: "pointer" }}
-            onClick={handleClose}
-          />
+         <Col className="d-flex justify-content-between">
+            <small className="">{`${title} added to favorites`}</small>
+            <i class="bi bi-x-circle" style={{ cursor: 'pointer'}} onClick={handleClose}></i>
+        </Col>
         </Modal.Body>
       </Modal>
     </>

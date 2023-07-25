@@ -40,21 +40,20 @@ const App = () => {
         // El usuario no está autenticado
         dispatch(logout())
         navigate("/")
-        // Puedes realizar acciones específicas para usuarios no autenticados aquí
       }
     });
-  }, [])
+  }, []);
 
   return (
     <div className="app">
       
-      {loggedIn 
+      {loggedIn
       ? (
         <>
           {/* Si estoy logueado puedo usar estas rutas */}
           {location.pathname !== "/" && location.pathname !== "/admin-dashboard" && <NavBar />}
           <Routes>
-            <Route path='/' element={<Navigate to='/home' replace />} />{/* Si yo quiero retrocer a landing, al estar logueado no me deja y redirije a home */}
+            <Route path='/' element={<Navigate to='/home' replace/>} />{/* Si yo quiero retrocer a landing, al estar logueado no me deja y redirije a home */}
             <Route path="/home" element={<HomePage />} />
             <Route path="/rooms/:id" element={<DetailPropertyPage />} />
             <Route path="/new-property" element={<PropertyForm />} />{/* actualizar ruta en demas componentes */}

@@ -31,7 +31,7 @@ const AdminTableProperties = () => {
   };
   //Busqueda de propiedad mediante dueño
   const filteredData = data.filter((prop) =>
-    prop.title.toLowerCase().includes(searchText.toLowerCase())
+    (`${prop.User.name} ${prop.User.lastname}`).toLowerCase().includes(searchText.toLowerCase())
   );
 
   return (

@@ -5,6 +5,7 @@ import {
   GET_PROPERTIES_BY_NAME,
   POST_NEW_PROPERTY,
   SEARCH_BY_TITLE,
+  ENABLED_PROPERTY,
   APPLY_FILTERS,
   ORDER_PRICE,
   FIRST_PAGE,
@@ -12,11 +13,14 @@ import {
   PREV_PAGE,
   GET_USERS,
   GET_USER,
+  UPDATE_USER,
+  ENABLED_USER,
   GET_ADMINS,
   REGISTER,
   LOGIN,
   LOGOUT,
-  UPDATE_USER
+  REVIEWS_PROPERTY,
+  GET_REVIEWS_PROPERTY
 } from "./actionTypes";
 
 
@@ -44,6 +48,35 @@ export const getUser = (id) => {
       const res = await axios.get(`${urlLocal}/user/info/${id}`); //get User
       return dispatch({
         type: GET_USER,
+        payload: res.data,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+//Actualizar las propiedades del usuario
+export const updateUser = (id, userData) => {
+  return async function (dispatch) {
+    try {
+      const res = await axios.put(`${urlLocal}/user/update/${id}`, userData);
+      return dispatch({
+        type: UPDATE_USER,
+        payload: res.data,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+//Cambia el estado del usuario del campo enabled, para habilitarlo o deshabilitarlo
+export const changeEnabledUser = (id,enabled) => {
+  return async function (dispatch) {
+    try {
+      console.log(enabled);
+      const res = await axios.put(`${urlLocal}/admin/user/enabled/${id}`, enabled);
+      return dispatch({
+        type: ENABLED_USER,
         payload: res.data,
       });
     } catch (error) {
@@ -140,7 +173,20 @@ export function newPostProperty(id,values) {
     }
   };
 }
-
+//Cambia el estado de la propiedad del campo enabled, para habilitarlo o deshabilitarlo
+export const changeEnabledProperty = (id,enabled) => {
+  return async function (dispatch) {
+    try {
+      const res = await axios.put(`${urlLocal}/admin/property/enabled/${id}`, enabled);
+      return dispatch({
+        type: ENABLED_PROPERTY,
+        payload: res.data,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
 export function applyFilters(
   filterByPriceMin,
   filterByPriceMax,
@@ -193,9 +239,11 @@ export function register(userData) {
     try {
       const res = await axios.post(`${urlLocal}/public/register`,userData);
       //const res = await axios.post(`${url}/public/register`,userData);
+     
       return dispatch({
         type: REGISTER,
         payload: res.data,
+       
       });
     } catch (error) {
       console.log(error.message);
@@ -212,22 +260,35 @@ export const logout = () => ({
   type: LOGOUT,
 });
 
+export const postReviewsProperty = (idCasa, values)=>{
+  return async function (dispatch){
+        try {
+          const res = await axios.post(`${urlLocal}/user/property/${idCasa}/review`, values); 
 
-export const updateUser = (id, userData) => {
+          return dispatch({
+            type: REVIEWS_PROPERTY,
+            payload: res.data,
+          });
+        } catch (error) {
+          console.log(error);
+        }
+      };
+    }
+
+export const getReviewsProperty = (idCasa) =>{
   return async function (dispatch) {
     try {
-      const res = await axios.put(`${urlLocal}/user/update/${id}`, userData);
+      const res = await axios.get(`${urlLocal}/user/property/${idCasa}/review`);
       return dispatch({
-        type: UPDATE_USER,
-        payload: res.data,
+        type: GET_REVIEWS_PROPERTY,
+        payload: res.data.Reviews,
       });
     } catch (error) {
       console.log(error);
     }
   };
-};
 
-
+}
 
 
 

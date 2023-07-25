@@ -3,8 +3,8 @@ const { Router } = require("express");
 const {
   getAllUsersHandler,
   getAllAdminsHandler,
-  deleteUserHandler,
-  changeEnableReview,
+  changeEnabledUserHandler,
+  changeEnabledPropertyHandler
 } = require("../handlers/adminHandlers");
 
 const adminRouter = Router();
@@ -15,9 +15,9 @@ const adminRouter = Router();
 adminRouter.get("/users", getAllUsersHandler);
 //Obtener la informacion de todos los usuarios con rol admin
 adminRouter.get("/admins", getAllAdminsHandler);
-//Eliminar a un usuario
-adminRouter.delete("/users/:id", deleteUserHandler);
-//Cambia el campo enable
-adminRouter.put("/property/:id/review", changeEnableReview);
+//Actualizar habilitacion user
+adminRouter.put("/user/enabled/:id",changeEnabledUserHandler);
+//Actualizar habilitacion property
+adminRouter.put("/property/enabled/:id",changeEnabledPropertyHandler);
 
 module.exports = adminRouter;

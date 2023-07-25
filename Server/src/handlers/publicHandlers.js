@@ -9,12 +9,14 @@ const {
 /********* HANDLERS PARA LAS RUTAS PUBLICAS(NO AUTENTICADO) *********/
 
 const registerUserHandler = async (req, res) => {
-  var { email, id } = req.body;
+  var { email, id, name, lastname } = req.body;
+
   try {
-    if (!email || !id) {
+    if (!email || !id || !name || !lastname) {
       throw new Error("All fields are not complete");
     }
-    const newUser = await createUser(email, id);
+    const newUser = await createUser(email, id, name, lastname);
+    console.log(newUser)
     if (!newUser) {
       throw new Error("User not created");
     }

@@ -62,9 +62,11 @@ const createUserProperty = async (
   });
   return newProperty;
 };
+
+
 const createUserReview = async (review, score, user, idCasa) => {
  const existingReview = await Review.findOne({
-    where: { user: user, PropertyId: idCasa },
+    where: { UserId: user, PropertyId: idCasa },
   });
   console.log(existingReview, idCasa);
   if (existingReview) {
@@ -73,11 +75,15 @@ const createUserReview = async (review, score, user, idCasa) => {
   const newReview = await Review.create({
     review,
     score,
-    user,
+    UserId: user,
     PropertyId: idCasa,
   });
   return newReview;
 };
+
+
+
+
 //Se obtendra la propiedad de un usuario por su ID de la propiedad
 const getUserPropertyById = async (id) => {
   try {
@@ -117,7 +123,13 @@ const getReview = async (id) => {
       include: [
         {
           model: Review,
-          attributes: ["review", "score", "user"],
+          attributes: ["review", "score"],
+          include: [
+            {
+              model: User,
+              attributes: ["name", "lastname"],
+            }
+          ]
         },
       ],
     });
@@ -130,6 +142,73 @@ const getReview = async (id) => {
   }
 };
 
+const getUserFavById = async (userId) => {
+  try {
+    const user = await User.findByPk(userId);
+
+    if (!user) {
+      throw new Error("Usuario no encontrado");
+    }
+    const propertiesId = user.favorite;
+    console.log(propertiesId);
+    const numericId = propertiesId.map((id) => parseInt(id, 10));
+
+    const favoritedProperties = await Property.findAll({
+      where: { id: numericId },
+    });
+    return favoritedProperties;
+  } catch (error) {
+    throw new Error("Error getting a user property");
+  }
+};
+
+const setUserFavorites = async (userId, houseId) => {
+  try {
+    // Buscar al usuario por su ID
+    const user = await User.findByPk(userId);
+
+    if (!user) {
+      return "Usuario no encontrado";
+    }
+    // Verificar si la casa ya está en los favoritos del usuario
+    if (user.favorite.includes(houseId)) {
+      return "La casa ya está en favoritos";
+    }
+
+    // Agregar la casa al array de favoritos del usuario
+    await user.update({
+      favorite: [...user.favorite, houseId],
+    });
+    console.log(user.favorite);
+
+    return "Casa agregada a favoritos con éxito";
+  } catch (error) {
+    return "Error interno del servidor";
+  }
+};
+
+const removeUserFav = async (userId, houseId) => {
+  console.log(userId, houseId);
+  try {
+    // Buscar al usuario por su ID
+    const user = await User.findByPk(userId);
+
+    if (!user) {
+      return "Usuario no encontrado";
+    }
+
+    // Eliminar la casa del array de favoritos del usuario
+    const updatedFavorites = user.favorite.filter((fav) => fav !== houseId);
+    await user.update({
+      favorite: updatedFavorites,
+    });
+
+    return "Casa eliminada de favoritos con éxito";
+  } catch (error) {
+    return "Error interno del servidor";
+  }
+};
+
 module.exports = {
   getUserById,
   createUserProperty,
@@ -138,4 +217,7 @@ module.exports = {
   deleteUserProperty,
   getReview,
   createUserReview,
+  getUserFavById,
+  setUserFavorites,
+  removeUserFav,
 };

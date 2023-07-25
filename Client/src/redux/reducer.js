@@ -3,6 +3,7 @@ import {
   GET_PROPERTY_DETAIL,
   GET_PROPERTIES_BY_NAME,
   POST_NEW_PROPERTY,
+  ENABLED_PROPERTY,
   APPLY_FILTERS,
   ORDER_PRICE,
   FIRST_PAGE,
@@ -11,11 +12,14 @@ import {
   SEARCH_BY_TITLE,
   GET_USERS,
   GET_USER,
+  ENABLED_USER,
   GET_ADMINS,
   REGISTER,
   LOGIN,
   LOGOUT,
-  UPDATE_USER
+  UPDATE_USER,
+  REVIEWS_PROPERTY,
+  GET_REVIEWS_PROPERTY
 } from "./actionTypes";
 
 const initialState = {
@@ -26,6 +30,8 @@ const initialState = {
   allUsers:[],
   admins: [],
   allAdmins: [],
+  review: [],
+  allReview: [],
   page: 1,
   searchTerm: "",
   loggedIn: Boolean(localStorage.getItem("loggedIn")) || false,
@@ -55,16 +61,23 @@ const rootReducer = (state = initialState, action) => {
         searchTerm: action.searchName,
         properties: action.payload,
       };
+
     case POST_NEW_PROPERTY:
       return{
         ...state
       }
+
     case SEARCH_BY_TITLE:
       return {
         ...state,
         searchTerm: action.searchName,
         properties: action.payload,
       }; 
+
+    case ENABLED_PROPERTY:
+      return{
+        ...state,
+      }
 
     case GET_USERS:
       return {
@@ -76,8 +89,19 @@ const rootReducer = (state = initialState, action) => {
     case GET_USER:
       return{
         ...state,
-        user: action.payload
+        user: action.payload,
       };
+    
+    case UPDATE_USER:
+      return{
+        ...state,
+        user: action.payload
+      }
+
+    case ENABLED_USER:
+      return{
+        ...state,
+      }
 
     case GET_ADMINS:
       const filteredAdmins = action.payload.filter((admin)=>{
@@ -181,6 +205,7 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         loggedIn: false,
+        enabledUser: true
       };
   
       case UPDATE_USER:
@@ -188,7 +213,21 @@ const rootReducer = (state = initialState, action) => {
         return{
           ...state,
           user: action.payload
+        };
+    
+      case REVIEWS_PROPERTY:
+        return{
+          ...state
         }
+      
+      case GET_REVIEWS_PROPERTY:
+        return {
+          ...state,
+          review: action.payload,
+          allReview: action.payload
+        };
+
+
 
     default:
       return state;
