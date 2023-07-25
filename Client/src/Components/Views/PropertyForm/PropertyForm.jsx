@@ -9,7 +9,6 @@ import { Link, useParams } from "react-router-dom";
 import * as Yup from "yup";
 import axios from "axios";
 
-
 const validationSchema = Yup.object().shape({
   title: Yup.string().required("Title is required"),
   type: Yup.string().required("Type is required"),
@@ -48,9 +47,9 @@ const PropertyForm = () => {
       const imageUrl = response.data.secure_url;
       values.image = imageUrl;
 
-      dispatch(newPostProperty(id,values))
+      dispatch(newPostProperty(id, values));
 
-      console.log(response.data);
+      console.log(values);
       alert("Created property");
       localStorage.setItem("Form", "{}");
       resetForm();
