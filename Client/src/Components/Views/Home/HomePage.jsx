@@ -104,7 +104,7 @@ function HomePage() {
         {currentPage>=3 && (<Pagination.Item onClick={prev2Page}>{currentPage-2}</Pagination.Item>)}
         {currentPage>=2 && (<Pagination.Item onClick={prev1Page}>{currentPage-1}</Pagination.Item>)}
         <Pagination.Item active={true}>{currentPage}</Pagination.Item>
-        {hasNextPage && (<Pagination.Item onClick={next1Page}>{currentPage+1}</Pagination.Item>)}
+        {!isLastPage && hasNextPage && (<Pagination.Item onClick={next1Page}>{currentPage+1}</Pagination.Item>)}
         <Pagination.Next
           onClick={nextPage}
           disabled={!hasNextPage || isLastPage}
