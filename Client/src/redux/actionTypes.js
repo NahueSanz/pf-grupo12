@@ -19,3 +19,4 @@ export const LOGIN = "LOGIN";
 export const LOGOUT = "LOGOUT";
 export const REVIEWS_PROPERTY= "REVIEWS_PROPERTY";
 export const GET_REVIEWS_PROPERTY= "GET_REVIEWS_PROPERTY";
+export const ENABLED_REVIEW= "ENABLED_REVIEW";

@@ -8,6 +8,10 @@
     font-size: 14px;    
 
 }
+.container2{
+    display: flex;
+    justify-content: space-between;
+}
 
 .containerName {
     display: flex;
@@ -41,3 +45,12 @@
     object-fit: cover; /* La imagen se ajustará para cubrir todo el contenedor sin perder la relación de aspecto */
   }
 
+  .btnDelete{
+    display: flex;
+    background-color: rgba(240, 248, 255, 0);
+    height: 19px;
+    width: 30px;
+    align-items: center;
+    border:none;
+    margin-top: 6px;
+  }

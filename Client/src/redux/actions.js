@@ -20,7 +20,8 @@ import {
   LOGIN,
   LOGOUT,
   REVIEWS_PROPERTY,
-  GET_REVIEWS_PROPERTY
+  GET_REVIEWS_PROPERTY,
+  ENABLED_REVIEW
 } from "./actionTypes";
 
 
@@ -289,6 +290,26 @@ export const getReviewsProperty = (idCasa) =>{
   };
 
 }
+
+export const changeEnabledReview = (id,enabled) => {
+  console.log(enabled)
+  return async function (dispatch) {
+    try {
+      const res = await axios.put(`${urlLocal}/user/review/enabled/${id}`, {enabled:enabled});
+      
+
+      return dispatch({
+        type: ENABLED_REVIEW,
+        payload:{
+          id,
+          value: enabled,
+        },
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
 
 
 
