@@ -22,7 +22,10 @@ import {
   LOGOUT,
   REVIEWS_PROPERTY,
   GET_REVIEWS_PROPERTY,
-  ENABLED_REVIEW
+  ENABLED_REVIEW,
+  RESET_DETAIL_PROPERTY,
+  GET_USER_PROPERTIES,
+  RESET_USER
 } from "./actionTypes";
 
 
@@ -326,4 +329,25 @@ export const changeEnabledReview = (id,enabled) => {
 };
 
 
+export const resetDetailProperty = () => ({
+  type: RESET_DETAIL_PROPERTY
+})
 
+
+export const getUserProperties = (id) => {
+  return async function(dispatch){
+    try {
+      const { data } = await axios.get(`${urlLocal}/user/${id}/property`);
+      return dispatch({
+        type: GET_USER_PROPERTIES,
+        payload: data
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+}
+
+export const resetUser = () => ({
+  type: RESET_USER
+})

@@ -21,13 +21,17 @@ import {
   UPDATE_USER,
   REVIEWS_PROPERTY,
   GET_REVIEWS_PROPERTY,
-  ENABLED_REVIEW
+  ENABLED_REVIEW,
+  RESET_DETAIL_PROPERTY,
+  GET_USER_PROPERTIES,
+  RESET_USER
 } from "./actionTypes";
 
 const initialState = {
   properties: [],
   propertyDetail: {},
   allProperties: [],
+  userProperties:[],
   propertiesAdmin: [],
   allPropertiesAdmin: [],
   users: [],
@@ -251,9 +255,21 @@ const rootReducer = (state = initialState, action) => {
           return el;
         }),
       };
-
-
-
+      case RESET_DETAIL_PROPERTY: 
+      return {
+        ...state,
+        propertyDetail: {}
+      }
+      case GET_USER_PROPERTIES : 
+        return {
+        ...state,
+        userProperties : action.payload
+      }
+      case RESET_USER: 
+      return {
+        ...state,
+        user: {}
+      }
     default:
       return state;
   }

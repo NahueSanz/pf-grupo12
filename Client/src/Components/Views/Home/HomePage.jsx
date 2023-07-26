@@ -18,6 +18,9 @@ function HomePage() {
     dispatch(actions.getPropertiesAvaible()).catch((error) => {
       console.error(error);
     });
+    dispatch(actions.getAllProperties()).catch((error) => {
+      console.error(error);
+    });
   }, [dispatch]);
 
   //Paginado
