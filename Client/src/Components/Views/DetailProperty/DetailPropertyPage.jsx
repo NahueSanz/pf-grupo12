@@ -75,7 +75,7 @@ function DetailPropertyPage() {
       <Container className={`${style.container} container-fluid container pt-5`}>
       <Row>
         <Col className='col-12 d-flex justify-content-end'> 
-          {currentUserIsOwner ? <DropdownProperty/> : null }
+          {currentUserIsOwner ? <DropdownProperty id={id}/> : null }
         </Col>
         <Col className='p-3 col-12'>
           <Carousel image={property.image}/>

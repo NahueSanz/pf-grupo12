@@ -102,24 +102,25 @@ const FormMyPerfil = () => {
       </label>
       <label>
         Lastname:
-        <input type="text" name="lastname" value={user.lastname} onChange={handleChange}  />
+        <input type="text" name="lastname" value={user.lastname} onChange={handleChange} />
       </label>
       <label>
         Country:
-        <input type="text" name="country" value={user.country} onChange={handleChange}  />
+        <input type="text" name="country" value={user.country} onChange={handleChange} />
       </label>
       <label>
         Phonenumber:
-        <input type="tel" name="phonenumber" value={user.phonenumber} onChange={handleChange}  />
+        <input type="tel" name="phonenumber" value={user.phonenumber} onChange={handleChange} />
       </label>
       <label>
         Languaje:
-        <input type="text" name="language" value={user.language} onChange={handleChange}  />
+        <input type="text" name="language" value={user.language} onChange={handleChange} />
       </label>
 
       <div className={`form-group ${styles.formGroupImg}`}>
         {/* <label htmlFor="image">Image</label> */}
         <input
+         
           type="file"
           name="image"
           onChange={handleImageChange}

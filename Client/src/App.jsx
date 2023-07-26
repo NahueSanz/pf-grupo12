@@ -62,7 +62,7 @@ const App = () => {
             <Route path="/payment" element={<Payment />} />
             <Route path="/Miperfilform" element={<FormPerfil />} />
             <Route path='/user/:id' element={<PerfilUser/>} />
-            <Route path="/update-my-property" element={<FormProperty />} />
+            <Route path="/update-my-property/:id" element={<FormProperty />} />
             {
               userRole==="admin"?<Route path="/admin-dashboard" element={<Dashboard />} />:null
             }

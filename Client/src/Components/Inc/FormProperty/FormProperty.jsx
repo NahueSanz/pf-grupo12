@@ -2,28 +2,20 @@ import React, { useState } from "react";
 import { Button, Card } from "react-bootstrap";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
+import { useDispatch } from 'react-redux';
+import { updateProperty } from '../../../redux/actions';
 import styles from "../FormProperty/FormProperty.module.css";
 import { countries } from "../../../utils/countries";
 import Swal from 'sweetalert2'
-import { useNavigate } from "react-router-dom";
-
-//FALTA AGREGAR CLOUDINARY
-
-
+import { useNavigate, useParams } from "react-router-dom";
+import axios from "axios";
 
 const FormMyProperty = () => {
+  const dispatch = useDispatch();
+  const { id } = useParams();
 
-  const navigate = useNavigate();
-  const initialValues = {
-    image: "",
-    title: "",
-    type: "",
-    address: "",
-    country: "",
-    guests: "",
-    price: "",
-    description: "",
-  };
+  const [image, setImage] = useState(null);
+  const [previewImage, setPreviewImage] = useState(null);
 
   const validationSchema = Yup.object().shape({
     title: Yup.string()
@@ -55,21 +47,47 @@ const FormMyProperty = () => {
       }),
   });
 
-  const handleSubmit = (values) => {
-    console.log(values);
-    //ACTUALIZAR PROPIEDAD CON NUEVOS VALUES. No sé si hay ruta en el back para actualizar
+  const handleImageChange = (e) => {
+    const selectedImage = e.target.files[0];
+    setImage(selectedImage);
 
-    Swal.fire({
-      title: `Property updated successfully`,
-      icon: 'success',
-      confirmButtonColor: '#3085d6',
-      confirmButtonText: 'Go to home',
-    }).then((result) => {
-      if (result.isConfirmed) {
-        navigate('/home');
+    if (selectedImage) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreviewImage(reader.result);
+      };
+      reader.readAsDataURL(selectedImage);
+    } else {
+      setPreviewImage(null);
+    }
+  };
+
+  const handleSubmit = async (values, { setSubmitting }) => {
+    try {
+      const formData = new FormData();
+      formData.append("file", image);
+      formData.append("upload_preset", "aloharsur88");
+      formData.append("cloud_name", "dgsnukgdu");
+
+      if (image) {
+        const response = await axios.post(
+          "https://api.cloudinary.com/v1_1/dgsnukgdu/image/upload",
+          formData
+        );
+        const imageUrl = response.data.secure_url;
+        values.image = imageUrl;
       }
-    })
+   
 
+      dispatch(updateProperty(id, values));
+
+      setImage(null);
+      setPreviewImage(null);
+      setSubmitting(false);
+    } catch (error) {
+      console.error("Error al actualizar la propiedad:", error);
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -99,30 +117,53 @@ const FormMyProperty = () => {
                 <small>Remember to fill all fields</small>
               </Card.Text>
             </div>
-            
           </div>
         </Card>
 
         <Formik
-          initialValues={initialValues}
+          initialValues={{
+            image: "",
+            title: "",
+            type: "",
+            address: "",
+            country: "",
+            guests: "",
+            price: "",
+            description: "",
+          }}
           validationSchema={validationSchema}
           onSubmit={handleSubmit}
         >
-          {({ isSubmitting }) => (
+          {({ isSubmitting, setFieldValue }) => (
             <Form className={styles.propertyForm}>
-              <div className={styles.field}>
-                <label htmlFor="">Image</label>
-                <Field type="file" name="image"  />
-                <ErrorMessage
+
+
+              <div className={`form-group ${styles.formGroupImg}`}>
+                {/* <label htmlFor="image">Image</label> */}
+                <input
+                  key="imageInput"
+                  type="file"
                   name="image"
-                  component="div"
-                  className="text-danger"
+                  onChange={(e) => {
+                    handleImageChange(e);
+                    setFieldValue('image', ''); // Limpia el valor del input para permitir cargar la misma imagen en actualizaciones posteriores
+                  }}
+
                 />
+                {previewImage && (
+                  <div className={styles.imageContainer}>
+                    <img
+                      src={previewImage}
+                      alt="Preview"
+                      className={styles.imagePreview}
+                    />
+                  </div>
+                )}
               </div>
 
               <div className={styles.field}>
                 <label htmlFor="">title</label>
-                <Field type="text" name="title"  />
+                <Field type="text" name="title" />
                 <ErrorMessage
                   name="title"
                   component="div"
@@ -132,16 +173,13 @@ const FormMyProperty = () => {
 
               <div className={styles.field}>
                 <label htmlFor="">Type</label>
-                <Field
-                      as="select"
-                      name="type"
-                    >
-                      <option value="">Select type</option>
-                      <option value="Apartment">Apartment</option>
-                      <option value="Hotel">Hotel</option>
-                      <option value="House">House</option>
-                      <option value="Cabin">Cabin</option>
-                    </Field>
+                <Field as="select" name="type">
+                  <option value="">Select type</option>
+                  <option value="Apartment">Apartment</option>
+                  <option value="Hotel">Hotel</option>
+                  <option value="House">House</option>
+                  <option value="Cabin">Cabin</option>
+                </Field>
                 <ErrorMessage
                   name="type"
                   component="div"
@@ -151,7 +189,7 @@ const FormMyProperty = () => {
 
               <div className={styles.field}>
                 <label htmlFor="">Address</label>
-                <Field type="tel" name="address"/>
+                <Field type="tel" name="address" />
                 <ErrorMessage
                   name="address"
                   component="div"
@@ -162,16 +200,17 @@ const FormMyProperty = () => {
               <div className={styles.field}>
                 <label htmlFor="">Country</label>
                 <Field
-                      as="select"
-                      name="country"
-                    >
-                      <option value="">Select Country</option>
-                      {countries.map((country) => (
-                        <option key={country} value={country}>
-                          {country}
-                        </option>
-                      ))}
-                    </Field>
+                  as="select"
+                  name="country"
+
+                >
+                  <option value="">Select Country</option>
+                  {countries.map((country) => (
+                    <option key={country} value={country}>
+                      {country}
+                    </option>
+                  ))}
+                </Field>
                 <ErrorMessage
                   name="country"
                   component="div"
@@ -181,7 +220,7 @@ const FormMyProperty = () => {
 
               <div className={styles.field}>
                 <label htmlFor="">Guests</label>
-                <Field type="number" name="guests" placeholder="Max guests" min="1"/>
+                <Field type="number" name="guests" placeholder="Max guests" min="1" />
                 <ErrorMessage
                   name="guests"
                   component="div"
@@ -196,6 +235,7 @@ const FormMyProperty = () => {
                   name="price"
                   placeholder="Price per night"
                   min="0"
+
                 />
                 <ErrorMessage
                   name="price"
@@ -206,16 +246,17 @@ const FormMyProperty = () => {
 
               <div className={styles.field}>
                 <label htmlFor="">Description</label>
-                <Field as="textarea" name="description"  />
+                <Field as="textarea" name="description" />
                 <ErrorMessage
                   name="description"
                   component="div"
                   className="text-danger"
+
                 />
               </div>
 
               <Button variant="primary" type="submit" disabled={isSubmitting}>
-                Create Property
+                Update Property
               </Button>
             </Form>
           )}

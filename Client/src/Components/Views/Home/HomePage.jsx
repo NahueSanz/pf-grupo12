@@ -25,12 +25,13 @@ function HomePage() {
 
   //Paginado
 
+
   const currentPage = useSelector((state) => state.page);
   const [itemsPerPage] = useState(8);
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = properties.slice(indexOfFirstItem, indexOfLastItem);
+  const currentItems = properties?.slice(indexOfFirstItem, indexOfLastItem);
 
   const isLastPage = indexOfLastItem === properties.length;
   const hasNextPage = currentItems.length >= itemsPerPage;

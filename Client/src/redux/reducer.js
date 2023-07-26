@@ -1,4 +1,4 @@
-import { 
+import {
   GET_PROPERTIES_AVAIBLE,
   GET_ALL_PROPERTIES,
   GET_PROPERTY_DETAIL,
@@ -24,14 +24,15 @@ import {
   ENABLED_REVIEW,
   RESET_DETAIL_PROPERTY,
   GET_USER_PROPERTIES,
-  RESET_USER
+  RESET_USER,
+  UPDATE_PROPERTY
 } from "./actionTypes";
 
 const initialState = {
   properties: [],
   propertyDetail: {},
   allProperties: [],
-  userProperties:[],
+  userProperties: [],
   propertiesAdmin: [],
   allPropertiesAdmin: [],
   users: [],
@@ -111,6 +112,16 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         user: action.payload
+      }
+
+    case UPDATE_PROPERTY:
+      const newProperties = state.properties.map(prop=>{
+        prop.id===action.payload.id;
+        return action.payload
+      })
+      return {
+        ...state,
+        properties: newProperties
       }
 
     case ENABLED_USER:
@@ -255,17 +266,17 @@ const rootReducer = (state = initialState, action) => {
           return el;
         }),
       };
-      case RESET_DETAIL_PROPERTY: 
+    case RESET_DETAIL_PROPERTY:
       return {
         ...state,
         propertyDetail: {}
       }
-      case GET_USER_PROPERTIES : 
-        return {
+    case GET_USER_PROPERTIES:
+      return {
         ...state,
-        userProperties : action.payload
+        userProperties: action.payload
       }
-      case RESET_USER: 
+    case RESET_USER:
       return {
         ...state,
         user: {}
