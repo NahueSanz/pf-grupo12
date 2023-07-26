@@ -31,8 +31,14 @@ function DetailPropertyPage() {
   const property = useSelector((state) => state.propertyDetail);
   const currentUserID = useSelector(state => state.id);
   const reviews = useSelector((state) => state.review);
-  const arrScore= reviews.map(el=>el.score)
-  const promedio= calcularPromedio(arrScore);
+  const arrScore = reviews.map(el => el.score);
+  
+  // Filtrar los scores solo cuando el correspondiente enabled sea true
+  const arrEnabled = reviews.map(el => el.enabled);
+  const enabledScoresArray = arrScore.filter((score, index) => arrEnabled[index]);
+
+  // Calcular el promedio solo para los scores habilitados
+  const promedio = calcularPromedio(enabledScoresArray);
   const owner = property.User?.name;
   const ownerImage = property.User?.image || profilePicGuess;
   const ownerId = property.User?.id
