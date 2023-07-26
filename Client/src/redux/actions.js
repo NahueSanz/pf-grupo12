@@ -1,6 +1,7 @@
 import axios from "axios";
 import { 
-  GET_PROPERTIES,
+  GET_PROPERTIES_AVAIBLE,
+  GET_ALL_PROPERTIES,
   GET_PROPERTY_DETAIL,
   GET_PROPERTIES_BY_NAME,
   POST_NEW_PROPERTY,
@@ -31,7 +32,7 @@ import {
 const urlLocal = `http://localhost:3001`; //URL GENERAL
 const url = `https://pf-grupo12-production.up.railway.app/`; //URL Data-base deploy
 
-//Trae todos los usuarios con rol user de la BDD
+//Trae todos los usuarios con rol user de la BDD(solo para admin)
 export function getUsers() {
   return async function (dispatch) {
     try {
@@ -77,7 +78,6 @@ export const updateUser = (id, userData) => {
 export const changeEnabledUser = (id,enabled) => {
   return async function (dispatch) {
     try {
-      console.log(enabled);
       const res = await axios.put(`${urlLocal}/admin/user/enabled/${id}`, enabled);
       return dispatch({
         type: ENABLED_USER,
@@ -88,7 +88,7 @@ export const changeEnabledUser = (id,enabled) => {
     }
   };
 };
-//Trae todos los usuarios con rol admin de la BDD
+//Trae todos los usuarios con rol admin de la BDD(solo para admin)
 export function getAdmins() {
   return async function (dispatch) {
     try {
@@ -102,13 +102,27 @@ export function getAdmins() {
     }
   };
 }
-//Trae todas las propiedades de la BDD
-export function getProperties() {
+//Trae todas las propiedades de la BDD (solo para admin)
+export function getAllProperties() {
+  return async function (dispatch) {
+    try {
+      const res = await axios.get(`${urlLocal}/admin/properties`); //All properties
+      return dispatch({
+        type: GET_ALL_PROPERTIES,
+        payload: res.data,
+      });
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+}
+//Trae todas las propiedades habilitadas de la BDD
+export function getPropertiesAvaible() {
   return async function (dispatch) {
     try {
       const res = await axios.get(`${urlLocal}/public/properties`); //All properties
       return dispatch({
-        type: GET_PROPERTIES,
+        type: GET_PROPERTIES_AVAIBLE,
         payload: res.data,
       });
     } catch (error) {

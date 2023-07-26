@@ -1,14 +1,16 @@
 import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import styles from "./AdminTableProperties.module.css"
 import {Table,TableBody,TableCell,TableContainer,TableHead,TableRow,TablePagination,Paper,TextField,Switch,Typography,Grid,Modal,Backdrop,Fade} from "@mui/material";import '@fontsource/roboto/400.css';
 import { Button, Card, Carousel} from "react-bootstrap";
 import { Link } from "react-router-dom";
+import { changeEnabledProperty } from "../../../../redux/actions";
 
 
 const AdminTableProperties = () => {   
-  //propiedades estado
-	const properties  = useSelector((state) => state.allProperties);
+  const dispatch = useDispatch();
+  //propiedades estado todas las propiedades tanto habilitadas como deshabilitadas
+	const properties  = useSelector((state) => state.propertiesAdmin);
 	const [ data, setData ] = useState(properties);
   //Paginado estados
 	const [page, setPage] = useState(0);
@@ -17,9 +19,15 @@ const AdminTableProperties = () => {
   const [searchText, setSearchText] = useState('');
 
   //Cambia el estado enabled de una propiedad
-  const handleToggle = (id) => {
+  const handleToggle = (id,enabled) => {
 		setData((prevState) =>
-			prevState.map((prop) => (prop.id === id ? { ...prop, enabled: !prop.enabled } : prop))
+			prevState.map((prop) => {
+        if (prop.id === id) {
+          dispatch(changeEnabledProperty(id,{ enabled: enabled}));
+          return { ...prop, enabled: enabled}
+        }
+        return prop;
+      })
 		);
 	};
   //Cambio de pagina
@@ -33,7 +41,7 @@ const AdminTableProperties = () => {
   };
   //Busqueda de propiedad mediante dueño
   const filteredData = data.filter((prop) =>
-    prop.title.toLowerCase().includes(searchText.toLowerCase())
+    (`${prop.User.name} ${prop.User.lastname}`).toLowerCase().includes(searchText.toLowerCase())
   );
 
   //FUNCIONES DE MODAL
@@ -95,7 +103,7 @@ const AdminTableProperties = () => {
                     checked={prop.enabled}
                     color="primary"
                     inputProps={{ 'aria-label': 'controlled' }}
-                    onChange={() => handleToggle(prop.id)}
+                    onChange={() => handleToggle(prop.id, !prop.enabled)}
                   />
                   <Typography variant="body2" color="textSecondary">
                     {prop.enabled ? 'Enabled' : 'Disabled'}

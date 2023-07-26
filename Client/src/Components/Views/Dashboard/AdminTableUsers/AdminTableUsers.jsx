@@ -1,28 +1,43 @@
-import { useEffect, useState } from "react";
-import {useSelector } from "react-redux";
-//import { Table } from 'react-bootstrap';
-//import Form from 'react-bootstrap/Form';
+import React, { useEffect, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import styles from "./AdminTableUsers.module.css";
-import {Table,TableBody,TableCell,TableContainer,TableHead,TableRow,TablePagination,Paper,TextField,Switch,Typography,Grid,Modal,Backdrop,Fade} from "@mui/material";import '@fontsource/roboto/400.css';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TablePagination, Paper, TextField, Switch, Typography, Grid, Modal, Backdrop, Fade } from "@mui/material";
 import '@fontsource/roboto/400.css';
-import {Card} from "react-bootstrap";
-
+import { Card } from "react-bootstrap";
+import { changeEnabledUser } from "../../../../redux/actions";
+import {updateProfile} from "firebase/auth";
 
 const AdminTableUsers = () => {
-	//users estado
-	const users = useSelector((state) => state.users);
-	const [ data, setData ] = useState(users);
-	//Paginado estados
-	const [page, setPage] = useState(0);
-	const [rowsPerPage, setRowsPerPage] = useState(5);
-	//Search estado
-	const [searchText, setSearchText] = useState('');
+  const dispatch = useDispatch();
+  //users estado
+  const users = useSelector((state) => state.users);
+  const [data, setData] = useState(users);
+  //Paginado estados
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
+  //Search estado
+  const [searchText, setSearchText] = useState('');
 
-	const handleToggle = (id) => {
-		setData((prevState) =>
-			prevState.map((user) => (user.id === id ? { ...user, enabled: !user.enabled } : user))
-		);
-	};
+  const handleToggle = (uid, isDisabled) => {
+    // Actualiza el estado de habilitación/inhabilitación del usuario en Firebase Authentication
+    updateProfile(uid, { disabled: isDisabled })
+      .then(() => {
+        // Si la actualización en Firebase es exitosa, actualiza el estado local 'data' para reflejar el cambio en el front-end
+        setData(prevData =>
+          prevData.map(user => {
+            if (user.id === uid) {
+              dispatch(changeEnabledUser(uid, { enabled: isDisabled }));
+              return { ...user, enabled: isDisabled };
+            }
+            return user;
+          })
+        );
+        //console.log("Estado de la cuenta actualizado correctamente.");
+      })
+      .catch((error) => {
+        console.error("Error al actualizar el estado de la cuenta:", error);
+      });
+  };
 
 	//Cambio de pagina
   const handleChangePage = (event, newPage) => {
@@ -35,7 +50,7 @@ const AdminTableUsers = () => {
   };
   //Busqueda de useriedad mediante dueño
   const filteredData = data.filter((user) =>
-    user.id.toLowerCase().includes(searchText.toLowerCase())
+  (`${user.name} ${user.lastname}`).toLowerCase().includes(searchText.toLowerCase())
   );
 
 
@@ -81,17 +96,17 @@ const AdminTableUsers = () => {
           <TableHead>
             <TableRow>
               <TableCell>ID</TableCell>
-              <TableCell>Nombre</TableCell>
-              <TableCell>Fecha de Registro</TableCell>
-							<TableCell># Propiedades</TableCell>
-              <TableCell>Habilitado</TableCell>
+              <TableCell>Name</TableCell>
+              <TableCell>Registration Date</TableCell>
+							<TableCell># Properties</TableCell>
+              <TableCell>Enabled</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {filteredData.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((user) => (
               <TableRow key={user.id} className={styles.fila}>
                 <TableCell onClick={() => openModal(user)} style={{ cursor: "pointer" }}>{user.id}</TableCell>
-								<TableCell onClick={() => openModal(user)} style={{ cursor: "pointer" }}>{user.name===null||user.lastaname===null?null:`${user.name} ${user.lastaname}`}</TableCell>
+								<TableCell onClick={() => openModal(user)} style={{ cursor: "pointer" }}>{user.name===null||user.lastname===null?null:`${user.name} ${user.lastname}`}</TableCell>
                 <TableCell>{user.createdAt}</TableCell>
                 <TableCell>{user.Properties.length}</TableCell>
                 <TableCell>
@@ -99,7 +114,7 @@ const AdminTableUsers = () => {
                     checked={user.enabled}
                     color="primary"
                     inputusers={{ 'aria-label': 'controlled' }}
-                    onChange={() => handleToggle(user.id)}
+                    onChange={() => handleToggle(user.id, !user.enabled)}
                   />
                   <Typography variant="body2" color="textSecondary">
                     {user.enabled ? 'Enabled' : 'Disabled'}

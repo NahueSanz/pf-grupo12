@@ -25,7 +25,9 @@ function NavBar() {
   const [title, setTitle] = useState("");
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const id = useSelector(state => state.id)
+  const id = useSelector(state => state.id);
+  const user = useSelector(state => state.user);
+
 
   const handleChange = (event) => {
     setTitle(event.target.value)
@@ -94,7 +96,9 @@ function NavBar() {
               <Dropdown.Item as={Link} to="/new-property">New Property</Dropdown.Item>
 
               <Dropdown.Divider />
-              <Dropdown.Item as={Link} to={`/admin-dashboard`}>Admin Dashboard</Dropdown.Item>
+              {/* Solo renderiza el boton si eres rol admin */
+                user.role==="admin"?<Dropdown.Item as={Link} to={`/admin-dashboard`}>Admin Dashboard</Dropdown.Item>:null
+              }
               <Dropdown.Item as={Link} to={`/user/${id}`}>Profile</Dropdown.Item>
               <Dropdown.Item as={Link} to="/update-my-property">Update My Property</Dropdown.Item>
               <Dropdown.Item as={Link} to="/" onClick={logoutHandle}>Close sesion</Dropdown.Item>

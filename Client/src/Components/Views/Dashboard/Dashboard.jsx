@@ -6,7 +6,7 @@ import style from "./Dashboard.module.css";
 import { Link } from "react-router-dom";
 import AdminTableUsers from './AdminTableUsers/AdminTableUsers';
 import AdminTableProperties from './AdminTableProperties/AdminTableProperties';
-import { getProperties, getUsers } from "../../../redux/actions";
+import { getAllProperties, getUsers } from "../../../redux/actions";
 
 const Dashboard = () => {
 	const dispatch = useDispatch();
@@ -25,7 +25,8 @@ const Dashboard = () => {
 	};
 
 	useEffect(()=>{
-		dispatch(getProperties()).catch((error) => {
+		//trae todas las propiedades habilitadas y deshabilitadas
+		dispatch(getAllProperties()).catch((error) => {
 				console.error(error);
 		});
 		dispatch(getUsers()).catch((error) => {

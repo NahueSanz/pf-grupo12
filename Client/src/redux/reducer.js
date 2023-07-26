@@ -1,5 +1,6 @@
-import {
-  GET_PROPERTIES,
+import { 
+  GET_PROPERTIES_AVAIBLE,
+  GET_ALL_PROPERTIES,
   GET_PROPERTY_DETAIL,
   GET_PROPERTIES_BY_NAME,
   POST_NEW_PROPERTY,
@@ -30,7 +31,9 @@ const initialState = {
   properties: [],
   propertyDetail: {},
   allProperties: [],
-  userProperties: [],
+  userProperties:[],
+  propertiesAdmin: [],
+  allPropertiesAdmin: [],
   users: [],
   allUsers: [],
   admins: [],
@@ -46,7 +49,14 @@ const initialState = {
 
 const rootReducer = (state = initialState, action) => {
   switch (action.type) {
-    case GET_PROPERTIES:
+    case GET_ALL_PROPERTIES:
+      return {
+        ...state,
+        propertiesAdmin: action.payload,
+        allPropertiesAdmin: action.payload,
+      };
+
+    case GET_PROPERTIES_AVAIBLE:
       return {
         ...state,
         properties: action.payload,
@@ -210,7 +220,7 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         loggedIn: false,
-        enabledUser: true
+        user: {},
       };
 
     case UPDATE_USER:
