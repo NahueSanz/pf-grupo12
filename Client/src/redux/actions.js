@@ -29,14 +29,14 @@ import {
 } from "./actionTypes";
 
 
-const urlLocal = `http://localhost:3001`; //URL GENERAL
-const url = `https://pf-grupo12-production.up.railway.app/`; //URL Data-base deploy
+//const url = `http://localhost:3001`; //URL GENERAL
+const url = `pf-grupo12-production-75d0.up.railway.app`; //URL Data-base deploy
 
 //Trae todos los usuarios con rol user de la BDD(solo para admin)
 export function getUsers() {
   return async function (dispatch) {
     try {
-      const res = await axios.get(`${urlLocal}/admin/users`); //All users
+      const res = await axios.get(`${url}/admin/users`); //All users
       return dispatch({
         type: GET_USERS,
         payload: res.data,
@@ -50,7 +50,7 @@ export function getUsers() {
 export const getUser = (id) => {
   return async function (dispatch) {
     try {
-      const res = await axios.get(`${urlLocal}/user/info/${id}`); //get User
+      const res = await axios.get(`${url}/user/info/${id}`); //get User
       return dispatch({
         type: GET_USER,
         payload: res.data,
@@ -64,7 +64,7 @@ export const getUser = (id) => {
 export const updateUser = (id, userData) => {
   return async function (dispatch) {
     try {
-      const res = await axios.put(`${urlLocal}/user/update/${id}`, userData);
+      const res = await axios.put(`${url}/user/update/${id}`, userData);
       return dispatch({
         type: UPDATE_USER,
         payload: res.data,
@@ -78,7 +78,7 @@ export const updateUser = (id, userData) => {
 export const changeEnabledUser = (id,enabled) => {
   return async function (dispatch) {
     try {
-      const res = await axios.put(`${urlLocal}/admin/user/enabled/${id}`, enabled);
+      const res = await axios.put(`${url}/admin/user/enabled/${id}`, enabled);
       return dispatch({
         type: ENABLED_USER,
         payload: res.data,
@@ -92,7 +92,7 @@ export const changeEnabledUser = (id,enabled) => {
 export function getAdmins() {
   return async function (dispatch) {
     try {
-      const res = await axios.get(`${urlLocal}/admin/admins`); //All admins
+      const res = await axios.get(`${url}/admin/admins`); //All admins
       return dispatch({
         type: GET_ADMINS,
         payload: res.data,
@@ -106,7 +106,7 @@ export function getAdmins() {
 export function getAllProperties() {
   return async function (dispatch) {
     try {
-      const res = await axios.get(`${urlLocal}/admin/properties`); //All properties
+      const res = await axios.get(`${url}/admin/properties`); //All properties
       return dispatch({
         type: GET_ALL_PROPERTIES,
         payload: res.data,
@@ -120,7 +120,7 @@ export function getAllProperties() {
 export function getPropertiesAvaible() {
   return async function (dispatch) {
     try {
-      const res = await axios.get(`${urlLocal}/public/properties`); //All properties
+      const res = await axios.get(`${url}/public/properties`); //All properties
       return dispatch({
         type: GET_PROPERTIES_AVAIBLE,
         payload: res.data,
@@ -134,7 +134,7 @@ export function getPropertiesAvaible() {
 export function searchPropertiesByTitle(title) {
   return async function (dispatch) {
     try {
-      const res = await axios.get(`${urlLocal}/public/properties?title=${title}`); //Search properties by title
+      const res = await axios.get(`${url}/public/properties?title=${title}`); //Search properties by title
       return dispatch({
         type: SEARCH_BY_TITLE,
         searchName: title,
@@ -149,7 +149,7 @@ export function searchPropertiesByTitle(title) {
 export function getPropertyDetail(id) {
   return async function (dispatch) {
     try {
-      const res = await axios.get(`${urlLocal}/public/property/detail/${id}`); //One property
+      const res = await axios.get(`${url}/public/property/detail/${id}`); //One property
       //console.log(res.data);
       return dispatch({
         type: GET_PROPERTY_DETAIL,
@@ -165,7 +165,7 @@ export function getPropertiesByName(searchName) {
   //SIN USAR? QUIZA SE PUEDA BORRAR
   return async function (dispatch) {
     try {
-      const res = await axios.get(`${urlLocal}/countries/name?name=${searchName}`); //Property by name
+      const res = await axios.get(`${url}/countries/name?name=${searchName}`); //Property by name
       return dispatch({
         type: GET_PROPERTIES_BY_NAME,
         searchName: searchName,
@@ -180,7 +180,7 @@ export function getPropertiesByName(searchName) {
 export function newPostProperty(id,values) {
   return async function (dispatch) {
     try {
-      const res = await axios.post(`${urlLocal}/user/${id}/property`, values);
+      const res = await axios.post(`${url}/user/${id}/property`, values);
       //const res = await axios.post(`${url}/user/${id}/property`, values);
       return dispatch({
         type: POST_NEW_PROPERTY,
@@ -195,7 +195,7 @@ export function newPostProperty(id,values) {
 export const changeEnabledProperty = (id,enabled) => {
   return async function (dispatch) {
     try {
-      const res = await axios.put(`${urlLocal}/admin/property/enabled/${id}`, enabled);
+      const res = await axios.put(`${url}/admin/property/enabled/${id}`, enabled);
       return dispatch({
         type: ENABLED_PROPERTY,
         payload: res.data,
@@ -255,7 +255,7 @@ export function nextPage(quantity) {
 export function register(userData) {
   return async function (dispatch) {
     try {
-      const res = await axios.post(`${urlLocal}/public/register`,userData);
+      const res = await axios.post(`${url}/public/register`,userData);
       //const res = await axios.post(`${url}/public/register`,userData);
      
       return dispatch({
@@ -281,7 +281,7 @@ export const logout = () => ({
 export const postReviewsProperty = (idCasa, values)=>{
   return async function (dispatch){
         try {
-          const res = await axios.post(`${urlLocal}/user/property/${idCasa}/review`, values); 
+          const res = await axios.post(`${url}/user/property/${idCasa}/review`, values); 
 
           return dispatch({
             type: REVIEWS_PROPERTY,
@@ -296,7 +296,7 @@ export const postReviewsProperty = (idCasa, values)=>{
 export const getReviewsProperty = (idCasa) =>{
   return async function (dispatch) {
     try {
-      const res = await axios.get(`${urlLocal}/user/property/${idCasa}/review`);
+      const res = await axios.get(`${url}/user/property/${idCasa}/review`);
       return dispatch({
         type: GET_REVIEWS_PROPERTY,
         payload: res.data.Reviews,
@@ -312,7 +312,7 @@ export const changeEnabledReview = (id,enabled) => {
   console.log(enabled)
   return async function (dispatch) {
     try {
-      const res = await axios.put(`${urlLocal}/user/review/enabled/${id}`, {enabled:enabled});
+      const res = await axios.put(`${url}/user/review/enabled/${id}`, {enabled:enabled});
       
 
       return dispatch({
@@ -337,7 +337,7 @@ export const resetDetailProperty = () => ({
 export const getUserProperties = (id) => {
   return async function(dispatch){
     try {
-      const { data } = await axios.get(`${urlLocal}/user/${id}/property`);
+      const { data } = await axios.get(`${url}/user/${id}/property`);
       return dispatch({
         type: GET_USER_PROPERTIES,
         payload: data
