@@ -96,7 +96,7 @@ function NavBar() {
               <Dropdown.Divider />
               <Dropdown.Item as={Link} to={`/admin-dashboard`}>Admin Dashboard</Dropdown.Item>
               <Dropdown.Item as={Link} to={`/user/${id}`}>Profile</Dropdown.Item>
-              <Dropdown.Item as={Link} to="/update-my-property">Update My Property</Dropdown.Item>
+              <Dropdown.Item as={Link} to="/update-my-property">My properties</Dropdown.Item>
               <Dropdown.Item as={Link} to="/" onClick={logoutHandle}>Close sesion</Dropdown.Item>
 
             </DropdownButton>

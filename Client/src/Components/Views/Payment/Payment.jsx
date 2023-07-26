@@ -42,7 +42,17 @@ function Payment() {
     */
 
     // Aquí puedes realizar la lógica que deseas ejecutar cuando el pago se complete con éxito
-    console.log("Payment succeeded!");
+    Swal.fire({
+      title: `Payment was successfull, enjoy your trip!`,
+      text: "Reservation details will be sent to your email",
+      icon: 'success',
+      confirmButtonColor: '#3085d6',
+      confirmButtonText: 'Go to home'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        navigate('/home');
+      }
+    })
   }
 
   return (

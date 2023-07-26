@@ -6,6 +6,7 @@ import { countries } from "../../../utils/countries";
 import styles from "./PropertyForm.module.css";
 import { newPostProperty } from "../../../redux/actions";
 import { Link, useParams, useNavigate} from "react-router-dom";
+import Swal from 'sweetalert2'
 
 import * as Yup from "yup";
 import axios from "axios";
@@ -63,12 +64,25 @@ const PropertyForm = () => {
 
       dispatch(newPostProperty(id, values));
 
-      navigate('/home');
+      
 
-
-      // alert("Created property");
       localStorage.setItem("Form", "{}");
       resetForm();
+
+      Swal.fire({
+        title: `Property published successfully`,
+        text: "Proced to home?",
+        icon: 'success',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Go to home',
+        cancelButtonText:`Skeep posting`
+      }).then((result) => {
+        if (result.isConfirmed) {
+          navigate('/home');
+        }
+      })
     } catch (error) {
       console.error(error);
     } finally {
@@ -155,7 +169,6 @@ const PropertyForm = () => {
                     type="text"
                     name="title"
                     className={`form-control ${styles.formControl}`}
-                    required
                   />
                   <ErrorMessage
                     name="title"
@@ -173,7 +186,6 @@ const PropertyForm = () => {
                       as="select"
                       name="type"
                       className={`form-control ${styles.formControl}`}
-                      required
                     >
                       <option value="">Select type</option>
                       <option value="Apartment">Apartment</option>
@@ -196,7 +208,6 @@ const PropertyForm = () => {
                       as="select"
                       name="country"
                       className={`form-control ${styles.formControl}`}
-                      required
                     >
                       <option value="">Países</option>
                       {countries.map((country) => (
@@ -219,7 +230,6 @@ const PropertyForm = () => {
                     type="text"
                     name="address"
                     className={`form-control ${styles.formControl}`}
-                    required
                   />
                   <ErrorMessage
                     name="address"
@@ -237,7 +247,6 @@ const PropertyForm = () => {
                       type="date"
                       name="startDate"
                       className={`form-control ${styles.formControl}`}
-                      required
                     />
                     <ErrorMessage
                       name="startDate"
@@ -252,7 +261,6 @@ const PropertyForm = () => {
                       type="number"
                       name="price"
                       className={`form-control ${styles.formControl}`}
-                      required
                     />
                     <ErrorMessage
                       name="price"
@@ -271,7 +279,6 @@ const PropertyForm = () => {
                       type="date"
                       name="endDate"
                       className={`form-control ${styles.formControl}`}
-                      required
                     />
                     <ErrorMessage
                       name="endDate"
@@ -286,7 +293,6 @@ const PropertyForm = () => {
                       type="number"
                       name="guests"
                       className={`form-control ${styles.formControl}`}
-                      required
                     />
                     <ErrorMessage
                       name="guests"
@@ -307,7 +313,6 @@ const PropertyForm = () => {
                     rows={3}
                     name="description"
                     className={`form-control ${styles.formControl}`}
-                    required
                   />
                   <ErrorMessage
                     name="description"
@@ -322,7 +327,6 @@ const PropertyForm = () => {
                     type="file"
                     name="image"
                     onChange={handleImageChange}
-                    required
                   />
                   {previewImage && (
                     <div className={styles.imageContainer}>
