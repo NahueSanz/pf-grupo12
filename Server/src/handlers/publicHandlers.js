@@ -48,8 +48,8 @@ const checkUserHandle = async (req, res) => {
   }
 };
 
-//Todas las propiedades o todas las propiedas encontradas por search
-const getAllPropertiesHandler = async (req, res) => {
+//Todas las propiedades habilitadas o todas las propiedas encontradas por search
+const getAllPropertiesEnabledHandler= async (req, res) => {
   const { title } = req.query;
   try {
     //Si se busca por search
@@ -87,6 +87,6 @@ const getPropertyByIdHandler = async (req, res) => {
 
 module.exports = {
   registerUserHandler,
-  getAllPropertiesHandler,
+  getAllPropertiesEnabledHandler,
   getPropertyByIdHandler,
 };

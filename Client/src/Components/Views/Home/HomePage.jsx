@@ -15,10 +15,7 @@ function HomePage() {
   const searchTerm = useSelector((state)=>state.searchTerm);
   
   useEffect(() => {
-    dispatch(actions.getProperties()).catch((error) => {
-      console.error(error);
-    });
-    dispatch(actions.getUser(id)).catch((error) => {
+    dispatch(actions.getPropertiesAvaible()).catch((error) => {
       console.error(error);
     });
   }, [dispatch]);
@@ -68,7 +65,8 @@ function HomePage() {
   };
 
   useEffect(() => {
-    dispatch(actions.getProperties());
+    //solo cargan las propiedades habilitadas
+    dispatch(actions.getPropertiesAvaible());
     dispatch(actions.firstPage())
   }, []);
 

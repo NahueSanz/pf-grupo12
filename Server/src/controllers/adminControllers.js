@@ -1,4 +1,5 @@
 const { User, Property, Review } = require("../db");
+const admin = require("../../firebase");
 /**************** CONTROLLERS DEL USUARIO AUTORIZADO(ADMIN) ****************/
 
 //Obtener todos los usuarios con rol usuario de la BDD
@@ -39,20 +40,44 @@ const getAllAdmins = async () => {
     throw new Error("Error while getting admins");
   }
 };
+//Obtener todos los usuario de la BDD
+const getAllProperties = async () => {
+  try {
+    const properties = await Property.findAll({
+      include: [
+        {
+          model: Review,
+          attributes: ["score"],
+        },
+        {
+          model: User,
+          attributes: ["name","lastname"],
+        }
+      ],
+    });
+    return properties;
+  } catch (error) {
+    throw new Error("Error while getting properties");
+  }
+};
 //Cambiar si un usurio esta habilitado o no
 const enabledUser = async (id,enabled) => {
   try {
-    console.log(enabled);
     const user = await User.findByPk(id);
     if (!user) {
       throw new Error("User not found");
     }
     await user.update({enabled: enabled});
     await user.save();
+    admin.auth().updateUser(id,{disabled:!enabled})
+      .then((userRecord) => {
+        const userAuth = userRecord.toJSON()
+        console.log(`Usuario ${userAuth.email} de Firebase actualizo correctamente su campo disabled: ${userAuth.disabled}` );
+      })
     if (!enabled) {
       throw new Error("User disabled");
     }
-    return {message:"User enabled", enabled:enabled};
+    return {message: 'User updated successfully', enabled:enabled};
     
   } catch (error) {
     throw new Error(error.message);
@@ -95,4 +120,4 @@ const getReviewByPk = async (id) => {
   }
 };
 
-module.exports = { getAllUsers, getReviewByPk, getAllAdmins, enabledUser, enabledProperty };
+module.exports = { getAllUsers, getReviewByPk, getAllAdmins, getAllProperties, enabledUser, enabledProperty };

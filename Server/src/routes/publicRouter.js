@@ -2,7 +2,7 @@ const { Router } = require("express");
 
 const {
   registerUserHandler,
-  getAllPropertiesHandler,
+  getAllPropertiesEnabledHandler,
   getPropertyByIdHandler,
 } = require("../handlers/publicHandlers");
 
@@ -12,8 +12,8 @@ const publicRouter = Router();
 
 //Registro de usuario
 publicRouter.post("/register", registerUserHandler);
-//Obtener todas las propiedades o traer todas por search
-publicRouter.get("/properties", getAllPropertiesHandler);
+//Obtener todas las propiedades habilitadas o traer todas por search habilitadas
+publicRouter.get("/properties", getAllPropertiesEnabledHandler);
 //Obtener el detalle de la propiedad
 publicRouter.get("/property/detail/:id", getPropertyByIdHandler);
 

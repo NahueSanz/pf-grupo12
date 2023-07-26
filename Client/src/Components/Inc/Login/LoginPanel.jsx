@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
 import firebaseApp from "../../../fb";
 import Alert from "react-bootstrap/Alert";
-import { getUser, register } from "../../../redux/actions";
+import { register } from "../../../redux/actions";
 import style from "./LoginPanel.module.css";
 import {
   getAuth,
@@ -22,7 +22,6 @@ const gProvider = new GoogleAuthProvider();
 function LoginPanel() {
   const redVariant = "danger";
   const dispatch = useDispatch();
-  const userDB = useSelector(state=>state.user);
   //Para mostrar o no el formulario de login
   const [show, setShow] = useState(false);
   //Para mostrar o no la contraseña
@@ -64,10 +63,6 @@ function LoginPanel() {
         formData.email,
         formData.password
       );
-      if (user) {
-        dispatch(getUser(user.uid));
-      }
-
 
       setFormData({
         email: "",
@@ -111,7 +106,6 @@ function LoginPanel() {
           name,
           lastname
         };
-        dispatch(getUser(id));
         //Tratar de no crear un usuario si ya estas registrado
         //Crea el usuario en la BDD
         dispatch(register(userData));

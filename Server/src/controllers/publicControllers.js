@@ -8,6 +8,7 @@ const getPropertiesbyTitle = async (title) => {
   try {
     const properties = await Property.findAll({
       where: {
+        enabled:true,
         title: { [Op.iLike]: "%" + title + "%" },
       },
     });
@@ -35,10 +36,13 @@ const createUser = async (email,id, name, lastname) => {
   return newUser;
 };
 
-//Obtener todas las propiedades de la BDD
+//Obtener todas las propiedades de la BDD que esten habilitadas
 const getAllProperties = async () => {
   try {
     const properties = await Property.findAll({
+      where:{
+        enabled:true
+      },
       include: [
         {
           model: Review,

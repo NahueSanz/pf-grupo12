@@ -1,6 +1,7 @@
 const {
   getAllUsers,
   getAllAdmins,
+  getAllProperties,
   enabledUser,
   enabledProperty,
   getReviewByPk,
@@ -27,6 +28,18 @@ const getAllAdminsHandler = async (req, res) => {
       throw Error("There are not Admins");
     }
     res.status(200).json(admins);
+  } catch (error) {
+    res.status(404).json({ error: error.message });
+  }
+};
+//Todos los usuarios con rol admin
+const getAllPropertiesHandler = async (req, res) => {
+  try {
+    const properties = await getAllProperties();
+    if (properties.length === 0) {
+      throw Error("There are not Properties");
+    }
+    res.status(200).json(properties);
   } catch (error) {
     res.status(404).json({ error: error.message });
   }
@@ -69,6 +82,7 @@ const changeEnableReview = (req, res) => {
 module.exports = {
   getAllUsersHandler,
   getAllAdminsHandler,
+  getAllPropertiesHandler,
   changeEnabledUserHandler,
   changeEnabledPropertyHandler,
   changeEnableReview,

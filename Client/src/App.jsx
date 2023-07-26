@@ -12,7 +12,7 @@ import { useLocation } from "react-router-dom";
 import NavBar from "./Components/Inc/NavBar/NavBar";
 import Footer from "./Components/Inc/Footer/Footer";
 import Landing from "./Components/Views/Landing/Landing";
-import { login, logout } from "./redux/actions";
+import { getUser, login, logout } from "./redux/actions";
 import FormPerfil from "./Components/Inc/FormPerfil/FormPerfil";
 import FormProperty from "./Components/Inc/FormProperty/FormProperty";
 import Payment from "./Components/Views/Payment/Payment";
@@ -28,6 +28,7 @@ const App = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const loggedIn = useSelector(state => state.loggedIn);
+  const userRole = useSelector(state => state.user.role)
 
   useEffect(() => {
 
@@ -35,7 +36,8 @@ const App = () => {
     auth.onAuthStateChanged((user) => {
       if (user) {
         // El usuario está autenticado
-        dispatch(login(user.uid))
+        dispatch(getUser(user.uid));
+        dispatch(login(user.uid));
       } else {
         // El usuario no está autenticado
         dispatch(logout())
@@ -61,7 +63,9 @@ const App = () => {
             <Route path="/Miperfilform" element={<FormPerfil />} />
             <Route path='/user/:id' element={<PerfilUser/>} />
             <Route path="/update-my-property" element={<FormProperty />} />
-            <Route path="/admin-dashboard" element={<Dashboard />} />
+            {
+              userRole==="admin"?<Route path="/admin-dashboard" element={<Dashboard />} />:null
+            }
           </Routes>
           {location.pathname !== "/" && location.pathname !== "/admin-dashboard" && <Footer />}
         </>
