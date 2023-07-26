@@ -26,3 +26,8 @@
   width: 300px;
   margin: 20px;
 }
+
+.errorMessage{
+  font-size: 13px!important;
+  height: 0;
+}

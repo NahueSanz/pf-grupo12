@@ -20,7 +20,8 @@ import {
   LOGOUT,
   UPDATE_USER,
   REVIEWS_PROPERTY,
-  GET_REVIEWS_PROPERTY
+  GET_REVIEWS_PROPERTY,
+  ENABLED_REVIEW
 } from "./actionTypes";
 
 const initialState = {
@@ -30,7 +31,7 @@ const initialState = {
   propertiesAdmin: [],
   allPropertiesAdmin: [],
   users: [],
-  allUsers:[],
+  allUsers: [],
   admins: [],
   allAdmins: [],
   review: [],
@@ -73,7 +74,7 @@ const rootReducer = (state = initialState, action) => {
       };
 
     case POST_NEW_PROPERTY:
-      return{
+      return {
         ...state
       }
 
@@ -82,10 +83,10 @@ const rootReducer = (state = initialState, action) => {
         ...state,
         searchTerm: action.searchName,
         properties: action.payload,
-      }; 
+      };
 
     case ENABLED_PROPERTY:
-      return{
+      return {
         ...state,
       }
 
@@ -97,27 +98,27 @@ const rootReducer = (state = initialState, action) => {
       };
 
     case GET_USER:
-      return{
+      return {
         ...state,
         user: action.payload,
       };
-    
+
     case UPDATE_USER:
-      return{
+      return {
         ...state,
         user: action.payload
       }
 
     case ENABLED_USER:
-      return{
+      return {
         ...state,
       }
 
     case GET_ADMINS:
-      const filteredAdmins = action.payload.filter((admin)=>{
-        admin.id!==localStorage.getItem("loggedIn");
+      const filteredAdmins = action.payload.filter((admin) => {
+        admin.id !== localStorage.getItem("loggedIn");
       })
-      return{
+      return {
         ...state,
         admins: filteredAdmins,
         allAdmins: action.payload,
@@ -189,26 +190,26 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         page: state.page + action.payload,
-      }; 
+      };
 
     case PREV_PAGE:
       return {
         ...state,
         page: state.page - action.payload,
       };
-    
+
     case REGISTER:
       return {
         ...state
       };
 
     case LOGIN:
-        localStorage.setItem("loggedIn", action.payload);
-        return {
-          ...state,
-          loggedIn: action.payload,
-          id: action.payload
-        };
+      localStorage.setItem("loggedIn", action.payload);
+      return {
+        ...state,
+        loggedIn: action.payload,
+        id: action.payload
+      };
 
     case LOGOUT:
       localStorage.setItem("loggedIn", "");
@@ -217,25 +218,39 @@ const rootReducer = (state = initialState, action) => {
         loggedIn: false,
         user: {},
       };
-  
-      case UPDATE_USER:
-        localStorage.setItem("loggedIn", action.payload);
-        return{
-          ...state,
-          user: action.payload
-        };
-    
-      case REVIEWS_PROPERTY:
-        return{
-          ...state
-        }
-      
-      case GET_REVIEWS_PROPERTY:
-        return {
-          ...state,
-          review: action.payload,
-          allReview: action.payload
-        };
+
+    case UPDATE_USER:
+      localStorage.setItem("loggedIn", action.payload);
+      return {
+        ...state,
+        user: action.payload
+      };
+
+    case REVIEWS_PROPERTY:
+      return {
+        ...state
+      }
+
+    case GET_REVIEWS_PROPERTY:
+      return {
+        ...state,
+        review: action.payload,
+        allReview: action.payload
+      };
+
+    case ENABLED_REVIEW:
+      return {
+        ...state,
+        review: state.review.map(el => {
+          if (el.id === action.payload.id) {
+            return {
+              ...el,
+              enabled: action.payload.value,
+            };
+          }
+          return el;
+        }),
+      };
 
 
 

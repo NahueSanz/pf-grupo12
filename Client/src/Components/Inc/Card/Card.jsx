@@ -22,11 +22,17 @@ function CardComponent({
 }) {
   const properties = useSelector((state) => state.properties);
   const property = properties.find((property) => property.id === id);
-  
 
+  const enabledArray = property.Reviews?.map((review) => review.enabled);
   const scoresArray = property.Reviews?.map((review) => review.score) ?? [];
-  const promedio = calcularPromedio(scoresArray);
- 
+
+  // Filtrar los scores solo cuando el enabled sea true
+  const enabledScoresArray = scoresArray.filter((score, index) => enabledArray[index]);
+
+  // Calcular el promedio solo para los scores habilitados
+  const promedio = calcularPromedio(enabledScoresArray);
+
+  console.log(enabledArray);
 
   return (
     <Card className={style.card} style={{ width: "20vw", height: "25vw" }}>

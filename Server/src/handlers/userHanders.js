@@ -9,6 +9,7 @@ const {
   getUserFavById,
   setUserFavorites,
   removeUserFav,
+  enabledReview,
 } = require("../controllers/userControllers");
 /************** HANDLERS DEL USUARIO AUTENTICADO ****************/
 
@@ -241,6 +242,20 @@ const createPropertyReview = async (req, res) => {
     res.status(404).json({ error: error.message });
   }
 };
+
+const changeEnabledReviewHandler = async (req, res) => {
+  const { id } = req.params;
+  const  {enabled}  = req.body;
+  try {
+    const updateEnabledUser = await enabledReview(id,enabled);
+    res.status(200).json(updateEnabledUser);
+  
+   
+  } catch (error) {
+    res.status(404).json({ message: error.message, enabled: false });
+  }
+};
+
 const getUserFavs = async (req, res) => {
   const { userId } = req.params;
   try {
@@ -291,4 +306,5 @@ module.exports = {
   getUserFavs,
   setUserFavs,
   deleteUserFav,
+  changeEnabledReviewHandler,
 };
