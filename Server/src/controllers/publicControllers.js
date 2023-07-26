@@ -42,7 +42,7 @@ const getAllProperties = async () => {
       include: [
         {
           model: Review,
-          attributes: ["score"],
+          attributes: ["score", "enabled"],
         },
         {
           model: User,

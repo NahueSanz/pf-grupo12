@@ -64,13 +64,13 @@ const createUserProperty = async (
 };
 
 const createUserReview = async (review, score, user, idCasa) => {
-  const existingReview = await Review.findOne({
-    where: { UserId: user, PropertyId: idCasa },
-  });
-  console.log(existingReview, idCasa);
-  if (existingReview) {
-    throw new Error("You have already posted one review in this property");
-  }
+  // const existingReview = await Review.findOne({
+  //   where: { UserId: user, PropertyId: idCasa },
+  // });
+
+  // if (existingReview) {
+  //   throw new Error("You have already posted one review in this property");
+  // }
   const newReview = await Review.create({
     review,
     score,
@@ -78,6 +78,22 @@ const createUserReview = async (review, score, user, idCasa) => {
     PropertyId: idCasa,
   });
   return newReview;
+};
+
+const enabledReview = async (id,enabled) => {
+  try {
+
+    const review = await Review.findByPk(id);
+    if (!review) {
+      throw new Error("Review not found");
+    }
+    await review.update({enabled: enabled});
+    await review.save();
+    return {message:"Review disabled", enabled:enabled};
+    
+  } catch (error) {
+    throw new Error(error.message);
+  }
 };
 
 //Se obtendra la propiedad de un usuario por su ID de la propiedad
@@ -120,11 +136,11 @@ const getReview = async (id) => {
       include: [
         {
           model: Review,
-          attributes: ["review", "score"],
+          attributes: ["id", "review", "score", "enabled"],
           include: [
             {
               model: User,
-              attributes: ["name", "lastname", "image"],
+              attributes: ["id", "name", "lastname", "image"],
             },
           ],
         },
@@ -217,4 +233,5 @@ module.exports = {
   getUserFavById,
   setUserFavorites,
   removeUserFav,
+  enabledReview,
 };

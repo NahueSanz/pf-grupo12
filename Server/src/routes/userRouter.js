@@ -12,6 +12,7 @@ const {
   getUserFavs,
   setUserFavs,
   deleteUserFav,
+  changeEnabledReviewHandler,
 } = require("../handlers/userHanders");
 
 const userRouter = Router();
@@ -42,5 +43,7 @@ userRouter.get("/property/:userId/fav", getUserFavs);
 userRouter.post("/property/:userId/fav", setUserFavs);
 //Eliminar de favoritos
 userRouter.delete("/property/:userId/fav/:houseId", deleteUserFav);
+//Deshabilitar una review
+userRouter.put("/review/enabled/:id", changeEnabledReviewHandler);
 
 module.exports = userRouter;

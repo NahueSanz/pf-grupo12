@@ -22,7 +22,7 @@ function ReviewsPanel({idCasa}) {
 
   const handleScoreChange = (newScore) => {
     setScore(newScore);
-    console.log(newScore);
+
   };
 
   
@@ -40,8 +40,6 @@ function ReviewsPanel({idCasa}) {
       score: score,
       user: uid,
     };
-
-    console.log("Datos a enviar al backend:", dataToSend);
 
     // Llamar a la acción para enviar la reseña al backend
     dispatch(postReviewsProperty(idCasa, dataToSend));
