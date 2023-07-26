@@ -38,12 +38,12 @@ module.exports = (sequelize) => {
       favorite: {
         type: DataTypes.ARRAY(DataTypes.STRING),
         defaultValue: [],
-        allowNull: false,
+
       },
       travels: {
         type: DataTypes.ARRAY(DataTypes.STRING),
         defaultValue: [],
-        allowNull: false,
+  
       },
       language: {
         type: DataTypes.STRING,
