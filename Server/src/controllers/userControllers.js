@@ -1,4 +1,4 @@
-const { User, Property } = require("../db");
+const { User, Property, Review } = require("../db");
 /************** CONTROLLERS DEL USUARIO AUTENTICADO ****************/
 
 //Se obtendra al usuario buscando en la BDD por su ID
@@ -14,7 +14,7 @@ const getUserById = async (id) => {
 const getAllUserProperties = async (userId) => {
   try {
     const userProperties = await Property.findAll({
-      where:{UserId:userId},
+      where: { UserId: userId },
       include: [
         {
           model: User,
@@ -58,10 +58,44 @@ const createUserProperty = async (
     startDate,
     endDate,
     image,
-    UserId:userId
+    UserId: userId,
   });
   return newProperty;
 };
+
+const createUserReview = async (review, score, user, idCasa) => {
+  // const existingReview = await Review.findOne({
+  //   where: { UserId: user, PropertyId: idCasa },
+  // });
+
+  // if (existingReview) {
+  //   throw new Error("You have already posted one review in this property");
+  // }
+  const newReview = await Review.create({
+    review,
+    score,
+    UserId: user,
+    PropertyId: idCasa,
+  });
+  return newReview;
+};
+
+const enabledReview = async (id,enabled) => {
+  try {
+
+    const review = await Review.findByPk(id);
+    if (!review) {
+      throw new Error("Review not found");
+    }
+    await review.update({enabled: enabled});
+    await review.save();
+    return {message:"Review disabled", enabled:enabled};
+    
+  } catch (error) {
+    throw new Error(error.message);
+  }
+};
+
 //Se obtendra la propiedad de un usuario por su ID de la propiedad
 const getUserPropertyById = async (id) => {
   try {
@@ -82,22 +116,111 @@ const getUserPropertyById = async (id) => {
 //Se eliminara una propiedad del usuario
 const deleteUserProperty = async (id) => {
   try {
-    const deletedProperty = await Property.destroy({
-      where: { id },
-    });
+    const deletedProperty = await Property.findByPk(id);
 
     if (deletedProperty === 0) {
       throw new Error("User property not found");
     }
 
-    return "User property deleted";
+    if(deletedProperty.enabled === true){
+      return "User property enabled"
+    }
+    return "User property disabled";
   } catch (error) {
     throw new Error("Error deleting a user property");
   }
 };
+const getReview = async (id) => {
+  try {
+    const casaConReview = await Property.findByPk(id, {
+      include: [
+        {
+          model: Review,
+          attributes: ["id", "review", "score", "enabled"],
+          include: [
+            {
+              model: User,
+              attributes: ["id", "name", "lastname", "image"],
+            },
+          ],
+        },
+      ],
+    });
+    if (!casaConReview) {
+      throw new Error("User property review not found");
+    }
+    return casaConReview;
+  } catch (error) {
+    throw new Error("No se encontraron las reviews");
+  }
+};
 
+const getUserFavById = async (userId) => {
+  try {
+    const user = await User.findByPk(userId);
 
+    if (!user) {
+      throw new Error("Usuario no encontrado");
+    }
+    const propertiesId = user.favorite;
+    console.log(propertiesId);
+    const numericId = propertiesId.map((id) => parseInt(id, 10));
 
+    const favoritedProperties = await Property.findAll({
+      where: { id: numericId },
+    });
+    return favoritedProperties;
+  } catch (error) {
+    throw new Error("Error getting a user property");
+  }
+};
+
+const setUserFavorites = async (userId, houseId) => {
+  try {
+    // Buscar al usuario por su ID
+    const user = await User.findByPk(userId);
+
+    if (!user) {
+      return "Usuario no encontrado";
+    }
+    // Verificar si la casa ya está en los favoritos del usuario
+    if (user.favorite.includes(houseId)) {
+      return "La casa ya está en favoritos";
+    }
+
+    // Agregar la casa al array de favoritos del usuario
+    await user.update({
+      favorite: [...user.favorite, houseId],
+    });
+    console.log(user.favorite);
+
+    return "Casa agregada a favoritos con éxito";
+  } catch (error) {
+    return "Error interno del servidor";
+  }
+};
+
+const removeUserFav = async (userId, houseId) => {
+  console.log(userId, houseId);
+  try {
+    // Buscar al usuario por su ID
+    const user = await User.findByPk(userId);
+
+    if (!user) {
+      return "Usuario no encontrado";
+    }
+
+    // Eliminar la casa del array de favoritos del usuario
+    const updatedFavorites = user.favorite.filter((fav) => fav !== houseId);
+    await user.update({
+      favorite: updatedFavorites,
+    });
+
+    return "Casa eliminada de favoritos con éxito";
+  } catch (error) {
+    return "Error interno del servidor";
+  }
+};
 
 module.exports = {
   getUserById,
@@ -105,4 +228,10 @@ module.exports = {
   getAllUserProperties,
   getUserPropertyById,
   deleteUserProperty,
+  getReview,
+  createUserReview,
+  getUserFavById,
+  setUserFavorites,
+  removeUserFav,
+  enabledReview,
 };

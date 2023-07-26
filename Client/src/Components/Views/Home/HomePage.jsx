@@ -9,14 +9,16 @@ import { Pagination } from "react-bootstrap";
 
 function HomePage() {
   
-
   const dispatch = useDispatch();
+  const id = localStorage.getItem("loggedIn");
   const properties = useSelector((state) => state.properties);
-  const searchTerm = useSelector((state)=>state.searchTerm)
+  const searchTerm = useSelector((state)=>state.searchTerm);
   
-
   useEffect(() => {
-    dispatch(actions.getProperties()).catch((error) => {
+    dispatch(actions.getPropertiesAvaible()).catch((error) => {
+      console.error(error);
+    });
+    dispatch(actions.getAllProperties()).catch((error) => {
       console.error(error);
     });
   }, [dispatch]);
@@ -66,7 +68,8 @@ function HomePage() {
   };
 
   useEffect(() => {
-    dispatch(actions.getProperties());
+    //solo cargan las propiedades habilitadas
+    dispatch(actions.getPropertiesAvaible());
     dispatch(actions.firstPage())
   }, []);
 
@@ -102,7 +105,7 @@ function HomePage() {
         {currentPage>=3 && (<Pagination.Item onClick={prev2Page}>{currentPage-2}</Pagination.Item>)}
         {currentPage>=2 && (<Pagination.Item onClick={prev1Page}>{currentPage-1}</Pagination.Item>)}
         <Pagination.Item active={true}>{currentPage}</Pagination.Item>
-        {hasNextPage && (<Pagination.Item onClick={next1Page}>{currentPage+1}</Pagination.Item>)}
+        {!isLastPage && hasNextPage && (<Pagination.Item onClick={next1Page}>{currentPage+1}</Pagination.Item>)}
         <Pagination.Next
           onClick={nextPage}
           disabled={!hasNextPage || isLastPage}

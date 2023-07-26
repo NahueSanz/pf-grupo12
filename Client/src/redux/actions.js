@@ -1,27 +1,44 @@
 import axios from "axios";
+import { 
+  GET_PROPERTIES_AVAIBLE,
+  GET_ALL_PROPERTIES,
+  GET_PROPERTY_DETAIL,
+  GET_PROPERTIES_BY_NAME,
+  POST_NEW_PROPERTY,
+  SEARCH_BY_TITLE,
+  ENABLED_PROPERTY,
+  APPLY_FILTERS,
+  ORDER_PRICE,
+  FIRST_PAGE,
+  NEXT_PAGE,
+  PREV_PAGE,
+  GET_USERS,
+  GET_USER,
+  UPDATE_USER,
+  ENABLED_USER,
+  GET_ADMINS,
+  REGISTER,
+  LOGIN,
+  LOGOUT,
+  REVIEWS_PROPERTY,
+  GET_REVIEWS_PROPERTY,
+  ENABLED_REVIEW,
+  RESET_DETAIL_PROPERTY,
+  GET_USER_PROPERTIES,
+  RESET_USER
+} from "./actionTypes";
 
-export const GET_PROPERTIES = "GET_PROPERTIES";
-export const GET_PROPERTY_DETAIL = "GET_PROPERTY_DETAIL";
-export const GET_PROPERTIES_BY_NAME = "GET_PROPERTIES_BY_NAME";
-export const APPLY_FILTERS = "APPLY_FILTERS";
-export const ORDER_PRICE = "ORDER_PRICE";
-export const FIRST_PAGE = "FIRST_PAGE";
-export const NEXT_PAGE = "NEXT_PAGE";
-export const PREV_PAGE = "PREV_PAGE";
-export const SEARCH_BY_TITLE = "SEARCH_BY_TITLE";
-export const GET_USER = "GET_USER";
-export const LOGIN = "LOGIN";
-export const LOGOUT = "LOGOUT";
 
-//const url = `http://localhost:3001`; //URL GENERAL
+const urlLocal = `http://localhost:3001`; //URL GENERAL
 const url = `https://pf-grupo12-production.up.railway.app/`; //URL Data-base deploy
 
-export function getProperties() {
+//Trae todos los usuarios con rol user de la BDD(solo para admin)
+export function getUsers() {
   return async function (dispatch) {
     try {
-      const res = await axios.get(`${url}/public/properties`); //All properties
+      const res = await axios.get(`${urlLocal}/admin/users`); //All users
       return dispatch({
-        type: GET_PROPERTIES,
+        type: GET_USERS,
         payload: res.data,
       });
     } catch (error) {
@@ -29,11 +46,95 @@ export function getProperties() {
     }
   };
 }
-
+//Trae la informacion del usuario por su ID
+export const getUser = (id) => {
+  return async function (dispatch) {
+    try {
+      const res = await axios.get(`${urlLocal}/user/info/${id}`); //get User
+      return dispatch({
+        type: GET_USER,
+        payload: res.data,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+//Actualizar las propiedades del usuario
+export const updateUser = (id, userData) => {
+  return async function (dispatch) {
+    try {
+      const res = await axios.put(`${urlLocal}/user/update/${id}`, userData);
+      return dispatch({
+        type: UPDATE_USER,
+        payload: res.data,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+//Cambia el estado del usuario del campo enabled, para habilitarlo o deshabilitarlo
+export const changeEnabledUser = (id,enabled) => {
+  return async function (dispatch) {
+    try {
+      const res = await axios.put(`${urlLocal}/admin/user/enabled/${id}`, enabled);
+      return dispatch({
+        type: ENABLED_USER,
+        payload: res.data,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+//Trae todos los usuarios con rol admin de la BDD(solo para admin)
+export function getAdmins() {
+  return async function (dispatch) {
+    try {
+      const res = await axios.get(`${urlLocal}/admin/admins`); //All admins
+      return dispatch({
+        type: GET_ADMINS,
+        payload: res.data,
+      });
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+}
+//Trae todas las propiedades de la BDD (solo para admin)
+export function getAllProperties() {
+  return async function (dispatch) {
+    try {
+      const res = await axios.get(`${urlLocal}/admin/properties`); //All properties
+      return dispatch({
+        type: GET_ALL_PROPERTIES,
+        payload: res.data,
+      });
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+}
+//Trae todas las propiedades habilitadas de la BDD
+export function getPropertiesAvaible() {
+  return async function (dispatch) {
+    try {
+      const res = await axios.get(`${urlLocal}/public/properties`); //All properties
+      return dispatch({
+        type: GET_PROPERTIES_AVAIBLE,
+        payload: res.data,
+      });
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+}
+//Busca propiedades por su titulo
 export function searchPropertiesByTitle(title) {
   return async function (dispatch) {
     try {
-      const res = await axios.get(`${url}/public/properties?title=${title}`); //Search properties by title
+      const res = await axios.get(`${urlLocal}/public/properties?title=${title}`); //Search properties by title
       return dispatch({
         type: SEARCH_BY_TITLE,
         searchName: title,
@@ -44,12 +145,12 @@ export function searchPropertiesByTitle(title) {
     }
   };
 }
-
+//Trae la informacion del detalle de la propiedad
 export function getPropertyDetail(id) {
   return async function (dispatch) {
     try {
-      const res = await axios.get(`${url}/public/property/detail/${id}`); //One property
-      console.log(res.data);
+      const res = await axios.get(`${urlLocal}/public/property/detail/${id}`); //One property
+      //console.log(res.data);
       return dispatch({
         type: GET_PROPERTY_DETAIL,
         payload: res.data,
@@ -64,7 +165,7 @@ export function getPropertiesByName(searchName) {
   //SIN USAR? QUIZA SE PUEDA BORRAR
   return async function (dispatch) {
     try {
-      const res = await axios.get(`${url}/countries/name?name=${searchName}`); //Property by name
+      const res = await axios.get(`${urlLocal}/countries/name?name=${searchName}`); //Property by name
       return dispatch({
         type: GET_PROPERTIES_BY_NAME,
         searchName: searchName,
@@ -76,6 +177,34 @@ export function getPropertiesByName(searchName) {
   };
 }
 
+export function newPostProperty(id,values) {
+  return async function (dispatch) {
+    try {
+      const res = await axios.post(`${urlLocal}/user/${id}/property`, values);
+      //const res = await axios.post(`${url}/user/${id}/property`, values);
+      return dispatch({
+        type: POST_NEW_PROPERTY,
+        payload: res.data,
+      });
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+}
+//Cambia el estado de la propiedad del campo enabled, para habilitarlo o deshabilitarlo
+export const changeEnabledProperty = (id,enabled) => {
+  return async function (dispatch) {
+    try {
+      const res = await axios.put(`${urlLocal}/admin/property/enabled/${id}`, enabled);
+      return dispatch({
+        type: ENABLED_PROPERTY,
+        payload: res.data,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
 export function applyFilters(
   filterByPriceMin,
   filterByPriceMax,
@@ -123,6 +252,22 @@ export function nextPage(quantity) {
   };
 }
 
+export function register(userData) {
+  return async function (dispatch) {
+    try {
+      const res = await axios.post(`${urlLocal}/public/register`,userData);
+      //const res = await axios.post(`${url}/public/register`,userData);
+     
+      return dispatch({
+        type: REGISTER,
+        payload: res.data,
+       
+      });
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+}
 //se le pasa un id al loguearse
 export const login = (id) => ({
   type: LOGIN,
@@ -133,16 +278,76 @@ export const logout = () => ({
   type: LOGOUT,
 });
 
-export const getUser = (id) => {
+export const postReviewsProperty = (idCasa, values)=>{
+  return async function (dispatch){
+        try {
+          const res = await axios.post(`${urlLocal}/user/property/${idCasa}/review`, values); 
+
+          return dispatch({
+            type: REVIEWS_PROPERTY,
+            payload: res.data,
+          });
+        } catch (error) {
+          console.log(error);
+        }
+      };
+    }
+
+export const getReviewsProperty = (idCasa) =>{
   return async function (dispatch) {
     try {
-      const res = await axios.get(`${url}/user/info/${id}`); //get User
+      const res = await axios.get(`${urlLocal}/user/property/${idCasa}/review`);
       return dispatch({
-        type: GET_USER,
-        payload: res.data,
+        type: GET_REVIEWS_PROPERTY,
+        payload: res.data.Reviews,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+}
+
+export const changeEnabledReview = (id,enabled) => {
+  console.log(enabled)
+  return async function (dispatch) {
+    try {
+      const res = await axios.put(`${urlLocal}/user/review/enabled/${id}`, {enabled:enabled});
+      
+
+      return dispatch({
+        type: ENABLED_REVIEW,
+        payload:{
+          id,
+          value: enabled,
+        },
       });
     } catch (error) {
       console.log(error);
     }
   };
 };
+
+
+export const resetDetailProperty = () => ({
+  type: RESET_DETAIL_PROPERTY
+})
+
+
+export const getUserProperties = (id) => {
+  return async function(dispatch){
+    try {
+      const { data } = await axios.get(`${urlLocal}/user/${id}/property`);
+      return dispatch({
+        type: GET_USER_PROPERTIES,
+        payload: data
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+}
+
+export const resetUser = () => ({
+  type: RESET_USER
+})

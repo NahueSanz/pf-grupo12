@@ -1,0 +1,25 @@
+.modal{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    position: relative;
+
+}
+.title{
+    margin-left: 40%;
+}
+.comentario{
+    width: 100%;
+    margin-top: 30px;
+}
+.button{
+    background-color: white;
+    color: black;
+    border-color: black;
+    margin-top: 20px;
+    margin-left: 35%;
+}
+.button:hover{
+    background-color: #DC3545 ;
+}

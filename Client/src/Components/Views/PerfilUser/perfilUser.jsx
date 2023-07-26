@@ -1,24 +1,38 @@
 import style from './perfilUser.module.css';
-import { Container, Row, Col, Button } from 'react-bootstrap';
-import { useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { getUser } from '../../../redux/actions';
+import { Container, Row, Col } from 'react-bootstrap';
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { getUser, resetUser } from '../../../redux/actions';
 import { useDispatch, useSelector } from "react-redux";
-import languageIcon from '../../../assets/languageIcon.svg';
-import locationIcon from '../../../assets/locationIcon.svg';
-import contactUsIcon from '../../../assets/ContactUs.svg';
-import { Link } from "react-router-dom";
+import PerfilUserName from '../../Inc/PerfilUserName/perfilUserName';
+import PerfilUserAbout from '../../Inc/PerfilUserAbout/perfilUserAbout';
+import PerfilCreateUser from '../../Inc/PerfilUserCreateButton/perfilUserCreate';
+import UserProperties from '../../Inc/UserPropertiesProfile/UserProfileProperties';
 
 
 function PerfilUser () {
-    const navigate = useNavigate('/Miperfilform')
     const { id } = useParams();
     const dispatch = useDispatch();
     const user = useSelector(state => state.user);
-    console.log(user);
+    const currentUserId = useSelector(state=> state.id)
+    const [showUserInfo, setShowUserInfo ] = useState(true);
+    const [ profileIsCurrentUser, setProfileIsCurrentUser ] = useState(true); 
 
     useEffect(() => {
+        if(id === currentUserId){
+            setProfileIsCurrentUser(true);
+        }else {
+            setProfileIsCurrentUser(false);
+        }
+    }, [id, currentUserId]);
+ 
+    useEffect(() => {
+        if(!user.phonenumber && !user.language && !user.country){
+            setShowUserInfo(false);
+        } else setShowUserInfo(true);
+    }, [user]);
 
+    useEffect(() => {
         async function getUserData(id){
           try {
               const data = getUser(id);
@@ -27,62 +41,38 @@ function PerfilUser () {
               console.log(error);
           }
       }
-      
+        
         getUserData(id);
+
+        return () => dispatch(resetUser());
       }, [ dispatch, id]);
 
-   if(!user.name){
-        return(
-            <Container fluid style={{ height: '62vh'}} className='pt-5'>
-                <Row className='d-flex justify-content-center align-items-center mt-5'>
-                    <Col className='col-12 fw-bold text-uppercase mt-5'>
-                        <h2>It's time to create your profile</h2>
-                    </Col>
-                    <Col lg={6} md={6} sm={12} xs={12} className='mt-4'>
-                        <p className='text-secondary' style={{fontFamily: 'Open Sans, sans-serif' }}>Completing your profile helps keeping the host and guests safe. Create it and let the world of Alohar know who you are</p>
-                    </Col>
-                    <Col className='col-12 mt-4'>
-                        <Button as={Link} to="/Miperfilform" variant='danger'>Create profile</Button>
-                    </Col>
-                </Row>
-            </Container>
-        )
-   }else{
+   
     return(
-        <Container fluid style={{ height: '65vh'}}>
-            <Row>
-                <Col lg={4} md={4} sm={12} xs={12} className='rounded shadow mt-5 mx-lg-5 mx-md-5 ms-0 py-4'>
-                    <img src={user.image} alt="" className='rounded-circle mb-3' style={{ width: '100px'}}/>
-                    <h3 className='fw-bolder mt-1'> {user.name}</h3>
-                    <p>{user.email}</p>
-                </Col>  
-                <Col lg={4} md={4} sm={12} xs={12} className='mt-5 mx-lg-5 mx-md-5 ms-0'>
-                    <h1 className='fw-bolder mt-1 text-start'>About {user.name}</h1>
-                    <Col className='col-12 d-flex mb-3 mt-3'>
-                        <Button className='btn-light btn-outline-dark'  as={Link} to="/Miperfilform" >Edit profile</Button>
-                    </Col>
-                    <div>
-                     {user.language && <p className='text-start'>
-                            <img style={{ height: "22px" }} src={languageIcon} alt="Star icon" className='me-1'/>
-                            Speaks {user.language}.
-                        </p>}
-                       { user.country && <p className='text-start'>
-                            <img style={{ height: "22px" }} src={locationIcon} alt="Location icon"  className='me-1'/>
-                            Lives in {user.country}.
-                        </p>}
-                        {user.phonenumber && <p className='text-start'>
-                            <img style={{ height: "22px" }} src={contactUsIcon} alt="Phone icon"  className='me-1'/>
-                            Contact {user.phonenumber}.
-                        </p>}
-                    </div>
-                    <hr className='mb-4 border-top border-secondary' style={{ width: "100%" }} />
-                    {user.description && <p className='text-start'>{user.description}</p>}
-                </Col> 
+        <Container fluid style={{ height: 'auto' }} className='py-lg-5 py-md-5 py-2 mb-5'>
+            <Row className='d-flex justify-content-between'>
+            {profileIsCurrentUser &&  <Col className='col-12 d-flex align-items-center justify-content-end mb-3'>
+                <a className='text-decoration-underline link-dark link-offset-1 d-md-none d-lg-none d-block fw-bolder'>
+                    Edit
+                </a>
+            </Col> }
+            <Col lg={3} md={3} sm={11} xs={11} className={`rounded shadow-lg ms-lg-5 ms-md-5 ms-3 ${style.perfilUserName}`} style={{ height: '300px' }}>
+                <PerfilUserName user={user} />
+            </Col>
+            <Col lg={8} md={9} sm={12} xs={12}>
+                {!showUserInfo ? (
+                <PerfilCreateUser profileIsCurrentUser={profileIsCurrentUser}/>
+                ) : (
+                <PerfilUserAbout user={user} profileIsCurrentUser={profileIsCurrentUser}/>
+                )}
+                <hr className='border-top border-secondary mt-5' style={{ width: '100%' }} />
+                <UserProperties user={user} />
+            </Col>
             </Row>
-        </Container>
+      </Container>
     )
    }
-}
+
 
 
 

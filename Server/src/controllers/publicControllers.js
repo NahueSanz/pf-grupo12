@@ -1,4 +1,4 @@
-const { Property, User } = require("../db");
+const { Property, User, Review } = require("../db");
 const { Op } = require("sequelize");
 
 /********************* CONTROLLERS PUBLICOS *********************/
@@ -8,6 +8,7 @@ const getPropertiesbyTitle = async (title) => {
   try {
     const properties = await Property.findAll({
       where: {
+        enabled:true,
         title: { [Op.iLike]: "%" + title + "%" },
       },
     });
@@ -22,12 +23,12 @@ const getPropertiesbyTitle = async (title) => {
 };
 
 //Crear un nuevo usuario en la BDD
-const createUser = async (email,id) => {
+const createUser = async (email,id, name, lastname) => {
   const [newUser, created] = await User.findOrCreate({
     //busca por estos datos al usuario
-    where: { email, id },
+    where: { email, id, name, lastname},
     //sino lo encuentra lo crea con los valores del defaults
-    defaults: { email, id },
+    defaults: { email, id, name, lastname},
   });
   if (!created) {
     throw new Error("User already exists");
@@ -35,10 +36,25 @@ const createUser = async (email,id) => {
   return newUser;
 };
 
-//Obtener todas las propiedades de la BDD
+//Obtener todas las propiedades de la BDD que esten habilitadas
 const getAllProperties = async () => {
   try {
-    const properties = await Property.findAll();
+    const properties = await Property.findAll({
+      where:{
+        enabled:true
+      },
+      include: [
+        {
+          model: Review,
+          attributes: ["score", "enabled"],
+        },
+        {
+          model: User,
+          attributes: ["name","lastname"],
+        }
+      ],
+
+    });
 
     return properties;
   } catch (error) {

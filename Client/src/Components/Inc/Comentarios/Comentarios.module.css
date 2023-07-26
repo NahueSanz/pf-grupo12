@@ -1,0 +1,56 @@
+
+.container {
+    height: auto;
+    margin:0;
+    padding: 0;
+    border: none;
+    /* border-bottom: 1px solid rgb(119, 117, 117); */
+    font-size: 14px;    
+
+}
+.container2{
+    display: flex;
+    justify-content: space-between;
+}
+
+.containerName {
+    display: flex;
+    height: auto;
+    top: 0;
+    left: 0;
+    border: none;
+}
+.containerName2{
+    margin-left: 10px;
+}
+
+.userName {
+    margin: 0;
+    padding: 0;
+}
+.review{
+    margin-top: 10px;
+}
+
+.containerImg{
+    width: 40px;
+    border-radius: 50%;
+}
+
+/* SIRVE PARA QUE LA IMAGEN SEA SIEMPRE DEL MISMO TAMAÑO  */
+.img {
+    width: 100%;
+    aspect-ratio: 1/1; /* Proporción 1:1 para mantener la imagen cuadrada */
+    border-radius: 50%;
+    object-fit: cover; /* La imagen se ajustará para cubrir todo el contenedor sin perder la relación de aspecto */
+  }
+
+  .btnDelete{
+    display: flex;
+    background-color: rgba(240, 248, 255, 0);
+    height: 19px;
+    width: 30px;
+    align-items: center;
+    border:none;
+    margin-top: 6px;
+  }

@@ -12,21 +12,23 @@ import { useLocation } from "react-router-dom";
 import NavBar from "./Components/Inc/NavBar/NavBar";
 import Footer from "./Components/Inc/Footer/Footer";
 import Landing from "./Components/Views/Landing/Landing";
-import { login, logout } from "./redux/actions";
+import { getUser, login, logout } from "./redux/actions";
 import FormPerfil from "./Components/Inc/FormPerfil/FormPerfil";
 import FormProperty from "./Components/Inc/FormProperty/FormProperty";
-
+import Payment from "./Components/Views/Payment/Payment";
+import Dashboard from "./Components/Views/Dashboard/Dashboard";
 import firebaseApp from "./fb";
 import { getAuth } from "firebase/auth";
 
 const auth = getAuth(firebaseApp);
-import Payment from "./Components/Views/Payment/Payment";
+
 
 const App = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const loggedIn = useSelector(state => state.loggedIn);
+  const userRole = useSelector(state => state.user.role)
 
   useEffect(() => {
 
@@ -34,26 +36,26 @@ const App = () => {
     auth.onAuthStateChanged((user) => {
       if (user) {
         // El usuario está autenticado
-        dispatch(login(user.uid))
+        dispatch(getUser(user.uid));
+        dispatch(login(user.uid));
       } else {
         // El usuario no está autenticado
         dispatch(logout())
         navigate("/")
-        // Puedes realizar acciones específicas para usuarios no autenticados aquí
       }
     });
-  }, [])
+  }, []);
 
   return (
     <div className="app">
       
-      {loggedIn 
+      {loggedIn
       ? (
         <>
           {/* Si estoy logueado puedo usar estas rutas */}
-          {location.pathname !== "/" && <NavBar />}
+          {location.pathname !== "/" && location.pathname !== "/admin-dashboard" && <NavBar />}
           <Routes>
-            <Route path='/' element={<Navigate to='/home' replace />} />{/* Si yo quiero retrocer a landing, al estar logueado no me deja y redirije a home */}
+            <Route path='/' element={<Navigate to='/home' replace/>} />{/* Si yo quiero retrocer a landing, al estar logueado no me deja y redirije a home */}
             <Route path="/home" element={<HomePage />} />
             <Route path="/rooms/:id" element={<DetailPropertyPage />} />
             <Route path="/new-property" element={<PropertyForm />} />{/* actualizar ruta en demas componentes */}
@@ -61,8 +63,11 @@ const App = () => {
             <Route path="/Miperfilform" element={<FormPerfil />} />
             <Route path='/user/:id' element={<PerfilUser/>} />
             <Route path="/update-my-property" element={<FormProperty />} />
+            {
+              userRole==="admin"?<Route path="/admin-dashboard" element={<Dashboard />} />:null
+            }
           </Routes>
-          {location.pathname !== "/" && <Footer />}
+          {location.pathname !== "/" && location.pathname !== "/admin-dashboard" && <Footer />}
         </>
       ) 
       : (

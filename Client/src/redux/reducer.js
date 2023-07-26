@@ -1,17 +1,62 @@
+import { 
+  GET_PROPERTIES_AVAIBLE,
+  GET_ALL_PROPERTIES,
+  GET_PROPERTY_DETAIL,
+  GET_PROPERTIES_BY_NAME,
+  POST_NEW_PROPERTY,
+  ENABLED_PROPERTY,
+  APPLY_FILTERS,
+  ORDER_PRICE,
+  FIRST_PAGE,
+  NEXT_PAGE,
+  PREV_PAGE,
+  SEARCH_BY_TITLE,
+  GET_USERS,
+  GET_USER,
+  ENABLED_USER,
+  GET_ADMINS,
+  REGISTER,
+  LOGIN,
+  LOGOUT,
+  UPDATE_USER,
+  REVIEWS_PROPERTY,
+  GET_REVIEWS_PROPERTY,
+  ENABLED_REVIEW,
+  RESET_DETAIL_PROPERTY,
+  GET_USER_PROPERTIES,
+  RESET_USER
+} from "./actionTypes";
+
 const initialState = {
   properties: [],
   propertyDetail: {},
   allProperties: [],
+  userProperties:[],
+  propertiesAdmin: [],
+  allPropertiesAdmin: [],
+  users: [],
+  allUsers: [],
+  admins: [],
+  allAdmins: [],
+  review: [],
+  allReview: [],
   page: 1,
   searchTerm: "",
   loggedIn: Boolean(localStorage.getItem("loggedIn")) || false,
   id: '',
-  user: {}
+  user: {},
 };
 
 const rootReducer = (state = initialState, action) => {
   switch (action.type) {
-    case "GET_PROPERTIES":
+    case GET_ALL_PROPERTIES:
+      return {
+        ...state,
+        propertiesAdmin: action.payload,
+        allPropertiesAdmin: action.payload,
+      };
+
+    case GET_PROPERTIES_AVAIBLE:
       return {
         ...state,
         properties: action.payload,
@@ -19,28 +64,72 @@ const rootReducer = (state = initialState, action) => {
         searchTerm: "",
       };
 
-    case "GET_PROPERTY_DETAIL":
+    case GET_PROPERTY_DETAIL:
       return {
         ...state,
         propertyDetail: action.payload,
       };
 
-    case "GET_PROPERTIES_BY_NAME":
+    case GET_PROPERTIES_BY_NAME:
       return {
         ...state,
         searchTerm: action.searchName,
         properties: action.payload,
       };
 
-    case "SEARCH_BY_TITLE":
+    case POST_NEW_PROPERTY:
+      return {
+        ...state
+      }
+
+    case SEARCH_BY_TITLE:
       return {
         ...state,
         searchTerm: action.searchName,
         properties: action.payload,
       };
 
-    case "APPLY_FILTERS":
-      var filteringProperties = [...state.properties];
+    case ENABLED_PROPERTY:
+      return {
+        ...state,
+      }
+
+    case GET_USERS:
+      return {
+        ...state,
+        users: action.payload,
+        allUsers: action.payload
+      };
+
+    case GET_USER:
+      return {
+        ...state,
+        user: action.payload,
+      };
+
+    case UPDATE_USER:
+      return {
+        ...state,
+        user: action.payload
+      }
+
+    case ENABLED_USER:
+      return {
+        ...state,
+      }
+
+    case GET_ADMINS:
+      const filteredAdmins = action.payload.filter((admin) => {
+        admin.id !== localStorage.getItem("loggedIn");
+      })
+      return {
+        ...state,
+        admins: filteredAdmins,
+        allAdmins: action.payload,
+      }
+
+    case APPLY_FILTERS:
+      var filteringProperties = [...state.allProperties];
       // Aplicar el filtro filterByPriceMin
       if (action.payload.filterByPriceMin !== "") {
         filteringProperties = filteringProperties.filter(
@@ -75,7 +164,7 @@ const rootReducer = (state = initialState, action) => {
         page: 1,
       };
 
-    case "ORDER_PRICE":
+    case ORDER_PRICE:
       if (action.payload === "All") {
         return {
           ...state,
@@ -93,42 +182,94 @@ const rootReducer = (state = initialState, action) => {
           ...state,
           properties: orderPrice, // Mostrar los datos ordenados
         };
-      }
+      };
 
-    case "FIRST_PAGE":
+    case FIRST_PAGE:
       return {
         ...state,
         page: 1,
       };
-    case "PREV_PAGE":
-      return {
-        ...state,
-        page: state.page - action.payload,
-      };
-    case "NEXT_PAGE":
+
+    case NEXT_PAGE:
       return {
         ...state,
         page: state.page + action.payload,
       };
 
-    case "LOGIN":
-        localStorage.setItem("loggedIn", action.payload);
-        return {
-          ...state,
-          loggedIn: action.payload,
-          id: action.payload
-        };
-    case "LOGOUT":
+    case PREV_PAGE:
+      return {
+        ...state,
+        page: state.page - action.payload,
+      };
+
+    case REGISTER:
+      return {
+        ...state
+      };
+
+    case LOGIN:
+      localStorage.setItem("loggedIn", action.payload);
+      return {
+        ...state,
+        loggedIn: action.payload,
+        id: action.payload
+      };
+
+    case LOGOUT:
       localStorage.setItem("loggedIn", "");
       return {
         ...state,
         loggedIn: false,
+        user: {},
       };
-      case 'GET_USER':
-        return{
-          ...state,
-          user: action.payload
-        }
+
+    case UPDATE_USER:
+      localStorage.setItem("loggedIn", action.payload);
+      return {
+        ...state,
+        user: action.payload
+      };
+
+    case REVIEWS_PROPERTY:
+      return {
+        ...state
+      }
+
+    case GET_REVIEWS_PROPERTY:
+      return {
+        ...state,
+        review: action.payload,
+        allReview: action.payload
+      };
+
+    case ENABLED_REVIEW:
+      return {
+        ...state,
+        review: state.review.map(el => {
+          if (el.id === action.payload.id) {
+            return {
+              ...el,
+              enabled: action.payload.value,
+            };
+          }
+          return el;
+        }),
+      };
+      case RESET_DETAIL_PROPERTY: 
+      return {
+        ...state,
+        propertyDetail: {}
+      }
+      case GET_USER_PROPERTIES : 
+        return {
+        ...state,
+        userProperties : action.payload
+      }
+      case RESET_USER: 
+      return {
+        ...state,
+        user: {}
+      }
     default:
       return state;
   }

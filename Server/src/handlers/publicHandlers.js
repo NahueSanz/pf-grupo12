@@ -6,21 +6,25 @@ const {
   getPropertyDetail,
   getPropertiesbyTitle,
 } = require("../controllers/publicControllers");
-
 /********* HANDLERS PARA LAS RUTAS PUBLICAS(NO AUTENTICADO) *********/
 
-//Registrar un nuevo usuario
 const registerUserHandler = async (req, res) => {
-  const { email, id } = req.body;
+  var { email, id, name, lastname } = req.body;
+
   try {
-    if (!email || !id) {
-      throw Error("All fields are not complete");
+    if (!email || !id || !name || !lastname) {
+      throw new Error("All fields are not complete");
     }
-    const newUser = await createUser(email, id);
+    const newUser = await createUser(email, id, name, lastname);
+    console.log(newUser)
     if (!newUser) {
-      throw Error("User not created");
+      throw new Error("User not created");
     }
-    //Si todo sale bien se crea al nuevo usuario
+
+    // Si todo sale bien se crea al nuevo usuario
+    // Envía el correo electrónico al usuario recién registrado
+    const emailInfo = await sendEmail(email, "welcome"); // Enviamos el email de bienvenida
+    console.log("Email sent: " + emailInfo.messageId);
     res.status(201).json(newUser);
   } catch (error) {
     res.status(400).json({ error: error.message });
@@ -44,8 +48,8 @@ const checkUserHandle = async (req, res) => {
   }
 };
 
-//Todas las propiedades o todas las propiedas encontradas por search
-const getAllPropertiesHandler = async (req, res) => {
+//Todas las propiedades habilitadas o todas las propiedas encontradas por search
+const getAllPropertiesEnabledHandler= async (req, res) => {
   const { title } = req.query;
   try {
     //Si se busca por search
@@ -83,6 +87,6 @@ const getPropertyByIdHandler = async (req, res) => {
 
 module.exports = {
   registerUserHandler,
-  getAllPropertiesHandler,
+  getAllPropertiesEnabledHandler,
   getPropertyByIdHandler,
 };
