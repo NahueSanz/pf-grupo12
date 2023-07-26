@@ -32,7 +32,7 @@ function CardComponent({
   // Calcular el promedio solo para los scores habilitados
   const promedio = calcularPromedio(enabledScoresArray);
 
-  console.log(enabledArray);
+ 
 
   return (
     <Card className={style.card} style={{ width: "20vw", height: "25vw" }}>

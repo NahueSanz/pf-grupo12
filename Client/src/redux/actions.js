@@ -15,6 +15,7 @@ import {
   GET_USERS,
   GET_USER,
   UPDATE_USER,
+  UPDATE_PROPERTY,
   ENABLED_USER,
   GET_ADMINS,
   REGISTER,
@@ -29,8 +30,8 @@ import {
 } from "./actionTypes";
 
 
-//const url = `http://localhost:3001`; //URL GENERAL
-const url = `https://pf-grupo12-production-75d0.up.railway.app`; //URL Data-base deploy
+const url = `http://localhost:3001`; //URL GENERAL
+// const url = `https://pf-grupo12-production-75d0.up.railway.app`; //URL Data-base deploy
 
 //Trae todos los usuarios con rol user de la BDD(solo para admin)
 export function getUsers() {
@@ -67,6 +68,21 @@ export const updateUser = (id, userData) => {
       const res = await axios.put(`${url}/user/update/${id}`, userData);
       return dispatch({
         type: UPDATE_USER,
+        payload: res.data,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+
+export const updateProperty = (id, userData) => {
+
+  return async function (dispatch) {
+    try {
+      const res = await axios.put(`${url}/user/property/${id}`, userData);
+      return dispatch({
+        type: UPDATE_PROPERTY,
         payload: res.data,
       });
     } catch (error) {
