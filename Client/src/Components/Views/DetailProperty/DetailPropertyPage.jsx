@@ -99,8 +99,7 @@ function DetailPropertyPage() {
           <div className="d-flex align-items-center">
             <p><span className="mr-2 fw-bolder">${property.price} USD</span> night  │ </p>
             <p className='d-inline-flex align-items-center'>
-              <small className='fw-normal'>{property.guests} guests │ </small>
-              <i class="bi bi-star-fill"></i> <span className="ms-1">{promedio}</span>
+              <small className='fw-normal'>{property.guests} guests </small>
             </p>
           </div>
         </Col>
@@ -168,11 +167,8 @@ function DetailPropertyPage() {
         ? <>
           <Row className={`${style.owner} owner ms-2 shadow rounded pt-3`}>
             <Col className='text-center'>
-            <small className='fw-semibold'>CHECK-IN</small>
-            <input type="date" className='rounded mb-4 mx-2 border border-secondary' placeholder='check-in'/>
-            <small className='fw-semibold'>CHECKOUT</small> 
-            <input type="date" className='rounded mb-4 mx-2 border border-secondary' placeholder='check-in'/>
-            <Button className='btn-danger btn-sm my-2 mx-2' as={Link} to="/payment">Reserve</Button>
+            <small className="fw-bolder">${property.price} USD night</small>
+            <Button className='btn-danger btn-lg my-2 mx-2' as={Link} to="/payment">Reserve</Button>
               </Col>
             </Row>
           </>

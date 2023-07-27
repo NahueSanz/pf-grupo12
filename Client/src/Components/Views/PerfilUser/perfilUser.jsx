@@ -57,7 +57,7 @@ function PerfilUser () {
 
    
     return(
-        <Container fluid style={{ height: 'auto' }} className='py-lg-5 py-md-5 py-2 mb-5'>
+        <Container fluid style={{ minHeight: '80vh' }} className='py-lg-5 py-md-5 py-2 mb-5'>
            {showSpinner && (
                 <div className="d-flex justify-content-center" style={{ height: '42vh' }}>
                     <SpinnerLoading/>

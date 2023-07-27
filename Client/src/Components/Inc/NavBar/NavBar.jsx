@@ -22,11 +22,10 @@ const auth = getAuth(firebaseApp);
 
 
 function NavBar() {
-  const idUserLogged= localStorage.getItem("loggedIn");
+  const id= localStorage.getItem("loggedIn");
   const [title, setTitle] = useState("");
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const id = useSelector(state => state.id);
   const user = useSelector(state => state.user);
   const location = useLocation()
   // const [ profileIsCurrentUser, setProfileIsCurrentUser ] = useState(true); 
@@ -108,7 +107,7 @@ function NavBar() {
               }
             >
               {/* <Dropdown.Item >{auth.currentUser.displayName}</Dropdown.Item> */}
-              <Dropdown.Item as={Link} to={`/user/${id}`}>{`${user.name} ${user.lastname}`}</Dropdown.Item>
+              <Dropdown.Item as={Link} to={`/user/${id}`}>My Profile</Dropdown.Item>
               
 
               <Dropdown.Divider />

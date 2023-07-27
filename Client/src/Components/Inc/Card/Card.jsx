@@ -15,7 +15,7 @@ function CardComponent({
   id,
   image,
   country,
-  description,
+  title,
   startDate,
   endDate,
   price,
@@ -49,7 +49,7 @@ function CardComponent({
           <span>☆ {promedio}</span>
         </div>
 
-        <p>{description}</p>
+        <p>{title}</p>
         <p>
           Available from {startDate} to {endDate}
         </p>

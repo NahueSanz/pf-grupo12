@@ -142,7 +142,8 @@ const PropertyForm = () => {
   };
 
   return (
-    <Formik
+    <div className={styles.containerUltraPrincipal}>
+      <Formik
       initialValues={
         JSON.parse(localStorage.getItem("Form")) || {
           title: "",
@@ -158,7 +159,7 @@ const PropertyForm = () => {
       }
       validationSchema={validationSchema}
       onSubmit={handleSubmit}
-    >
+      >
       {({ isSubmitting }) => (
         <div className={styles.containerPrincipal}>
           <Form className={styles.form} onChange={handleChange}>
@@ -341,13 +342,11 @@ const PropertyForm = () => {
                     required
                   />
                   {previewImage && (
-                    <div className={styles.imageContainer}>
                       <img
                         src={previewImage}
                         alt="Preview"
                         className={styles.imagePreview}
                       />
-                    </div>
                   )}
 
                   <ErrorMessage
@@ -374,7 +373,8 @@ const PropertyForm = () => {
           </Form>
         </div>
       )}
-    </Formik>
+      </Formik>
+    </div>
   );
 };
 
