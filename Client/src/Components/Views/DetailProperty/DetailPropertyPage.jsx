@@ -118,7 +118,11 @@ function DetailPropertyPage() {
           <Col className='p-3 mb-5 rounded text-start col-12'>
             <hr className='mb-4 border-top border-secondary' style={{ width: "100%" }} />
             <div className="d-flex align-items-center">
-              <img src={ownerImage} className='rounded-circle img-fluid profileImage' alt="User picture" style={{ width: "60px", marginRight: "10px", height: '50px' }} />
+              <div className={`${style.containerImg}`}>
+              <img src={ownerImage} className={` ${style.imgPerfil}`}
+ alt="User picture" style={{ }} />
+              </div>
+              
               <div>
                 <h4 className='fw-semibold my-4'>Hosted by {owner}</h4>
               </div>

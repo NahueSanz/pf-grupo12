@@ -86,7 +86,7 @@ function HomePage() {
       <div className={style.cards}>
         {currentItems.map((element) => {
           return (
-            <Card
+            <Card className={style.card}
               key={element.id}
               id={element.id}
               image={element.image}

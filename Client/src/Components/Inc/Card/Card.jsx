@@ -36,7 +36,11 @@ function CardComponent({
 
   return (
     <Card className={style.card} style={{ width: "20vw", height: "25vw" }}>
+      <div className={style.containerImg}>
       <Card.Img className={style.img} variant="top" src={image} />
+
+      </div>
+      
       <Card.Body className={style.cardBody}>
         <div className={style.contanerTittle}>
           <Link className={style.link} to={`/rooms/${id}`}>
