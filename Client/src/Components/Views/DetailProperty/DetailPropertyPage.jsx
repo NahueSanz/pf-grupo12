@@ -15,6 +15,7 @@ import { Link } from "react-router-dom";
 import DropdownProperty from '../../Inc/DropDownPropertyDetail/Dropdown';
 import { useNavigate } from "react-router-dom";
 import ReviewsPanel from '../../Inc/ReviewsPanel/ReviewsPanel';
+import SpinnerLoading from '../../Inc/SpinnerLoading/Spinner';
 
 
 function calcularPromedio(arr) {
@@ -42,8 +43,14 @@ function DetailPropertyPage() {
   const ownerDescription = property.User?.description;
   const [ currentUserIsOwner, setCurrentUserIsOwner ] = useState(false);
   const [ isLoading, setIsLoading ] = useState(true);
+  const [showSpinner, setShowSpinner] = useState(true);
 
 
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowSpinner(false);
+    }, 2000);
+  }, []);
 
   useEffect(() => {
     if(currentUserID === ownerId) {
@@ -68,12 +75,18 @@ function DetailPropertyPage() {
 
     getPropertyData(id);
 
-    return () => dispatch(resetDetailProperty());
   }, [dispatch, id]);
 
     return (
       <Container className={`${style.container} container-fluid container pt-5`}>
-      <Row>
+        {showSpinner && (
+                <Col className="d-flex justify-content-center" style={{ height: '62vh' }}>
+                    <SpinnerLoading/>
+                </Col>
+            )}
+            { !showSpinner && (
+              <>
+              <Row>
         <Col className='col-12 d-flex justify-content-end'> 
           {currentUserIsOwner ? <DropdownProperty id={id}/> : null }
         </Col>
@@ -163,6 +176,8 @@ function DetailPropertyPage() {
           </>
           : null
       }        
+              </>
+            )}
     </Container>
       );
 }

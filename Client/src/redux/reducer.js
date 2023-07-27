@@ -28,7 +28,8 @@ import {
   UPDATE_PROPERTY,
   GET_USER_FAVORITES,
   ADD_USER_FAVORITES,
-  DELETE_USER_FAVORITES 
+  DELETE_USER_FAVORITES,
+  GET_USER_PROFILE
 } from "./actionTypes";
 
 const initialState = {
@@ -50,6 +51,7 @@ const initialState = {
   loggedIn: Boolean(localStorage.getItem("loggedIn")) || false,
   id: '',
   user: {},
+  userProfile: {}
 };
 
 const rootReducer = (state = initialState, action) => {
@@ -300,6 +302,11 @@ const rootReducer = (state = initialState, action) => {
           ...state,
           userFavorites: updateFavs
         }
+        case GET_USER_PROFILE:
+          return{
+            ...state,
+            userProfile: action.payload
+          }
     default:
       return state;
   }

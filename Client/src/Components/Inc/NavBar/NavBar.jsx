@@ -13,8 +13,7 @@ import { login, logout } from "../../../redux/actions"
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getUser, resetUser } from '../../../redux/actions';
-
-
+import guessProfilePic from '../../../assets/guessProfilePic.webp'
 import style from "./NavBar.module.css";
 import { searchPropertiesByTitle } from "../../../redux/actions";
 
@@ -31,8 +30,9 @@ function NavBar() {
   const user = useSelector(state => state.user);
   const currentUserId = useSelector(state=> state.id)
   const [showUserInfo, setShowUserInfo ] = useState(true);
+
   // const [ profileIsCurrentUser, setProfileIsCurrentUser ] = useState(true); 
-  const defaultImage = "data:image/jpeg;base64,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"
+  
 
   useEffect(() => {
       if(!user.image && !user.name && !user.lastname){
@@ -40,7 +40,7 @@ function NavBar() {
       } else setShowUserInfo(true);
   }, [user]);
 
-  const userImage = user?.image || defaultImage;
+  const userImage = user?.image || guessProfilePic;
 
   useEffect(() => {
       async function getUserData(id){
@@ -137,6 +137,7 @@ function NavBar() {
               {/* Solo renderiza el boton si eres rol admin */
                 user.role==="admin"?<Dropdown.Item as={Link} to={`/admin-dashboard`}>Admin Dashboard</Dropdown.Item>:null
               }
+              <Dropdown.Item as={Link} to={`/user/${user.id}/favorites`}>Favorites</Dropdown.Item>
               <Dropdown.Item as={Link} to="/new-property">New Property</Dropdown.Item>
               <Dropdown.Item as={Link} to="/update-my-property">Update My Property</Dropdown.Item>
               <Dropdown.Item as={Link} to="/" onClick={logoutHandle}>Close sesion</Dropdown.Item>
