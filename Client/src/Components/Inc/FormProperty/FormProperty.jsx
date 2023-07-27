@@ -3,16 +3,18 @@ import { Button, Card } from "react-bootstrap";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { useDispatch } from 'react-redux';
-import { updateProperty } from '../../../redux/actions';
+import { updateProperty,getPropertiesAvaible } from '../../../redux/actions';
 import styles from "../FormProperty/FormProperty.module.css";
 import { countries } from "../../../utils/countries";
 import Swal from 'sweetalert2'
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 
+
 const FormMyProperty = () => {
   const dispatch = useDispatch();
   const { id } = useParams();
+  const navigate = useNavigate()
 
   const [image, setImage] = useState(null);
   const [previewImage, setPreviewImage] = useState(null);
@@ -78,12 +80,22 @@ const FormMyProperty = () => {
         values.image = imageUrl;
       }
    
-
       dispatch(updateProperty(id, values));
-
       setImage(null);
       setPreviewImage(null);
       setSubmitting(false);
+
+      Swal.fire({
+        title: `Property updated successfully`,
+        icon: 'success',
+        confirmButtonColor: '#3085d6',
+        confirmButtonText: 'Go to Property Detail',
+      }).then((result) => {
+        if (result.isConfirmed) {
+          
+          navigate(`/rooms/${id}`)
+        }
+      })
     } catch (error) {
       console.error("Error al actualizar la propiedad:", error);
       setSubmitting(false);
@@ -159,7 +171,7 @@ const FormMyProperty = () => {
                     />
                   </div>
                 )}
-              </div>
+              </div> 
 
               <div className={styles.field}>
                 <label htmlFor="">title</label>

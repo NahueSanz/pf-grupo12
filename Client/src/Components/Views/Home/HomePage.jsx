@@ -27,7 +27,7 @@ function HomePage() {
 
 
   const currentPage = useSelector((state) => state.page);
-  const [itemsPerPage] = useState(8);
+  const [itemsPerPage] = useState(9);
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;

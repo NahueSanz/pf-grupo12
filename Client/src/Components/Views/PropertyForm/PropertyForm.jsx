@@ -6,6 +6,7 @@ import { countries } from "../../../utils/countries";
 import styles from "./PropertyForm.module.css";
 import { newPostProperty } from "../../../redux/actions";
 import { Link, useParams, useNavigate} from "react-router-dom";
+import Swal from 'sweetalert2'
 
 import * as Yup from "yup";
 import axios from "axios";
@@ -63,7 +64,17 @@ const PropertyForm = () => {
 
       dispatch(newPostProperty(id, values));
 
-      navigate('/home');
+      Swal.fire({
+        title: `Property posted successfully`,
+        icon: 'success',
+        confirmButtonColor: '#3085d6',
+        confirmButtonText: 'Go to home',
+      }).then((result) => {
+        if (result.isConfirmed) {
+          
+          navigate(`/home`)
+        }
+      })
 
 
       // alert("Created property");
