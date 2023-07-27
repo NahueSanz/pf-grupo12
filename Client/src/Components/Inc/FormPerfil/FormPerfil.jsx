@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { updateUser } from '../../../redux/actions';
 import { Button, Card } from "react-bootstrap";
@@ -10,6 +11,7 @@ import Swal from 'sweetalert2'
 
 const FormMyPerfil = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [image, setImage] = useState(null);
   const [previewImage, setPreviewImage] = useState(null);
 
@@ -18,8 +20,6 @@ const FormMyPerfil = () => {
       .test("no-empty-spaces", "name cannot contain only spaces", (value) => {
         return !/^\s*$/.test(value);
       }),
-
-    type: Yup.string().required("Type is required"),
 
     lastname: Yup.string()
       .test("no-empty-spaces", "lastname cannot contain only spaces", (value) => {
@@ -73,11 +73,10 @@ const FormMyPerfil = () => {
     setFieldValue('image', selectedImage);
   };
 
+  const id = localStorage.getItem("loggedIn");
   const handleSubmit = async (values) => {
-    const id = localStorage.getItem("loggedIn");
-
     // Se sube la imagen a Cloudinary y obtenemos la URL
-    if (image) {
+  
       const formData = new FormData();
       formData.append("file", image);
       formData.append("upload_preset", "aloharsur88");
@@ -94,12 +93,10 @@ const FormMyPerfil = () => {
         dispatch(updateUser(id, { ...values, image: imageUrl }));
       } catch (error) {
         console.error("Error al subir la imagen a Cloudinary:", error);
-        return;
+        ;
       }
-    } else {
       // Si no hay imagen seleccionada solo se actualiza el resto de los datos
       dispatch(updateUser(id, values));
-    }
 
     Swal.fire({
       title: `Profile updated successfully`,
@@ -108,8 +105,7 @@ const FormMyPerfil = () => {
       confirmButtonText: 'Go to Profile',
     }).then((result) => {
       if (result.isConfirmed) {
-        
-        navigate(`/user/${localStorage.getItem("loggedIn")}`)
+        navigate(`/user/${id}`)
       }
     })
   };
