@@ -25,12 +25,16 @@ import {
   RESET_DETAIL_PROPERTY,
   GET_USER_PROPERTIES,
   RESET_USER,
-  UPDATE_PROPERTY
+  UPDATE_PROPERTY,
+  GET_USER_FAVORITES,
+  ADD_USER_FAVORITES,
+  DELETE_USER_FAVORITES 
 } from "./actionTypes";
 
 const initialState = {
   properties: [],
   propertyDetail: {},
+  userFavorites: [],
   allProperties: [],
   userProperties: [],
   propertiesAdmin: [],
@@ -281,6 +285,21 @@ const rootReducer = (state = initialState, action) => {
         ...state,
         user: {}
       }
+      case GET_USER_FAVORITES:
+        return {
+            ...state,
+            userFavorites: action.payload
+        }
+      case ADD_USER_FAVORITES: 
+        return {
+            ...state,
+        }
+      case DELETE_USER_FAVORITES :
+        const updateFavs = state.userFavorites.filter(fav => fav.id !== houseId);
+        return{
+          ...state,
+          userFavorites: updateFavs
+        }
     default:
       return state;
   }

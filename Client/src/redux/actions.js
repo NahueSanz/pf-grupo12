@@ -26,7 +26,10 @@ import {
   ENABLED_REVIEW,
   RESET_DETAIL_PROPERTY,
   GET_USER_PROPERTIES,
-  RESET_USER
+  RESET_USER,
+  GET_USER_FAVORITES,
+  ADD_USER_FAVORITES,
+  DELETE_USER_FAVORITES 
 } from "./actionTypes";
 
 
@@ -367,3 +370,45 @@ export const getUserProperties = (id) => {
 export const resetUser = () => ({
   type: RESET_USER
 })
+
+export const getUserFavorites = (id) => {
+  return async function(dispatch){
+    try {
+      const { data } = await axios.get(`${url}/user/property/${id}/fav`);
+      return dispatch({
+        type: GET_USER_FAVORITES,
+        payload: data
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+}
+
+export const addUserFavorites = (userId, houseId) => {
+  return async function(dispatch){
+    try {
+      const { data } = await axios.post(`${url}/user/property/${userId}/fav`, { houseId });
+      return dispatch({
+        type: ADD_USER_FAVORITES,
+        payload: data
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+}
+
+export const deleteUserFavorites = (userId, houseId) => {
+  return async function(dispatch){
+    try {
+      await axios.delete(`${url}/user/property/${userId}/fav/${houseId}`);
+      return dispatch({
+        type: DELETE_USER_FAVORITES,
+        payload: houseId
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+}

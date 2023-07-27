@@ -89,8 +89,9 @@ function DetailPropertyPage() {
             </p>
           </div>
         </Col>
-        <Col className='d-inline-flex text-start col-12'>
-              <h2 className='fw-bold text-uppercase mt-2'>{property.title}</h2> { !currentUserIsOwner ? <FavoritesAddNotification title={property.title} image={property.image}/> : "" }
+        <Col className='d-flex align-items-center text-start col-12'>
+            <h2 className='fw-bold text-uppercase mt-2'>{property.title}</h2>
+            {!currentUserIsOwner ? <FavoritesAddNotification title={property.title} houseId={property.id} image={property.image} className="ms-3" /> : ""}
         </Col>
         <Col className='d-inline-flex text-start col-12 mt-3 mx-auto'>
               <h6>{property.type} hosted by <a onClick={ () => navigate(`/user/${ownerId}`)} className='link-danger link-offset-1' style={{ cursor: 'pointer'}}>{owner}</a></h6>
