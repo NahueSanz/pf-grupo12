@@ -11,6 +11,7 @@ import UserProperties from '../../Inc/UserPropertiesProfile/UserProfilePropertie
 import SpinnerLoading from '../../Inc/SpinnerLoading/Spinner';
 
 
+
 function PerfilUser () {
     const { id } = useParams();
     const dispatch = useDispatch();
