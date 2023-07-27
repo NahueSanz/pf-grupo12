@@ -82,7 +82,7 @@ function DetailPropertyPage() {
     return (
       <Container className={`${style.container} container-fluid container pt-5`}>
         {showSpinner && (
-                <Col className="d-flex justify-content-center" style={{ height: '62vh' }}>
+                <Col className="d-flex justify-content-center" style={{ height: '100vh' }}>
                     <SpinnerLoading/>
                 </Col>
             )}
@@ -166,7 +166,7 @@ function DetailPropertyPage() {
       {
         !currentUserIsOwner 
         ? <>
-          <Row className={`${style.owner} owner ms-2 shadow rounded w-50 pt-3`}>
+          <Row className={`${style.owner} owner ms-2 shadow rounded pt-3`}>
             <Col className='text-center'>
             <small className='fw-semibold'>CHECK-IN</small>
             <input type="date" className='rounded mb-4 mx-2 border border-secondary' placeholder='check-in'/>
