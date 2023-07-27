@@ -28,36 +28,10 @@ function NavBar() {
   const dispatch = useDispatch();
   const id = useSelector(state => state.id);
   const user = useSelector(state => state.user);
-  const currentUserId = useSelector(state=> state.id)
-  const [showUserInfo, setShowUserInfo ] = useState(true);
   const location = useLocation()
   // const [ profileIsCurrentUser, setProfileIsCurrentUser ] = useState(true); 
-  
-
-  useEffect(() => {
-      if(!user.image && !user.name && !user.lastname){
-          setShowUserInfo(false);
-      } else setShowUserInfo(true);
-  }, [user]);
 
   const userImage = user?.image || guessProfilePic;
-
-  useEffect(() => {
-      async function getUserData(id){
-        try {
-            const data = getUser(id);
-            dispatch(data)
-        } catch (error) {
-            console.log(error);
-        }
-    }
-      
-      getUserData(id);
-
-      return () => dispatch(resetUser());
-    }, [ dispatch, id]);
-
-
 
   const handleChange = (event) => {
     setTitle(event.target.value)

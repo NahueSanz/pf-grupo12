@@ -135,9 +135,7 @@ const rootReducer = (state = initialState, action) => {
       }
 
     case GET_ADMINS:
-      const filteredAdmins = action.payload.filter((admin) => {
-        admin.id !== localStorage.getItem("loggedIn");
-      })
+      const filteredAdmins = action.payload.filter((admin) => admin.id !== localStorage.getItem("loggedIn"));
       return {
         ...state,
         admins: filteredAdmins,
