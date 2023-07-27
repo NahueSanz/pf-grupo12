@@ -40,3 +40,8 @@
   gap: 3vw;
   max-width: 30vw;
 }
+
+.imagePreview{
+  max-height: 10vw;
+  width: fit-content;
+}

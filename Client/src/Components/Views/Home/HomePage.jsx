@@ -21,7 +21,7 @@ function HomePage() {
     dispatch(actions.getAllProperties()).catch((error) => {
       console.error(error);
     });
-  }, [dispatch]);
+  }, []);
 
   //Paginado
 

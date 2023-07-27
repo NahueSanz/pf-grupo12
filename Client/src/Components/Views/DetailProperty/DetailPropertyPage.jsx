@@ -68,7 +68,6 @@ function DetailPropertyPage() {
 
     getPropertyData(id);
 
-    return () => dispatch(resetDetailProperty());
   }, [dispatch, id]);
 
     return (

@@ -19,29 +19,24 @@ const FormMyProperty = () => {
 
   const validationSchema = Yup.object().shape({
     title: Yup.string()
-      .required("Title is required")
       .test("no-empty-spaces", "Title cannot contain only spaces", (value) => {
         return !/^\s*$/.test(value);
       }),
     type: Yup.string().required("Type is required"),
     address: Yup.string()
-      .required("Address is required")
       .test("no-empty-spaces", "Address cannot contain only spaces", (value) => {
         return !/^\s*$/.test(value);
       }),
     country: Yup.string().required("Country is required"),
     guests: Yup.string()
-      .required("Guests is required")
       .test("no-empty-spaces", "Guests cannot contain only spaces", (value) => {
         return !/^\s*$/.test(value);
       }),
     price: Yup.string()
-      .required("Price is required")
       .test("no-empty-spaces", "Price cannot contain only spaces", (value) => {
         return !/^\s*$/.test(value);
       }),
     description: Yup.string()
-      .required("Description is required")
       .test("no-empty-spaces", "Description cannot contain only spaces", (value) => {
         return !/^\s*$/.test(value);
       }),
@@ -84,6 +79,18 @@ const FormMyProperty = () => {
       setImage(null);
       setPreviewImage(null);
       setSubmitting(false);
+
+      Swal.fire({
+        title: `Property updated successfully`,
+        icon: 'success',
+        confirmButtonColor: '#3085d6',
+        confirmButtonText: 'Go to Property Detail',
+      }).then((result) => {
+        if (result.isConfirmed) {
+          
+          navigate(`/rooms/${id}`)
+        }
+      })
     } catch (error) {
       console.error("Error al actualizar la propiedad:", error);
       setSubmitting(false);

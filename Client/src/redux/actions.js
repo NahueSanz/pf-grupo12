@@ -83,14 +83,14 @@ export const updateProperty = (id, userData) => {
 
   return async function (dispatch) {
     try {
-      const res = await axios.put(`${url}/user/property/${id}`, userData);
-      return dispatch({
-        type: UPDATE_PROPERTY,
-        payload: res.data,
-      });
+      await axios.put(`${url}/user/property/${id}`, userData);
+
     } catch (error) {
       console.log(error);
     }
+
+    getAllProperties()
+    getPropertiesAvaible()
   };
 };
 //Cambia el estado del usuario del campo enabled, para habilitarlo o deshabilitarlo
