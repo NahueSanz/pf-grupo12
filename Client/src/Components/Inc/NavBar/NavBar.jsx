@@ -10,7 +10,7 @@ import { Link } from "react-router-dom";
 import firebaseApp from '../../../fb'
 import { getAuth, signOut } from "firebase/auth";
 import { login, logout } from "../../../redux/actions"
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getUser, resetUser } from '../../../redux/actions';
 import guessProfilePic from '../../../assets/guessProfilePic.webp'
@@ -30,7 +30,7 @@ function NavBar() {
   const user = useSelector(state => state.user);
   const currentUserId = useSelector(state=> state.id)
   const [showUserInfo, setShowUserInfo ] = useState(true);
-
+  const location = useLocation()
   // const [ profileIsCurrentUser, setProfileIsCurrentUser ] = useState(true); 
   
 
@@ -97,20 +97,24 @@ function NavBar() {
         >
           <Navbar.Brand as={Link} to="/home" className={style.logo}>AloHar</Navbar.Brand>
 
-          <Form className={style.form} onSubmit={handleSubmit} > {/*O BIEN SOLO RENDERIZAR EN /home, O QUE AL BUSCAR REDIRIGA A /home */ }
-            <Form.Control
-              name="search"
-              type="search"
-              value={title}
-              placeholder="Search"
-              className={`me-2 ${style.search}`}
-              aria-label="Search"
-              onChange={handleChange}
-            />
-            <Button variant="outline-success" type="submit" className={style.searchButton}>
-           < BsSearch className={style.imgSearch}/>
-            </Button>
-          </Form>
+          {
+            (location.pathname === "/home")?
+            <Form className={style.form} onSubmit={handleSubmit} > {/*O BIEN SOLO RENDERIZAR EN /home, O QUE AL BUSCAR REDIRIGA A /home */ }
+              <Form.Control
+                name="search"
+                type="search"
+                value={title}
+                placeholder="Search"
+                className={`me-2 ${style.search}`}
+                aria-label="Search"
+                onChange={handleChange}
+              />
+              <Button variant="outline-success" type="submit" className={style.searchButton}>
+            < BsSearch className={style.imgSearch}/>
+              </Button>
+            </Form>:null
+          }
+          
 
           <div className={style.containerNews}>
 
@@ -139,7 +143,6 @@ function NavBar() {
               }
               <Dropdown.Item as={Link} to={`/user/${user.id}/favorites`}>Favorites</Dropdown.Item>
               <Dropdown.Item as={Link} to="/new-property">New Property</Dropdown.Item>
-              <Dropdown.Item as={Link} to="/update-my-property">Update My Property</Dropdown.Item>
               <Dropdown.Item as={Link} to="/" onClick={logoutHandle}>Close sesion</Dropdown.Item>
 
             </DropdownButton>
