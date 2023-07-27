@@ -9,12 +9,12 @@ import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button'
 import FavoritesAddNotification from '../../Inc/ModalPropertypage/ModalProperty';
 import profilePicGuess from '../../../assets/guessProfilePic.webp';
-import ReviewsPanel from '../../Inc/ReviewsPanel/ReviewsPanel'
 import PanelComentarios from '../../Inc/PanelComentarios/PanelComentarios'
 import style from './PropertyPage.module.css'
 import { Link } from "react-router-dom";
 import DropdownProperty from '../../Inc/DropDownPropertyDetail/Dropdown';
 import { useNavigate } from "react-router-dom";
+import ReviewsPanel from '../../Inc/ReviewsPanel/ReviewsPanel';
 
 
 function calcularPromedio(arr) {
@@ -110,6 +110,11 @@ function DetailPropertyPage() {
               </p>
               { property.description?.length > 475 && <ReadMore description={property.description} /> }
           </Col>
+          <Col className='p-3 rounded' sm={12} md={12} lg={12}>
+            <hr className='mb-4 border-top border-secondary' style={{ width: "100%" }} />
+            <PanelComentarios idCasa={id}/>
+            { !currentUserIsOwner && <ReviewsPanel idCasa={id}/>}
+          </Col>
           <Col className='p-3 mb-5 rounded text-start col-12'>
             <hr className='mb-4 border-top border-secondary' style={{ width: "100%" }} />
             <div className="d-flex align-items-center">
@@ -119,7 +124,6 @@ function DetailPropertyPage() {
               </div>
             </div>
             <Col className='d-flex align-items-center text-start'>
-            <span className="me-2"> <i class="bi bi-star-fill"></i> 23 reviews  </span> 
             {ownerLanguage && <span className='ms-2'>  <i class="bi bi-globe-americas"/> Languages: {ownerLanguage} </span>}
             </Col>
               <p className='lh-sm mt-4 paragraph mb-4'>
@@ -152,11 +156,9 @@ function DetailPropertyPage() {
             <Button className='btn-danger btn-sm my-2 mx-2' as={Link} to="/payment">Reserve</Button>
               </Col>
             </Row>
-            <ReviewsPanel idCasa={id}/>
           </>
           : null
-      }
-      <PanelComentarios idCasa={id}/>
+      }        
     </Container>
       );
 }
