@@ -29,7 +29,8 @@ import {
   RESET_USER,
   GET_USER_FAVORITES,
   ADD_USER_FAVORITES,
-  DELETE_USER_FAVORITES 
+  DELETE_USER_FAVORITES,
+  GET_USER_PROFILE
 } from "./actionTypes";
 
 
@@ -412,3 +413,17 @@ export const deleteUserFavorites = (userId, houseId) => {
     }
   }
 }
+
+export const getUserProfile = (id) => {
+  return async function (dispatch) {
+    try {
+      const res = await axios.get(`${url}/user/info/${id}`); //get User
+      return dispatch({
+        type: GET_USER_PROFILE,
+        payload: res.data,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};

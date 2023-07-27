@@ -15,7 +15,8 @@ import { Link } from "react-router-dom";
 import DropdownProperty from '../../Inc/DropDownPropertyDetail/Dropdown';
 import { useNavigate } from "react-router-dom";
 import ReviewsPanel from '../../Inc/ReviewsPanel/ReviewsPanel';
-
+import SpinnerLoading from '../../Inc/SpinnerLoading/Spinner';
+import ContactHostModal from '../../Inc/ContactHostModal/ContactHost';
 
 function calcularPromedio(arr) {
   if (arr.length === 0) return 0;
@@ -40,10 +41,18 @@ function DetailPropertyPage() {
   const ownerId = property.User?.id
   const ownerLanguage = property.User?.language;
   const ownerDescription = property.User?.description;
+  const ownerNumber = property.User?.phonenumber;
+  const ownerEmail = property.User?.email;
   const [ currentUserIsOwner, setCurrentUserIsOwner ] = useState(false);
   const [ isLoading, setIsLoading ] = useState(true);
+  const [showSpinner, setShowSpinner] = useState(true);
 
 
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowSpinner(false);
+    }, 2000);
+  }, []);
 
   useEffect(() => {
     if(currentUserID === ownerId) {
@@ -72,7 +81,14 @@ function DetailPropertyPage() {
 
     return (
       <Container className={`${style.container} container-fluid container pt-5`}>
-      <Row>
+        {showSpinner && (
+                <Col className="d-flex justify-content-center" style={{ height: '100vh' }}>
+                    <SpinnerLoading/>
+                </Col>
+            )}
+            { !showSpinner && (
+              <>
+              <Row>
         <Col className='col-12 d-flex justify-content-end'> 
           {currentUserIsOwner ? <DropdownProperty id={id}/> : null }
         </Col>
@@ -133,7 +149,7 @@ function DetailPropertyPage() {
                   { ownerDescription?.length > 475 ? ownerDescription.slice(0, 475).concat('...') : ownerDescription }
               </p>
               { ownerDescription?.length > 475 && <ReadMore description={ ownerDescription } /> } 
-              { currentUserIsOwner ? <div className='d-flex justify-content-end'> <Button className='btn-dark' href='/Miperfilform'>Edit profile</Button></div> : <div className='d-flex justify-content-end'> <Button className='btn-dark'>Contact Host</Button> </div> }
+              { currentUserIsOwner ? <div className='d-flex justify-content-end'> <Button className='btn-dark' href='/Miperfilform'>Edit profile</Button></div> : <div className='d-flex justify-content-end'><ContactHostModal ownerNumber={ownerNumber} owner={owner} ownerEmail={ownerEmail}/></div> }
           </Col>
         <Row className={`${style.reserveSm} reserve-sm  shadow bg-body rounded mx-auto border border-white`}>
             <Col className='col-12 text-start'>
@@ -150,7 +166,7 @@ function DetailPropertyPage() {
       {
         !currentUserIsOwner 
         ? <>
-          <Row className={`${style.owner} owner ms-2 shadow rounded w-50 pt-3`}>
+          <Row className={`${style.owner} owner ms-2 shadow rounded pt-3`}>
             <Col className='text-center'>
             <small className='fw-semibold'>CHECK-IN</small>
             <input type="date" className='rounded mb-4 mx-2 border border-secondary' placeholder='check-in'/>
@@ -162,6 +178,8 @@ function DetailPropertyPage() {
           </>
           : null
       }        
+              </>
+            )}
     </Container>
       );
 }
