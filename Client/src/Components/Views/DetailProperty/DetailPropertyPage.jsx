@@ -16,7 +16,7 @@ import DropdownProperty from '../../Inc/DropDownPropertyDetail/Dropdown';
 import { useNavigate } from "react-router-dom";
 import ReviewsPanel from '../../Inc/ReviewsPanel/ReviewsPanel';
 import SpinnerLoading from '../../Inc/SpinnerLoading/Spinner';
-
+import ContactHostModal from '../../Inc/ContactHostModal/ContactHost';
 
 function calcularPromedio(arr) {
   if (arr.length === 0) return 0;
@@ -41,6 +41,8 @@ function DetailPropertyPage() {
   const ownerId = property.User?.id
   const ownerLanguage = property.User?.language;
   const ownerDescription = property.User?.description;
+  const ownerNumber = property.User?.phonenumber;
+  const ownerEmail = property.User?.email;
   const [ currentUserIsOwner, setCurrentUserIsOwner ] = useState(false);
   const [ isLoading, setIsLoading ] = useState(true);
   const [showSpinner, setShowSpinner] = useState(true);
@@ -147,7 +149,7 @@ function DetailPropertyPage() {
                   { ownerDescription?.length > 475 ? ownerDescription.slice(0, 475).concat('...') : ownerDescription }
               </p>
               { ownerDescription?.length > 475 && <ReadMore description={ ownerDescription } /> } 
-              { currentUserIsOwner ? <div className='d-flex justify-content-end'> <Button className='btn-dark' href='/Miperfilform'>Edit profile</Button></div> : <div className='d-flex justify-content-end'> <Button className='btn-dark'>Contact Host</Button> </div> }
+              { currentUserIsOwner ? <div className='d-flex justify-content-end'> <Button className='btn-dark' href='/Miperfilform'>Edit profile</Button></div> : <div className='d-flex justify-content-end'><ContactHostModal ownerNumber={ownerNumber} owner={owner} ownerEmail={ownerEmail}/></div> }
           </Col>
         <Row className={`${style.reserveSm} reserve-sm  shadow bg-body rounded mx-auto border border-white`}>
             <Col className='col-12 text-start'>
