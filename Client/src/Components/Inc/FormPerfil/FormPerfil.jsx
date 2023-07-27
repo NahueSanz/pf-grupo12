@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { updateUser } from '../../../redux/actions';
 import { Button, Card } from "react-bootstrap";
 import axios from "axios";
@@ -14,6 +14,7 @@ const FormMyPerfil = () => {
   const navigate = useNavigate();
   const [image, setImage] = useState(null);
   const [previewImage, setPreviewImage] = useState(null);
+  const oldUser = useSelector(state=> state.userProfile)
 
   const validationSchema = Yup.object().shape({
     name: Yup.string()
@@ -150,7 +151,7 @@ const FormMyPerfil = () => {
             <Form className={styles.propertyForm}>
               <div className={styles.field}>
                 <label htmlFor="">name</label>
-                <Field type="text" name="name" />
+                <Field type="text" name="name" placeholder={oldUser.name} />
                 <ErrorMessage
                   name="title"
                   component="div"
@@ -159,7 +160,7 @@ const FormMyPerfil = () => {
               </div>
               <div className={styles.field}>
                 <label htmlFor="">lastname</label>
-                <Field type="text" name="lastname" />
+                <Field type="text" name="lastname" placeholder={oldUser.lastname} />
                 <ErrorMessage
                   name="title"
                   component="div"
@@ -169,7 +170,7 @@ const FormMyPerfil = () => {
 
               <div className={styles.field}>
                 <label htmlFor="">country</label>
-                <Field type="text" name="country" />
+                <Field type="text" name="country" placeholder={oldUser.country} />
                 <ErrorMessage
                   name="title"
                   component="div"
@@ -179,7 +180,7 @@ const FormMyPerfil = () => {
 
               <div className={styles.field}>
                 <label htmlFor="">phonenumber</label>
-                <Field type="tel" name="phonenumber" />
+                <Field type="tel" name="phonenumber" placeholder={oldUser.phonenumber} />
                 <ErrorMessage
                   name="title"
                   component="div"
@@ -189,7 +190,7 @@ const FormMyPerfil = () => {
 
               <div className={styles.field}>
                 <label htmlFor="">language</label>
-                <Field type="text" name="language" />
+                <Field type="text" name="language" placeholder={oldUser.language} />
                 <ErrorMessage
                   name="title"
                   component="div"

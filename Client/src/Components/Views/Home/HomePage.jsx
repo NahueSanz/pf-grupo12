@@ -91,7 +91,7 @@ function HomePage() {
               id={element.id}
               image={element.image}
               country={element.country}
-              description={element.description}
+              title={element.title}
               startDate={element.startDate}
               endDate={element.endDate}
               price={element.price}

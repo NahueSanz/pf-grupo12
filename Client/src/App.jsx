@@ -78,8 +78,6 @@ const App = () => {
           {location.pathname !== "/" && <NavBar />}
           <Routes>
             <Route path="/" element={<Landing />} />
-            <Route path="/home" element={<HomePage />} />
-            <Route path="/rooms/:id" element={<DetailPropertyPage />} />
           </Routes>
           {location.pathname !== "/" && <Footer />}
         </>
