@@ -100,6 +100,7 @@ function NavBar() {
                 user.role==="admin"?<Dropdown.Item as={Link} to={`/admin-dashboard`}>Admin Dashboard</Dropdown.Item>:null
               }
               <Dropdown.Item as={Link} to={`/user/${id}`}>Profile</Dropdown.Item>
+              <Dropdown.Item as={Link} to={`/user/${id}/favorites`}>Favorites</Dropdown.Item>
               <Dropdown.Item as={Link} to="/update-my-property">Update My Property</Dropdown.Item>
               <Dropdown.Item as={Link} to="/" onClick={logoutHandle}>Close sesion</Dropdown.Item>
 
